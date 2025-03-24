@@ -46,7 +46,7 @@ const Profile = () => {
       return;
     }
 
-    fetch("http://localhost:3000/profile", {
+    fetch("https://betradebackend.onrender.com/profile", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
