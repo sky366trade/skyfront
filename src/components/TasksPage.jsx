@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 const TasksPage = () => {
+  const url=import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const { level } = useParams();
   const [progress, setProgress] = useState(0);
@@ -31,13 +32,13 @@ const TasksPage = () => {
     const fetchTasks = async () => {
       try {
         const [tasksResponse, userResponse] = await Promise.all([
-          fetch("https://tradeflyhub.com/view-task", {
+          fetch(`${url}/view-task`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("https://tradeflyhub.com/profile", {
+          fetch(`${url}/profile`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -93,7 +94,7 @@ const TasksPage = () => {
     try {
       // Submit feedback and update task status
       const feedbackResponse = await fetch(
-        `https://tradeflyhub.com/completeTask/${currentTask._id}`,
+        `${url}/completeTask/${currentTask._id}`,
         {
           method: "GET",
           headers: {

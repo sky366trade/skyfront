@@ -10,6 +10,7 @@ const Deposit = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const url=import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     if (!token) {
@@ -17,7 +18,7 @@ const Deposit = () => {
       return;
     }
 
-    fetch("https://tradeflyhub.com/profile", {
+    fetch(`${url}/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -54,7 +55,7 @@ const Deposit = () => {
 
     setLoading(true);
     try {
-      const order = await fetch("https://tradeflyhub.com/payment/create-order", {
+      const order = await fetch(`${url}/payment/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +67,7 @@ const Deposit = () => {
       console.log("Order response:", data);
 
       const options = {
-        key: "rzp_test_LMV41rb8aScSBr",
+        key: import.meta.env.VITE_API_KEY,
         amount: data.amount,
         currency: "USD",
         order_id: data.id,
@@ -75,7 +76,7 @@ const Deposit = () => {
         handler: async (response) => {
           console.log(response);
           const verify = await fetch(
-            "https://tradeflyhub.com/payment/verify-payment",
+            `${url}/payment/verify-payment`,
             {
               method: "POST",
               headers: {
@@ -103,7 +104,7 @@ const Deposit = () => {
                   return;
                 }
           
-                const res = await fetch("https://tradeflyhub.com/update-wallet", {
+                const res = await fetch(`${url}/update-wallet`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

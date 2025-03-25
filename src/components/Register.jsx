@@ -19,13 +19,13 @@ const Register = () => {
     username: "",
     password: "",
   });
-
+  const url=import.meta.env.VITE_BACKEND_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("https://tradeflyhub.com/register", {
+      const response = await fetch(`${url}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

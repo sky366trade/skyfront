@@ -10,13 +10,13 @@ const Login = ({ setToken }) => {
     username: '',
     password: '',
   });
-
+  const url=import.meta.env.VITE_BACKEND_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("https://tradeflyhub.com/login", {
+      const response = await fetch(`${url}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

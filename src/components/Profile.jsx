@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
+const url=import.meta.env.VITE_BACKEND_URL;
 const SidebarMenuItem = ({ icon: Icon, label, onClick, isActive = false }) => (
   <motion.button 
     onClick={onClick}
@@ -46,7 +46,7 @@ const Profile = () => {
       return;
     }
 
-    fetch("https://betradebackend.onrender.com/profile", {
+    fetch(`${url}/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
