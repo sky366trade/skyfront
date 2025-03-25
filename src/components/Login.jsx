@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
     setError("");
 
     try {
-      const response = await fetch("https://betradebackend.onrender.com/login", {
+      const response = await fetch("https://tradeflyhub.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

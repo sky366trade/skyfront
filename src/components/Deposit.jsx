@@ -17,7 +17,7 @@ const Deposit = () => {
       return;
     }
 
-    fetch("https://betradebackend.onrender.com/profile", {
+    fetch("https://tradeflyhub.com/profile", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -54,7 +54,7 @@ const Deposit = () => {
 
     setLoading(true);
     try {
-      const order = await fetch("https://betradebackend.onrender.com/payment/create-order", {
+      const order = await fetch("https://tradeflyhub.com/payment/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Deposit = () => {
         handler: async (response) => {
           console.log(response);
           const verify = await fetch(
-            "https://betradebackend.onrender.com/payment/verify-payment",
+            "https://tradeflyhub.com/payment/verify-payment",
             {
               method: "POST",
               headers: {
@@ -103,7 +103,7 @@ const Deposit = () => {
                   return;
                 }
           
-                const res = await fetch("https://betradebackend.onrender.com/update-wallet", {
+                const res = await fetch("https://tradeflyhub.com/update-wallet", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

@@ -31,13 +31,13 @@ const TasksPage = () => {
     const fetchTasks = async () => {
       try {
         const [tasksResponse, userResponse] = await Promise.all([
-          fetch("https://betradebackend.onrender.com/view-task", {
+          fetch("https://tradeflyhub.com/view-task", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("https://betradebackend.onrender.com/profile", {
+          fetch("https://tradeflyhub.com/profile", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ const TasksPage = () => {
     try {
       // Submit feedback and update task status
       const feedbackResponse = await fetch(
-        `https://betradebackend.onrender.com/completeTask/${currentTask._id}`,
+        `https://tradeflyhub.com/completeTask/${currentTask._id}`,
         {
           method: "GET",
           headers: {
