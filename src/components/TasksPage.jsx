@@ -10,11 +10,12 @@ import {
   DollarSign,
   Send,
   Sparkles,
+  AlertCircle
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TasksPage = () => {
-  const url=import.meta.env.VITE_BACKEND_URL;
+  const url = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const { level } = useParams();
   const [progress, setProgress] = useState(0);
@@ -26,9 +27,10 @@ const TasksPage = () => {
   const [rating, setRating] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showWalletAlert, setShowWalletAlert] = useState(false);
   const token = localStorage.getItem("token");
+
   useEffect(() => {
-    // Fetch tasks and completed tasks on component mount
     const fetchTasks = async () => {
       try {
         const [tasksResponse, userResponse] = await Promise.all([
@@ -43,7 +45,7 @@ const TasksPage = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }), // Assuming you have a wallet endpoint
+          }),
         ]);
 
         if (!tasksResponse.ok || !userResponse.ok) {
@@ -56,14 +58,11 @@ const TasksPage = () => {
         setTasks(tasksData.tasks);
         setCurrentWallet(userData.wallet);
 
-        // Set completed tasks based on status
         const completed = tasks
           .filter((task) => task.status === "completed")
           .map((task) => task._id);
         setCompletedTasks(completed);
-        console.log(completed);
 
-        // Calculate initial progress
         const progressPercentage = (completed.length / tasks.length) * 100;
         setProgress(progressPercentage);
       } catch (error) {
@@ -72,9 +71,15 @@ const TasksPage = () => {
     };
 
     fetchTasks();
-  }, [progress, token]);
+  }, [progress, token, tasks]);
 
   const handleTaskClick = (task) => {
+    if (currentWallet <= 10) {
+      setShowWalletAlert(true);
+      setTimeout(() => setShowWalletAlert(false), 3000);
+      return;
+    }
+
     if (!completedTasks.includes(task._id) && task.status !== "completed") {
       setCurrentTask(task);
       setShowFeedbackForm(true);
@@ -92,7 +97,6 @@ const TasksPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Submit feedback and update task status
       const feedbackResponse = await fetch(
         `${url}/completeTask/${currentTask._id}`,
         {
@@ -113,7 +117,6 @@ const TasksPage = () => {
       const wallet = await feedbackResponse.json();
       setCurrentWallet(wallet.wallet);
       setProgress((completedTasks.length + 1) * (100 / tasks.length));
-      console.log(progress);
       setShowFeedbackForm(false);
       setFeedback("");
       setRating(0);
@@ -151,14 +154,35 @@ const TasksPage = () => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="bg-gray-800/60 px-6 py-3 rounded-xl flex items-center space-x-3">
-                <DollarSign className="h-5 w-5 text-green-400" />
-                <span className="text-white font-medium">
+              <div className={`bg-gray-800/60 px-6 py-3 rounded-xl flex items-center space-x-3 ${
+                currentWallet <= 10 ? 'border-2 border-red-500' : ''
+              }`}>
+                <DollarSign className={`h-5 w-5 ${
+                  currentWallet <= 10 ? 'text-red-500' : 'text-green-400'
+                }`} />
+                <span className={`font-medium ${
+                  currentWallet <= 10 ? 'text-red-500' : 'text-white'
+                }`}>
                   ${currentWallet.toFixed(2)}
                 </span>
               </div>
             </div>
           </div>
+
+          {/* Wallet Alert */}
+          <AnimatePresence>
+            {showWalletAlert && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="fixed top-4 right-4 bg-red-500/90 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2"
+              >
+                <AlertCircle className="h-5 w-5" />
+                <span>Wallet balance must be greater than $10 to activate tasks</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Progress Bar */}
           <div className="mb-8">
@@ -183,10 +207,12 @@ const TasksPage = () => {
             {tasks.map((task) => (
               <motion.div
                 key={task._id}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: currentWallet > 10 ? 1.02 : 1 }}
                 className={`bg-gray-800/60 p-6 rounded-xl border ${
                   completedTasks.includes(task._id)
                     ? "border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+                    : currentWallet <= 10
+                    ? "border-red-500/50 opacity-50 cursor-not-allowed"
                     : "border-gray-700/50 hover:border-blue-500/50 cursor-pointer"
                 }`}
                 onClick={() => handleTaskClick(task)}

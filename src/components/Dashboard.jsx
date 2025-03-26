@@ -16,7 +16,6 @@ import {
   Sparkles,
   Wallet,
   Star,
-  DollarSign,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,16 +23,10 @@ const Slideshow = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
+  
     {
       image:
-        "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070",
-      title: "Epic Victories",
-      subtitle: "Join thousands of players in epic battles",
-      stats: { rating: "4.9/5", reviews: "10k+", earnings: "$1M+" },
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2070",
+        "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1641932970485-26fe40a9da37?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Instant Deposits",
       subtitle: "Quick and secure transactions",
       stats: { deposits: "24/7", speed: "Instant", security: "100%" },
@@ -43,21 +36,21 @@ const Slideshow = () => {
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2070",
       title: "Daily Earnings",
       subtitle: "Turn your skills into rewards",
-      stats: { dailyEarnings: "$10k+", players: "50k+", games: "100+" },
+      stats: { dailyEarnings: "$10k+"},
     },
     {
       image:
-        "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?q=80&w=2070",
+        "https://images.unsplash.com/photo-1641932970485-26fe40a9da37?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Fast Withdrawals",
       subtitle: "Get your winnings instantly",
-      stats: { processing: "< 1hr", methods: "10+", fee: "0%" },
+      stats: { processing: "< 1hr", fee: "0%" },
     },
     {
       image:
         "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2070",
       title: "Community Reviews",
-      subtitle: "Join our trusted gaming community",
-      stats: { satisfaction: "98%", support: "24/7", users: "100k+" },
+      subtitle: "Join our trusted review community",
+      stats: { satisfaction: "98%", support: "24/7"},
     },
   ];
 
@@ -207,11 +200,11 @@ const LevelCard = ({
         disabled={isLocked}
         onClick={() => navigate(`/tasks/${level}`)}
         className={`w-full py-3 px-4 rounded-xl flex items-center justify-center space-x-2
-    ${
-      isLocked
-        ? "bg-gray-700 cursor-not-allowed"
-        : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-    } transition-all duration-300`}
+          ${
+            isLocked
+              ? "bg-gray-700 cursor-not-allowed"
+              : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+          } transition-all duration-300`}
       >
         {isLocked ? (
           <>
@@ -230,17 +223,20 @@ const LevelCard = ({
 };
 
 const Dashboard = () => {
+  const url = import.meta.env.VITE_BACKEND_URL;
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWallet, setCurrentWallet] = useState(0);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const scrollContainer = React.useRef(null);
+  const reviewsContainer = React.useRef(null);
 
   useEffect(() => {
     if (!token) {
       navigate("/login");
       return;
     }
-    fetch("https://betradebackend.onrender.com/profile", {
+    fetch(`${url}/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -343,9 +339,6 @@ const Dashboard = () => {
     },
   ];
 
-  const scrollContainer = React.useRef(null);
-  const reviewsContainer = React.useRef(null);
-
   const scroll = (direction, container) => {
     if (container.current) {
       const scrollAmount = 330;
@@ -364,40 +357,27 @@ const Dashboard = () => {
       className="min-h-screen bg-[url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2070')] bg-cover bg-center"
     >
       <div className="min-h-screen bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-blue-900/95">
+        {/* Minimalist wallet in top right corner */}
+        <div className="fixed top-4 right-4 z-50">
+          <div className="bg-gray-800/40 backdrop-blur-sm px-4 py-2 rounded-lg flex items-center space-x-2 border border-white/10">
+            <Wallet className="h-6 w-6 text-white/70" />
+            <span className="text-white/90 font-medium">
+              ${currentWallet.toLocaleString()}
+            </span>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-12">
-            <div className="flex items-center space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => navigate("/profile")}
-                className="bg-gray-800/60 p-2 rounded-lg hover:bg-gray-700/60 transition-colors"
-              >
-                <ArrowLeft className="h-6 w-6 text-white" />
-              </motion.button>
-              <div className="bg-gray-800/60 px-6 py-3 rounded-xl flex items-center space-x-3 border border-gray-700/50">
-                <div className="relative group">
-                  <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg group-hover:bg-blue-500/30 transition-colors duration-300"></div>
-                  <div className="relative bg-gradient-to-br from-blue-600 to-blue-400 p-3 rounded-lg transform group-hover:scale-105 transition-transform duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-lg"></div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/20 rounded-lg"></div>
-                    <div className="relative z-10">
-                      <Wallet className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)] transform -rotate-12" />
-                    </div>
-                  </div>
-                </div>
-                <span className="text-white font-medium tracking-wide text-lg">
-                  ${currentWallet}
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-gray-800/60 px-4 py-2 rounded-xl flex items-center space-x-2">
-                <Users className="h-5 w-5 text-blue-400" />
-                <span className="text-white font-medium">432 Online</span>
-              </div>
-            </div>
+          {/* Back button */}
+          <div className="mb-12">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => navigate("/profile")}
+              className="bg-gray-800/60 p-2 rounded-lg hover:bg-gray-700/60 transition-colors"
+            >
+              <ArrowLeft className="h-6 w-6 text-white" />
+            </motion.button>
           </div>
 
           {/* Slideshow */}

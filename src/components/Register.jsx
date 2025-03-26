@@ -8,6 +8,7 @@ import {
   User,
   Lock,
   ArrowRight,
+  Phone,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -18,50 +19,64 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    email: "",
+    phone: "",
   });
-  const url=import.meta.env.VITE_BACKEND_URL;
+  
+  const url = import.meta.env.VITE_BACKEND_URL;
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   try {
+  //     const response = await fetch(`${url}/register`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     const data = await response.json();
+  //     if (!response.ok) throw new Error(data.msg);
+      
+  //     Swal.fire({
+  //       position: "top-end",
+  //       icon: "success",
+  //       title: "Registered Successfully",
+  //       showConfirmButton: false,
+  //       timer: 1500
+  //     });
+      
+  //     navigate("/login");
+  //   } catch (error) {
+  //     setError(error.message || "An error occurred during registration");
+  //     console.error("Registration Error:", error);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
-      const response = await fetch(`${url}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-      navigate("/login");
-      return (
-        <>
-          {Swal.fire({
-  position: "top-end",
-  icon: "success",
-  title: "Registered Successfully",
-  showConfirmButton: false,
-  timer: 1500
-})}
-        </>
-      );
+      navigate('/verify-email', { state: { formData } });
     } catch (error) {
       setError(error.message || "An error occurred during registration");
       console.error("Registration Error:", error);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072')] bg-cover bg-center">
       <div className="min-h-screen bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-blue-900/95 flex items-center justify-center p-4">
         <div className="max-w-md w-full space-y-8">
-          {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
             <div className="absolute w-96 h-96 -top-10 -left-10 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="absolute w-96 h-96 -bottom-10 -right-10 bg-purple-500/10 rounded-full blur-3xl"></div>
           </div>
 
-          {/* Main content */}
           <div className="relative bg-gray-800/40 backdrop-blur-xl p-8 rounded-2xl border border-gray-700 shadow-2xl space-y-8">
             <div className="text-center relative">
               <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl">
@@ -84,10 +99,7 @@ const Register = () => {
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-5">
                 <div className="relative">
-                  <label
-                    htmlFor="username"
-                    className="text-sm font-medium text-gray-300 block mb-0"
-                  >
+                  <label htmlFor="username" className="text-sm font-medium text-gray-300 block mb-0">
                     Username
                   </label>
                   <div className="relative">
@@ -102,17 +114,55 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Choose your username"
                       value={formData.username}
-                      onChange={(e) =>
-                        setFormData({ ...formData, username: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     />
                   </div>
                 </div>
+
                 <div className="relative">
-                  <label
-                    htmlFor="password"
-                    className="text-sm font-medium text-gray-300 block mb-2"
-                  >
+                  <label htmlFor="email" className="text-sm font-medium text-gray-300 block mb-0">
+                    Email
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <label htmlFor="phone" className="text-sm font-medium text-gray-300 block mb-0">
+                    Phone
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Phone className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter your phone number"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <label htmlFor="password" className="text-sm font-medium text-gray-300 block mb-2">
                     Password
                   </label>
                   <div className="relative">
@@ -127,9 +177,7 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Create a strong password"
                       value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
                     <button
                       type="button"

@@ -1,10 +1,11 @@
 {
-  "name": "---",
+  "name": "Trade Fly Hub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-"start":"vite",
+"start":"vite"
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
