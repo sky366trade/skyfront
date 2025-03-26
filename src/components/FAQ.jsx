@@ -46,8 +46,8 @@ const FAQ = () => {
   const navigate = useNavigate();
   const faqs = [
     {
-      question: "What is BeTrade?",
-      answer: "BeTrade is a cutting-edge gaming platform that combines competitive gaming with trading mechanics. Our platform allows players to compete, trade, and earn rewards in a secure and engaging environment."
+      question: "What is TradeFlyHub?",
+      answer: "TradeFlyHub is a cutting-edge gaming platform that combines competitive gaming with trading mechanics. Our platform allows players to compete, trade, and earn rewards in a secure and engaging environment."
     },
     {
       question: "How do I get started?",
@@ -90,7 +90,7 @@ const FAQ = () => {
           >
             <HelpCircle className="h-16 w-16 text-blue-500 mx-auto mb-4" />
             <h1 className="text-4xl font-bold text-white mb-4">Frequently Asked Questions</h1>
-            <p className="text-gray-400">Find answers to common questions about BeTrade</p>
+            <p className="text-gray-400">Find answers to common questions about TradeFlyHub</p>
           </motion.div>
 
           <motion.div

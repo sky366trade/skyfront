@@ -131,8 +131,10 @@ const Deposit = () => {
           alert(verifyResponse.success);
         },
         prefill: {
-          name: {user},
-        },
+          name: "John Doe", // ✅ Ensure it's valid
+          email: "john.doe@example.com",
+          contact: "9876543210"
+      },
         theme: { color: "#3399cc" },
       };
 

@@ -71,9 +71,9 @@ const About = () => {
             className="text-center mb-16"
           >
             <Building2 className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-            <h1 className="text-4xl font-bold text-white mb-4">About BeTrade</h1>
+            <h1 className="text-4xl font-bold text-white mb-4">About TradeFlyHub</h1>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              BeTrade is revolutionizing the gaming industry by combining competitive gaming with innovative trading mechanics.
+              TradeFlyHub is revolutionizing the gaming industry by combining competitive gaming with innovative trading mechanics.
               Our platform provides a secure and engaging environment for players worldwide.
             </p>
           </motion.div>
@@ -97,7 +97,7 @@ const About = () => {
           >
             <h2 className="text-2xl font-bold text-white mb-6">Our Mission</h2>
             <p className="text-gray-400 mb-6">
-              At BeTrade, we're committed to creating a revolutionary gaming platform that combines the thrill of competitive gaming
+              At TradeFlyHub, we're committed to creating a revolutionary gaming platform that combines the thrill of competitive gaming
               with innovative trading mechanics. Our mission is to provide a secure, fair, and engaging environment where players
               can compete, trade, and earn rewards while being part of a global community.
             </p>

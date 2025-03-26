@@ -107,66 +107,65 @@ const NewsEvents = () => {
   
   const news = [
     {
-      title: "New Gaming Tournament Series Announced",
+      title: " First Deposit Special – Get $7 on Your First $100 Deposit",
       date: "Mar 15, 2024",
       readTime: 5,
-      tags: ["Tournament", "Gaming", "Prizes"],
-      description: "Get ready for our biggest tournament series yet! With over $100,000 in prizes and multiple game categories, this is your chance to prove your skills and win big.",
+      tags: [ "Bonus", "Prizes"],
+      description: "Deposit $100 as your first deposit and receive $7 as a reward. This offer is applicable only for first-time depositors.",
       content: (
         <div className="space-y-4">
-          <p>We're thrilled to announce our biggest tournament series yet, featuring multiple game categories and incredible prizes! Starting next month, players from around the world will compete for a share of the $100,000 prize pool.</p>
-          <h4 className="text-xl font-bold text-white">Tournament Details</h4>
+          <h4 className="text-xl font-bold text-white">How its works</h4>
           <ul className="list-disc pl-4 space-y-2">
-            <li>Multiple game categories including FPS, MOBA, and Battle Royale</li>
-            <li>Qualifiers begin April 1st</li>
-            <li>Finals will be streamed live on our platform</li>
-            <li>Special rewards for all participants</li>
+            <li>A new registered member makes an initial one-time deposit of $100.</li>
+            <li>They receive a $7 reward instantly.</li>
+            <li>Users can use the bonus amount to complete tasks and win real money.</li>
           </ul>
-          <p>Don't miss this opportunity to showcase your skills and compete against the best players in the community!</p>
+          <p>Fraudulent activities like multiple accounts with the same identity, multiple logins from the same IP, or using VPNs to access multiple accounts will lead to disqualification.</p>
         </div>
       ),
-      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070"
+      image: "https://images.unsplash.com/photo-1650821289259-cb51d897d706?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-      title: "Platform Updates: New Features Released",
+      title: "Mentorship Rewards Program – Earn Up to $3000",
       date: "Mar 14, 2024",
       readTime: 3,
       tags: ["Update", "Features"],
-      description: "We've just rolled out exciting new features to enhance your gaming experience! Check out the improved matchmaking system and new social features.",
+      description: "At TradeFlyHub, we recognize and reward mentorship. Our Mentorship Rewards Program allows you to earn up to $3000 based on your downline network performance.",
       content: (
         <div className="space-y-4">
           <p>We're constantly working to improve your experience on our platform. Today, we're excited to announce several new features that will make your gaming journey even better!</p>
-          <h4 className="text-xl font-bold text-white">New Features</h4>
+          <h4 className="text-xl font-bold text-white">Important Notes</h4>
           <ul className="list-disc pl-4 space-y-2">
-            <li>Enhanced matchmaking algorithm</li>
-            <li>Improved social features</li>
-            <li>New achievement system</li>
-            <li>Performance optimizations</li>
+            <li>Each user is allowed only one TradeFlyHub account.</li>
+            <li>Accounts sharing the same IP address will not be eligible for rewards.</li>
+            <li>TradeFlyHub reserves the right to cancel rewards participation if fraudulent activities are detected, such as multiple accounts with the same identity or VPN usage to log into multiple accounts.</li>
           </ul>
           <p>These updates are now live! Log in to explore all the new features and improvements.</p>
         </div>
       ),
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2069"
+      image: "https://images.unsplash.com/photo-1561346745-5db62ae43861?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-      title: "Community Spotlight: March Champions",
+      title: "Direct Downline Deposit Rewards – Earn Up to $500",
       date: "Mar 13, 2024",
       readTime: 4,
       tags: ["Community", "Awards"],
-      description: "Celebrating our top performers and community contributors for the month of March. See who made the biggest impact in our gaming community.",
+      description: "At TradeFlyHub, we value your referrals. Get rewarded every time your direct downlines make their initial deposits.",
       content: (
         <div className="space-y-4">
-          <p>Every month, we recognize the outstanding members of our community who have made significant contributions to our platform. Here are March's champions!</p>
-          <h4 className="text-xl font-bold text-white">Top Performers</h4>
+          <p>Join TradeFlyHub today and maximize your earnings with our referral and mentorship rewards programs!</p>
+          <h4 className="text-xl font-bold text-white">Important Notes</h4>
           <ul className="list-disc pl-4 space-y-2">
-            <li>Most Valuable Player: Alex "ProGamer" Smith</li>
-            <li>Best Community Support: Sarah "Helper" Johnson</li>
-            <li>Most Improved Player: Mike "Rising" Brown</li>
+            <li>Only one TradeFlyHub account per user is allowed.
+
+h</li>
+            <li>Accounts sharing an IP address are not eligible for rewards</li>
+            <li>TradeFlyHub reserves the right to cancel rewards if fraudulent activities such as multiple accounts or VPN usage are detected.</li>
           </ul>
           <p>Congratulations to all our champions! Your dedication and contribution make our community stronger.</p>
         </div>
       ),
-      image: "https://images.unsplash.com/photo-1511882150382-421056c89033?q=80&w=2071"
+      image: "https://images.unsplash.com/photo-1554134449-8ad2b1dea29e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
 

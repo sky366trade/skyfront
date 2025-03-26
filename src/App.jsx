@@ -11,6 +11,7 @@ import TasksPage from "./components/TasksPage";
 import About from "./components/About";
 import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
+import VerifyEmail from "./components/VerifyEmail";
 export default function App() {
   const [token, setToken] = useState("");
   return (
@@ -30,10 +31,12 @@ export default function App() {
             path="/benefitProgram"
             element={<BenefitProgram></BenefitProgram>}
           ></Route>
+             <Route path="/verify-email" element={<VerifyEmail />} />
           <Route
             path="/login"
             element={<Login setToken={setToken}></Login>}
           ></Route>
+            <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/profile" element={<Profile></Profile>}></Route>
           <Route path="/newsevent" element={<NewsEvents></NewsEvents>}></Route>
         </Routes>
