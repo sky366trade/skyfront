@@ -61,6 +61,7 @@ const Register = () => {
   
     try {
       navigate('/verify-email', { state: { formData } });
+      localStorage.setItem("username", formData.username);
     } catch (error) {
       setError(error.message || "An error occurred during registration");
       console.error("Registration Error:", error);

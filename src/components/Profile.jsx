@@ -1,16 +1,15 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Wallet, LogOut, Trophy, GamepadIcon, Settings, User,
-  Home, Users, Gift, Lock, Newspaper, HelpCircle, Contact,
-  ArrowUpCircle, ArrowDownCircle, History, ShoppingBag,
+  Home, Gift, Lock, Newspaper, HelpCircle, Contact,
+  ArrowUpCircle, ArrowDownCircle,
   Building2, Menu, X, ChevronLeft, ChevronRight, Star,
   Target, Award, TrendingUp, Clock, CheckCircle, BarChart3,
-  Calendar, Mail, Phone, Crown, Sparkles
+  Calendar, Mail, Phone, Crown, Sparkles, UserPlus, DollarSign,
+  Zap, Shield
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-
-const url = import.meta.env.VITE_BACKEND_URL;
+import { motion } from 'framer-motion';
 
 const SidebarMenuItem = ({ icon: Icon, label, onClick, isActive = false, isCollapsed = false }) => (
   <motion.button 
@@ -56,6 +55,107 @@ const MenuSection = ({ title, children, isCollapsed = false }) => (
   </div>
 );
 
+const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="bg-gray-700/30 p-4 rounded-xl"
+  >
+    <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center space-x-2">
+        <Icon className={`h-5 w-5 ${color}`} />
+        <span className="text-gray-400">{label}</span>
+      </div>
+      <span className={`${color} font-semibold`}>
+        {value.toLocaleString()} / {maxValue.toLocaleString()}
+      </span>
+    </div>
+    <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+      <motion.div 
+        initial={{ width: 0 }}
+        animate={{ width: `${Math.min((value / maxValue) * 100, 100)}%` }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className={`absolute h-full ${color.replace('text', 'bg')} opacity-75`}
+      />
+    </div>
+  </motion.div>
+);
+
+const TeamStatsCard = ({ teamDetails }) => {
+  const maxMembers = 100;
+  const maxCommission = 10000;
+  const maxActivity = 100;
+  const currentActivity = teamDetails.teamCount * 5;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl overflow-hidden"
+    >
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold text-white flex items-center">
+          <Trophy className="w-5 h-5 mr-2 text-blue-500" />
+          Team Performance
+        </h3>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <Shield className="h-6 w-6 text-blue-500" />
+        </motion.div>
+      </div>
+
+      <div className="space-y-4">
+        <TeamProgressBar 
+          icon={UserPlus}
+          label="Team Size"
+          value={teamDetails.teamCount}
+          maxValue={maxMembers}
+          color="text-blue-400"
+        />
+        
+        <TeamProgressBar 
+          icon={DollarSign}
+          label="Commission Progress"
+          value={teamDetails.teamWallet}
+          maxValue={maxCommission}
+          color="text-green-400"
+        />
+        
+        <TeamProgressBar 
+          icon={Zap}
+          label="Team Activity"
+          value={currentActivity}
+          maxValue={maxActivity}
+          color="text-yellow-400"
+        />
+
+        <div className="grid grid-cols-2 gap-4 mt-6">
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-700/30 p-4 rounded-xl"
+          >
+            <div className="text-sm text-gray-400">Total Members</div>
+            <div className="text-lg font-bold text-white mt-1">
+              {teamDetails.teamCount}
+            </div>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-700/30 p-4 rounded-xl"
+          >
+            <div className="text-sm text-gray-400">Total Commission</div>
+            <div className="text-lg font-bold text-white mt-1">
+              ${teamDetails.teamWallet}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const TaskCard = ({ task, onComplete }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
@@ -86,10 +186,10 @@ const TaskCard = ({ task, onComplete }) => (
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-         
+          
           className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
         >
-          Complete
+         Pending Tasks
         </motion.button>
       )}
     </div>
@@ -112,11 +212,11 @@ const TaskCard = ({ task, onComplete }) => (
 
 const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
   const levels = [
-    { level: 1, title: "Rookie Arena", minWallet: 0 },
-    { level: 2, title: "Warrior's Path", minWallet: 1000 },
-    { level: 3, title: "Elite League", minWallet: 2500 },
-    { level: 4, title: "Master's Domain", minWallet: 5000 },
-    { level: 5, title: "Legend's Realm", minWallet: 10000 },
+    { level: 1, title: "Elite", minWallet: 0 },
+    { level: 2, title: "Bronze", minWallet: 500 },
+    { level: 3, title: "Silver", minWallet: 1000 },
+    { level: 4, title: "Gold", minWallet: 3000 },
+    { level: 5, title: "Diamond", minWallet: 5000 },
   ];
 
   const currentLevel = levels.find(l => currentWallet >= l.minWallet && 
@@ -162,7 +262,6 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
       </div>
       
       <div className="space-y-4">
-        {/* XP Progress */}
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-sm text-gray-400">Daily XP</span>
@@ -178,7 +277,6 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
           </div>
         </div>
 
-        {/* Wallet Progress */}
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-sm text-gray-400">Wallet Progress</span>
@@ -253,17 +351,42 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
 );
 
 const Profile = () => {
- 
   const [userData, setUserData] = useState(null);
-  const [tasks, setTasks] =useState([]);
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeMenu, setActiveMenu] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [error, setError] = useState(null);
-  
+  const [teamDetails, setTeamDetails] = useState(null);
+
+  const url = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  
+  const fetchDetails = async () => {
+    if (!userData?.username) return;
+    
+    try {
+      setError(null);
+      const response = await fetch(`${url}/showDetails`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: userData.username }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch details");
+      }
+
+      const data = await response.json();
+      setTeamDetails(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const calculateUserStats = (tasks) => {
     const completedTasks = tasks.filter(task => task.status === 'completed').length;
@@ -322,7 +445,13 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, [token, navigate]);
+  }, [token, navigate, url]);
+
+  useEffect(() => {
+    if (userData?.username) {
+      fetchDetails();
+    }
+  }, [userData]);
 
   const handleCompleteTask = async (taskId) => {
     try {
@@ -400,14 +529,14 @@ const Profile = () => {
         <nav className="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700 relative z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
+              <div className="flex items-cenfter">
                 <div className="relative group">
                   <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative">
-                    <GamepadIcon className="h-8 w-8 text-blue-500" />
+                    <img src="icon-03.png" className="h-13.5 w-15.5 mr-2 " />
                   </div>
                 </div>
-                <span className="ml-2 text-xl font-bold text-white">TradeFlyHub</span>
+               
               </div>
               
               <div className="flex items-center space-x-4">
@@ -496,25 +625,15 @@ const Profile = () => {
                 label="Withdrawal" 
                 isActive={activeMenu === 'withdrawal'}
                 onClick={() => {
+                  navigate("/withdrawl")
                   setActiveMenu('withdrawal');
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-              <SidebarMenuItem 
-                icon={History} 
-                label="Transaction History" 
-                isActive={activeMenu === 'transactions'}
-                onClick={() => {
-                  setActiveMenu('transactions');
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-           
             </MenuSection>
 
-       <MenuSection title="Benefit Program" isCollapsed={isSidebarCollapsed}>
+            <MenuSection title="Benefit Program" isCollapsed={isSidebarCollapsed}>
               <SidebarMenuItem 
                 icon={Gift} 
                 label="Benefit Program" 
@@ -526,7 +645,6 @@ const Profile = () => {
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-            
             </MenuSection>
 
             <MenuSection title="Information" isCollapsed={isSidebarCollapsed}>
@@ -598,85 +716,92 @@ const Profile = () => {
           <div className="flex-1 p-8 pb-24">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Profile Section */}
-              <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
-                <div className="text-center">
-                  <motion.div 
-                    whileHover={{ scale: 1.1 }}
-                    className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
-                  >
-                    <User className="w-12 h-12 text-white" />
-                  </motion.div>
-                  <motion.h2 
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="mt-4 text-2xl font-bold text-white"
-                  >
-                    {userData?.username}
-                  </motion.h2>
-                  <p className="text-gray-400">Player Profile</p>
-                </div>
-                
-                <div className="mt-6">
-                  <LevelCard 
-                    level={userStats.level}
-                    xp={userStats.xp}
-                    requiredXp={userStats.requiredXp}
-                    currentWallet={userData?.wallet || 0}
-                  />
+              <div className="space-y-8">
+                <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
+                  <div className="text-center">
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
+                    >
+                      <User className="w-12 h-12 text-white" />
+                    </motion.div>
+                    <motion.h2 
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      className="mt-4 text-2xl font-bold text-white"
+                    >
+                      {userData?.username}
+                    </motion.h2>
+                    <p className="text-gray-400">Trader Profile</p>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <LevelCard 
+                      level={userStats.level}
+                      xp={userStats.xp}
+                      requiredXp={userStats.requiredXp}
+                      currentWallet={userData?.wallet || 0}
+                    />
+                  </div>
+
+                  <div className="mt-6 space-y-4">
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                    >
+                      <span className="flex items-center text-gray-300">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Member Since
+                      </span>
+                      <span className="text-white">{joinDate}</span>
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                    >
+                      <span className="flex items-center text-gray-300">
+                        <Mail className="w-4 h-4 mr-2" />
+                        Email
+                      </span>
+                      <span className="text-white">{userData?.email || 'Not provided'}</span>
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                    >
+                      <span className="flex items-center text-gray-300">
+                        <Phone className="w-4 h-4 mr-2" />
+                        Phone
+                      </span>
+                      <span className="text-white">{userData?.phone || 'Not provided'}</span>
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                    >
+                      <span className="flex items-center text-gray-300">
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Tasks Completed
+                      </span>
+                      <span className="text-white">{userStats.completedTasks}</span>
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                    >
+                      <span className="flex items-center text-gray-300">
+                        <TrendingUp className="w-4 h-4 mr-2" />
+                        Success Rate
+                      </span>
+                      <span className="text-white">{userStats.successRate}%</span>
+                    </motion.div>
+                  </div>
                 </div>
 
-                <div className="mt-6 space-y-4">
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
-                  >
-                    <span className="flex items-center text-gray-300">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Member Since
-                    </span>
-                    <span className="text-white">{joinDate}</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
-                  >
-                    <span className="flex items-center text-gray-300">
-                      <Mail className="w-4 h-4 mr-2" />
-                      Email
-                    </span>
-                    <span className="text-white">{userData?.email || 'Not provided'}</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
-                  >
-                    <span className="flex items-center text-gray-300">
-                      <Phone className="w-4 h-4 mr-2" />
-                      Phone
-                    </span>
-                    <span className="text-white">{userData?.phone || 'Not provided'}</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
-                  >
-                    <span className="flex items-center text-gray-300">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Tasks Completed
-                    </span>
-                    <span className="text-white">{userStats.completedTasks}</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
-                  >
-                    <span className="flex items-center text-gray-300">
-                      <TrendingUp className="w-4 h-4 mr-2" />
-                      Success Rate
-                    </span>
-                    <span className="text-white">{userStats.successRate}%</span>
-                  </motion.div>
-                </div>
+                {/* Team Details Section */}
+                {teamDetails && (
+                  <TeamStatsCard teamDetails={teamDetails} />
+                )}
               </div>
 
               {/* Stats and Tasks Section */}
@@ -698,7 +823,6 @@ const Profile = () => {
                     icon={TrendingUp}
                     label="Total Earnings"
                     value={`$${userStats.totalEarnings.toFixed(2)}`}
-
                     trend={8}
                   />
                 </div>

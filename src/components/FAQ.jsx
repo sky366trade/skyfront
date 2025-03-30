@@ -47,23 +47,24 @@ const FAQ = () => {
   const faqs = [
     {
       question: "What is TradeFlyHub?",
-      answer: "TradeFlyHub is a cutting-edge gaming platform that combines competitive gaming with trading mechanics. Our platform allows players to compete, trade, and earn rewards in a secure and engaging environment."
+      answer: "TradeFlyHub is revolutionizing the rewarding industry by combining competitive tasks with innovative trading mechanics.Our platform provides a secure and engaging environment for players worldwide."
     },
     {
       question: "How do I get started?",
-      answer: "Getting started is easy! Simply create an account, verify your email, and make your first deposit. Once you're set up, you can start playing games, trading items, and participating in tournaments."
+      answer: "Getting started is easy! Simply create an account, verify your email, and make your first deposit. Once you're set up, you can start  making tasks, and completing the tasks."
     },
-    {
-      question: "What payment methods do you accept?",
-      answer: "We accept various payment methods including credit/debit cards, bank transfers, and major cryptocurrencies. All transactions are secure and processed instantly."
-    },
+   
     {
       question: "How does the reward system work?",
-      answer: "Our reward system is based on your participation and performance. You earn points through gaming, trading, and completing challenges. These points can be converted into rewards or used for in-platform benefits."
+      answer: "Our reward system is based on your participation and performance. You earn points through completing tasks, trading, and completing challenges. These points can be converted into rewards or used for in-platform benefits."
     },
     {
       question: "Is my account secure?",
       answer: "Yes! We implement industry-standard security measures including SSL encryption, two-factor authentication, and regular security audits to ensure your account and assets are protected."
+    },
+    {
+      question: "how the refferal system works?",
+      answer: "You will receive 10% commission whenever someone signs up using your username as the referral code."
     }
   ];
 

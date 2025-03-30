@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Profile from "./components/Profile";
 import Deposit from "./components/Deposit";
 import Register from "./components/Register";
@@ -12,35 +11,32 @@ import About from "./components/About";
 import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
 import VerifyEmail from "./components/VerifyEmail";
-export default function App() {
-  const [token, setToken] = useState("");
-  return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Profile></Profile>}></Route>
-          <Route path="/contact" element={<Contact></Contact>}></Route>
-          <Route path="/faq" element={<FAQ></FAQ>}></Route>
-          <Route path="/about" element={<About></About>}></Route>
+import ReferralCode from "./components/RefferralCode";
+import Withdrawal from "./components/Withdrawl";
 
-          <Route path="/deposit" element={<Deposit></Deposit>}></Route>
-          <Route path="/register" element={<Register></Register>}></Route>
-          <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
-          <Route path="/tasks/:level" element={<TasksPage />} />
-          <Route
-            path="/benefitProgram"
-            element={<BenefitProgram></BenefitProgram>}
-          ></Route>
-             <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route
-            path="/login"
-            element={<Login setToken={setToken}></Login>}
-          ></Route>
-            <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/profile" element={<Profile></Profile>}></Route>
-          <Route path="/newsevent" element={<NewsEvents></NewsEvents>}></Route>
-        </Routes>
-      </Router>
-    </>
+
+export default function App() {
+  return (
+   
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/tasks/:level" element={<TasksPage />} />
+        <Route path="/benefitProgram" element={<BenefitProgram />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/newsevent" element={<NewsEvents />} />
+        <Route path="/referralCode" element={<ReferralCode />} />
+        <Route path="/withdrawl" element={ <div className="min-h-screen bg-gradient-to-br from-[#0A1525] via-[#0F1C3F] to-[#1B2C5C]"><Withdrawal></Withdrawal></div>}></Route>
+      </Routes>
+    </Router>
+    
   );
 }

@@ -30,12 +30,12 @@ const About = () => {
     {
       icon: Users,
       title: "Community Driven",
-      description: "A thriving community of gamers and traders from around the world"
+      description: "A thriving community of  traders from around the world"
     },
     {
       icon: Target,
       title: "Fair Gaming",
-      description: "Transparent and fair gaming mechanics for all players"
+      description: "Transparent and fair rewarding mechanics for all players"
     },
     {
       icon: Award,
@@ -73,7 +73,7 @@ const About = () => {
             <Building2 className="h-16 w-16 text-blue-500 mx-auto mb-4" />
             <h1 className="text-4xl font-bold text-white mb-4">About TradeFlyHub</h1>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              TradeFlyHub is revolutionizing the gaming industry by combining competitive gaming with innovative trading mechanics.
+              TradeFlyHub is revolutionizing the rewarding industry by combining competitive tasks with innovative trading mechanics.
               Our platform provides a secure and engaging environment for players worldwide.
             </p>
           </motion.div>

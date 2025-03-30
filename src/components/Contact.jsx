@@ -62,7 +62,7 @@ const Contact = () => {
             >
               <Mail className="h-8 w-8 text-blue-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">Email</h3>
-              <p className="text-gray-400">support@betrade.com</p>
+              <p className="text-gray-400">tradeflyhub@gmail.com</p>
             </motion.div>
 
             <motion.div
@@ -72,8 +72,8 @@ const Contact = () => {
               className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 text-center"
             >
               <Phone className="h-8 w-8 text-blue-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Phone</h3>
-              <p className="text-gray-400">+1 (555) 123-4567</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Telegram</h3>
+              <p className="text-gray-400">@tradeflyhub</p>
             </motion.div>
 
             <motion.div

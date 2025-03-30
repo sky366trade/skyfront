@@ -116,8 +116,9 @@ const VerifyEmail = () => {
         timer: 2000,
         showConfirmButton: false,
       });
+      localStorage.setItem("username", formData.username);
 
-      navigate("/login");
+      navigate("/referralCode");
     } catch (error) {
       Swal.fire({
         icon: "error",

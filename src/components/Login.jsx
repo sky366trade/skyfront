@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, User, Lock, ArrowRight } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-const Login = ({ setToken }) => {
-  useEffect(() => {if(setToken && setToken===localStorage.getItem("token")) {navigate("/profile")
+const Login = () => {
+  const [token,setToken]=useState("");
+  useEffect(() => {if(token && token===localStorage.getItem("token")) {navigate("/profile")
   }
   else{
     navigate("/login");
@@ -134,11 +135,11 @@ const Login = ({ setToken }) => {
                     Don't have an account? Register
                   </Link>
                 </div>
-                <div className="text-sm">
+                {/* <div className="text-sm">
                   <a href="#" className="font-medium text-blue-400 hover:text-blue-300">
                     Forgot password?
                   </a>
-                </div>
+                </div> */}
               </div>
 
               <button

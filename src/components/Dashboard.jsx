@@ -256,38 +256,38 @@ const Dashboard = () => {
   const levels = [
     {
       level: 1,
-      title: "Rookie Arena",
+      title: "Elite",
       minWallet: 0,
       icon: Gamepad2,
-      description: "Perfect for beginners. Start your gaming journey here!",
+      description: "Perfect for beginners. Start your reward journey here!",
     },
     {
       level: 2,
-      title: "Warrior's Path",
-      minWallet: 1000,
+      title: "Bronze",
+      minWallet:500,
       icon: Sword,
-      description: "Test your skills against more challenging opponents.",
+      description: "Give mor rewards along with reviews",
     },
     {
       level: 3,
-      title: "Elite League",
-      minWallet: 2500,
+      title: "Silver",
+      minWallet: 1000,
       icon: Shield,
       description: "Join the elite players in high-stakes matches.",
     },
     {
       level: 4,
-      title: "Master's Domain",
-      minWallet: 5000,
+      title: "Gold",
+      minWallet: 3000,
       icon: Zap,
-      description: "Exclusive matches with the best players worldwide.",
+      description: "Exclusive rewarding tasks available worldwide.",
     },
     {
       level: 5,
-      title: "Legend's Realm",
-      minWallet: 10000,
+      title: "Diamond",
+      minWallet: 5000,
       icon: Crown,
-      description: "The ultimate gaming experience for true legends.",
+      description: "The ultimate rewards experience and get true money  .",
     },
   ];
 
@@ -297,7 +297,7 @@ const Dashboard = () => {
       rating: 5,
       date: "2 days ago",
       comment:
-        "Best gaming platform I've ever used! The tournaments are incredibly well organized.",
+        "Best rewarding platform I've ever used! The daily tasks are incredibly well organized.",
       avatar:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100",
     },
@@ -315,7 +315,7 @@ const Dashboard = () => {
       rating: 4,
       date: "2 weeks ago",
       comment:
-        "Great platform for competitive gaming. The ranking system is fair and rewarding.",
+        "Great platform for daily earning. The ranking system is fair and rewarding.",
       avatar:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100",
     },
@@ -324,7 +324,7 @@ const Dashboard = () => {
       rating: 5,
       date: "3 weeks ago",
       comment:
-        "Love the variety of games and the daily tournaments. Excellent prize pools!",
+        "Love the variety of tasks and the daily rewards. Excellent prize pools!",
       avatar:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100",
     },
@@ -421,7 +421,7 @@ const Dashboard = () => {
                 className="h-6 w-6 text-yellow-500 mr-2"
                 fill="currentColor"
               />
-              Player Reviews
+              Reviews
             </h2>
             <div className="relative">
               <button

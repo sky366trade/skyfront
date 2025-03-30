@@ -112,33 +112,6 @@ const CommissionTier = ({ percentage, level, members, deposit, dailyCommission }
   </motion.div>
 );
 
-const NetworkVisualization = () => (
-  <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 1 }}
-    className="relative w-full max-w-2xl mx-auto mb-8 sm:mb-16 mt-4 sm:mt-8 overflow-x-auto py-4"
-  >
-    <div className="flex justify-center min-w-[800px] px-4">
-      <HierarchyNode level={1} percentage={16} delay={0.5}>
-        <div className="flex gap-16 sm:gap-32">
-          <HierarchyNode level={2} percentage={8} delay={1.0} isLeft={true}>
-            <div className="flex gap-8 sm:gap-16">
-              <HierarchyNode level={3} percentage={4} delay={1.5} />
-              <HierarchyNode level={3} percentage={4} delay={1.7} />
-            </div>
-          </HierarchyNode>
-          <HierarchyNode level={2} percentage={8} delay={1.2} isRight={true}>
-            <div className="flex gap-8 sm:gap-16">
-              <HierarchyNode level={3} percentage={4} delay={1.6} />
-              <HierarchyNode level={3} percentage={4} delay={1.8} />
-            </div>
-          </HierarchyNode>
-        </div>
-      </HierarchyNode>
-    </div>
-  </motion.div>
-);
 
 const BenefitProgram = () => {
   const navigate = useNavigate();
@@ -177,7 +150,7 @@ const BenefitProgram = () => {
           </motion.p>
         </div>
 
-        <NetworkVisualization />
+   
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -227,7 +200,7 @@ const BenefitProgram = () => {
             <div className="space-y-4">
               <CommissionTier
                 level="First Layer"
-                percentage={16}
+                percentage={10}
                 members={20}
                 deposit={500}
                 dailyCommission={32}
