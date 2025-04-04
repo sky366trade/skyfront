@@ -6,7 +6,7 @@ import {
   Building2, Menu, X, ChevronLeft, ChevronRight, Star,
   Target, Award, TrendingUp, Clock, CheckCircle, BarChart3,
   Calendar, Mail, Phone, Crown, Sparkles, UserPlus, DollarSign,
-  Zap, Shield
+  Zap, Shield, Users
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -156,6 +156,59 @@ const TeamStatsCard = ({ teamDetails }) => {
   );
 };
 
+const TeamMemberCard = ({ member }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="bg-[#1e2a4a] p-4 rounded-xl border border-gray-700"
+  >
+    <div className="flex items-center space-x-4">
+      <div className="p-3 bg-blue-500/20 rounded-full">
+        <User className="h-6 w-6 text-blue-400" />
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-white">{member.username}</h4>
+        <p className="text-gray-400 text-sm">{member.email}</p>
+      </div>
+    </div>
+    <div className="mt-4 grid grid-cols-2 gap-4">
+      <div className="bg-gray-800/40 p-3 rounded-lg">
+        <p className="text-sm text-gray-400">Wallet Balance</p>
+        <p className="text-lg font-semibold text-white">${member.wallet.toFixed(2)}</p>
+      </div>
+      <div className="bg-gray-800/40 p-3 rounded-lg">
+        <p className="text-sm text-gray-400">Join Date</p>
+        <p className="text-sm text-white">
+          {new Date(member.joinDate).toLocaleDateString()}
+        </p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const TeamMembersSection = ({ teamMembers }) => (
+  <div className="bg-[#112240] rounded-lg p-6 shadow-xl mt-8">
+    <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center space-x-3">
+        <Users className="h-6 w-6 text-blue-400" />
+        <h2 className="text-xl font-bold text-white">Team Members</h2>
+      </div>
+      <div className="bg-blue-500/20 px-3 py-1 rounded-full">
+        <span className="text-blue-400 font-medium">Level 01 </span>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      {teamMembers.map((member, index) => (
+        <TeamMemberCard key={index} member={member} />
+      ))}
+      {teamMembers.length === 0 && (
+        <p className="text-center text-gray-400 py-4">No team members found</p>
+      )}
+    </div>
+  </div>
+);
+
 const TaskCard = ({ task, onComplete }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
@@ -189,11 +242,11 @@ const TaskCard = ({ task, onComplete }) => (
           
           className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
         >
-         Pending Tasks
+          Pending
         </motion.button>
       )}
     </div>
-    <p className="text-gray-400 mb-4">{task.type}</p>
+    <p className="text-gray-400 mb-4">{task.description}</p>
     <div className="flex items-center justify-between text-sm">
       <span className="text-gray-500">
         <Clock className="h-4 w-4 inline mr-1" />
@@ -359,10 +412,27 @@ const Profile = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [error, setError] = useState(null);
   const [teamDetails, setTeamDetails] = useState(null);
+  const [teamMembers, setTeamMembers] = useState([]);
 
   const url = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await fetch(`${url}/showTeamInfo`, {
+        headers: { 
+          Authorization: `Bearer ${token}` 
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch team members');
+      const data = await response.json();
+      setTeamMembers(data.teams || []);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+    }
+  };
   
   const fetchDetails = async () => {
     if (!userData?.username) return;
@@ -445,6 +515,7 @@ const Profile = () => {
     };
 
     fetchUserData();
+    fetchTeamMembers();
   }, [token, navigate, url]);
 
   useEffect(() => {
@@ -529,14 +600,13 @@ const Profile = () => {
         <nav className="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700 relative z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <div className="flex items-cenfter">
+              <div className="flex items-center">
                 <div className="relative group">
                   <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative">
-                    <img src="icon-03.png" className="h-13.5 w-15.5 mr-2 " />
+                    <img src="icon-03.png" className="h-13.5 w-15.5 mr-2" alt="Logo" />
                   </div>
                 </div>
-               
               </div>
               
               <div className="flex items-center space-x-4">
@@ -625,7 +695,7 @@ const Profile = () => {
                 label="Withdrawal" 
                 isActive={activeMenu === 'withdrawal'}
                 onClick={() => {
-                  navigate("/withdrawl")
+                  navigate("/withdrawal");
                   setActiveMenu('withdrawal');
                   setIsSidebarOpen(false);
                 }}
@@ -802,6 +872,9 @@ const Profile = () => {
                 {teamDetails && (
                   <TeamStatsCard teamDetails={teamDetails} />
                 )}
+
+                {/* Team Members Section */}
+                <TeamMembersSection teamMembers={teamMembers} />
               </div>
 
               {/* Stats and Tasks Section */}

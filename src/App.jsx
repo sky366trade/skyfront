@@ -12,7 +12,9 @@ import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
 import VerifyEmail from "./components/VerifyEmail";
 import ReferralCode from "./components/RefferralCode";
-import Withdrawal from "./components/Withdrawl";
+
+import Success from "./components/Success";
+import Withdrawal from "./components/Withdrawal";
 
 
 export default function App() {
@@ -34,7 +36,8 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/newsevent" element={<NewsEvents />} />
         <Route path="/referralCode" element={<ReferralCode />} />
-        <Route path="/withdrawl" element={ <div className="min-h-screen bg-gradient-to-br from-[#0A1525] via-[#0F1C3F] to-[#1B2C5C]"><Withdrawal></Withdrawal></div>}></Route>
+        <Route path="/Withdrawal" element={<Withdrawal />} />
+        <Route path="/success/:username/:amount" element={<div className="min-h-screen bg-gradient-to-br from-[#0A1525] via-[#0F1C3F] to-[#1B2C5C]"><Success></Success></div>}></Route>
       </Routes>
     </Router>
     

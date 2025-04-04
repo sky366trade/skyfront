@@ -31,7 +31,7 @@ const ReferralCode = () => {
   };
   const handleReferral = async () => {
     try {
-      const res = await fetch(`${url}/getReward`, {
+      const res = await fetch(`${url}/setParent`, {
         method: "POST", // Change to POST
         headers: {
           "Content-Type": "application/json",
