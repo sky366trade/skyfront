@@ -249,9 +249,10 @@ const TaskCard = ({ task, onComplete }) => (
     <p className="text-gray-400 mb-4">{task.description}</p>
     <div className="flex items-center justify-between text-sm">
       <span className="text-gray-500">
-        <Clock className="h-4 w-4 inline mr-1" />
-        {new Date(task.date).toLocaleDateString()}
-      </span>
+  <Clock className="h-4 w-4 inline mr-1" />
+  {`${task.date.split('-')[2].split('T')[0]}/${task.date.split('-')[1]}/${task.date.split('-')[0]}`}
+</span>
+
       <motion.span 
         whileHover={{ scale: 1.1 }}
         className="text-yellow-500 flex items-center"

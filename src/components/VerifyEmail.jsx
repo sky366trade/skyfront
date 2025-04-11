@@ -116,7 +116,7 @@ const VerifyEmail = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      localStorage.setItem("username", formData.username);
+      
 
       navigate("/referralCode");
     } catch (error) {

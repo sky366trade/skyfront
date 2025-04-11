@@ -4,7 +4,8 @@ import { ArrowLeft, Wallet } from 'lucide-react';
 
 function Withdrawal() {
   const [amount, setAmount] = useState('');
-  const [address, setAddress] = useState('');
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -13,6 +14,11 @@ function Withdrawal() {
   const handleWithdrawal = async (e) => {
     e.preventDefault();
     try {
+      if( !address1 && !address2) {
+        setError('Please fill at least one address field');
+        setSuccess('');
+        return;
+      }
       const response = await fetch(`${url}/withdrawalRequest`, {
         method: 'POST',
         headers: {
@@ -21,7 +27,8 @@ function Withdrawal() {
         },
         body: JSON.stringify({
           amount: parseFloat(amount),
-          usdttrc20Address: address
+          usdttrc20Address: address1,
+          bep20Address: address2,
         })
       });
       console.log(response);
@@ -30,7 +37,8 @@ function Withdrawal() {
         setSuccess(data.msg);
         setError('');
         setAmount('');
-        setAddress('');
+        setAddress1('');
+        setAddress2('');
         fetchTransactions();
       } else {
         setError(data.msg);
@@ -103,10 +111,22 @@ function Withdrawal() {
                 </label>
                 <input
                   type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={address1}
+                  onChange={(e) => setAddress1(e.target.value)}
                   className="w-full bg-[#1e2a4a] border border-gray-600 rounded-md p-2 text-white"
-                  required
+                  
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  BEP20 Address
+                </label>
+                <input
+                  type="text"
+                  value={address2}
+                  onChange={(e) => setAddress2(e.target.value)}
+                  className="w-full bg-[#1e2a4a] border border-gray-600 rounded-md p-2 text-white"
+                  
                 />
               </div>
 
@@ -152,8 +172,10 @@ function Withdrawal() {
                     </div>
                   </div>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-400">Address</p>
+                    <p className="text-sm text-gray-400">TRC20 Address</p>
                     <p className="text-sm font-mono break-all">{tx.usdttrc20Address}</p>
+                    <p className="text-sm text-gray-400">BEP20 Address</p>
+                    <p className="text-sm font-mono break-all">{tx.bep20Address}</p>
                   </div>
                 </div>
               ))}

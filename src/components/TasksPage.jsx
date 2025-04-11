@@ -74,7 +74,7 @@ const TasksPage = () => {
   }, [progress, token, tasks]);
 
   const handleTaskClick = (task) => {
-    if (currentWallet <= 100) {
+    if (currentWallet < 100) {
       setShowWalletAlert(true);
       setTimeout(() => setShowWalletAlert(false), 3000);
       return;
@@ -155,13 +155,13 @@ const TasksPage = () => {
             </div>
             <div className="flex items-center space-x-4">
               <div className={`bg-gray-800/60 px-6 py-3 rounded-xl flex items-center space-x-3 ${
-                currentWallet <= 100 ? 'border-2 border-red-500' : ''
+                currentWallet < 100 ? 'border-2 border-red-500' : ''
               }`}>
                 <DollarSign className={`h-5 w-5 ${
-                  currentWallet <= 100 ? 'text-red-500' : 'text-green-400'
+                  currentWallet < 100 ? 'text-red-500' : 'text-green-400'
                 }`} />
                 <span className={`font-medium ${
-                  currentWallet <= 100 ? 'text-red-500' : 'text-white'
+                  currentWallet < 100 ? 'text-red-500' : 'text-white'
                 }`}>
                   ${currentWallet.toFixed(2)}
                 </span>
@@ -207,11 +207,11 @@ const TasksPage = () => {
             {tasks.map((task) => (
               <motion.div
                 key={task._id}
-                whileHover={{ scale: currentWallet > 100 ? 1.02 : 1 }}
+                whileHover={{ scale: currentWallet >= 100 ? 1.02 : 1 }}
                 className={`bg-gray-800/60 p-6 rounded-xl border ${
                   completedTasks.includes(task._id)
                     ? "border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]"
-                    : currentWallet <= 100
+                    : currentWallet < 100
                     ? "border-red-500/50 opacity-50 cursor-not-allowed"
                     : "border-gray-700/50 hover:border-blue-500/50 cursor-pointer"
                 }`}
