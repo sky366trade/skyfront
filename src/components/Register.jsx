@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Eye,
   EyeOff,
@@ -13,55 +13,31 @@ import {
 import Swal from "sweetalert2";
 
 const Register = () => {
+  const url = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    localStorage.setItem("verifying", "false");
+   fetch(`${url}/delete-unverified-users`, {
+      method: "DELETE",
+  }, []);
+  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const username=useParams().username;
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
     phone: "",
   });
-  
-  const url = import.meta.env.VITE_BACKEND_URL;
-  
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   try {
-  //     const response = await fetch(`${url}/register`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(formData),
-  //     });
-
-  //     const data = await response.json();
-  //     if (!response.ok) throw new Error(data.msg);
-      
-  //     Swal.fire({
-  //       position: "top-end",
-  //       icon: "success",
-  //       title: "Registered Successfully",
-  //       showConfirmButton: false,
-  //       timer: 1500
-  //     });
-      
-  //     navigate("/login");
-  //   } catch (error) {
-  //     setError(error.message || "An error occurred during registration");
-  //     console.error("Registration Error:", error);
-  //   }
-  // };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-  
     try {
-      navigate('/verify-email', { state: { formData } });
+      localStorage.setItem("verifying", "true");
       localStorage.setItem("username", formData.username);
+      navigate('/verify-email', { state: { formData,username } });
+     
     } catch (error) {
       setError(error.message || "An error occurred during registration");
       console.error("Registration Error:", error);

@@ -27,6 +27,7 @@ export default function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />
         <Route path="/deposit" element={<Deposit />} />
+        <Route path="/register/:username" element={<Register />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/tasks/:level" element={<TasksPage />} />

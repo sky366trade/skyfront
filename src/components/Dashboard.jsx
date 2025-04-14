@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Gamepad2,
@@ -16,6 +16,9 @@ import {
   Sparkles,
   Wallet,
   Star,
+  Copy,
+  Share2,
+  Check,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +26,6 @@ const Slideshow = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-  
     {
       image:
         "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1641932970485-26fe40a9da37?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -36,7 +38,7 @@ const Slideshow = () => {
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2070",
       title: "Daily Earnings",
       subtitle: "Turn your skills into rewards",
-      stats: { dailyEarnings: "$10k+"},
+      stats: { dailyEarnings: "$10k+" },
     },
     {
       image:
@@ -50,7 +52,7 @@ const Slideshow = () => {
         "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2070",
       title: "Community Reviews",
       subtitle: "Join our trusted review community",
-      stats: { satisfaction: "98%", support: "24/7"},
+      stats: { satisfaction: "98%", support: "24/7" },
     },
   ];
 
@@ -222,14 +224,119 @@ const LevelCard = ({
   );
 };
 
+  const ReferralSection = () => {
+    const token=localStorage.getItem("token");
+    const navigate = useNavigate();
+    const url=import.meta.env.VITE_BACKEND_URL;
+    const [username, setUsername] = useState("");
+    useEffect(() => {
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      fetch(`${url}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Authentication failed");
+          return res.json();
+        })
+        .then((data) => {
+          setUsername(data.username);
+        })
+        .catch((error) => {
+          console.error("Profile Error:", error);
+          localStorage.removeItem("token");
+          navigate("/login");
+        });
+    }, [token, navigate]);
+    const [copied, setCopied] = useState(false);
+    const referralLink = `${window.location.origin}/register/${username}`; // Replace USER123 with actual user referral code
+
+    const copyToClipboard = async () => {
+      try {
+        await navigator.clipboard.writeText(referralLink);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy text: ", err);
+      }
+    };
+
+    return (
+      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-8 mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">Refer & Earn</h2>
+            <p className="text-gray-400">Share with friends and earn rewards together</p>
+          </div>
+          <div className="bg-blue-500/20 p-4 rounded-xl">
+            <Share2 className="h-8 w-8 text-blue-400" />
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-gray-700/40 rounded-xl p-6">
+            <div className="bg-green-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Users className="h-6 w-6 text-green-400" />
+            </div>
+            <h3 className="text-white font-semibold mb-2">Invite Friends</h3>
+            <p className="text-gray-400 text-sm">Share your unique referral link with friends</p>
+          </div>
+          
+          <div className="bg-gray-700/40 rounded-xl p-6">
+            <div className="bg-purple-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Trophy className="h-6 w-6 text-purple-400" />
+            </div>
+            <h3 className="text-white font-semibold mb-2">Friend Signs Up</h3>
+            <p className="text-gray-400 text-sm">Your friend creates an account using your link</p>
+          </div>
+
+          <div className="bg-gray-700/40 rounded-xl p-6">
+            <div className="bg-yellow-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Wallet className="h-6 w-6 text-yellow-400" />
+            </div>
+            <h3 className="text-white font-semibold mb-2">Both Rewards</h3>
+            <p className="text-gray-400 text-sm">Get 10% of their first deposit</p>
+          </div>
+        </div>
+
+        <div className="relative">
+          <input
+            type="text"
+            value={referralLink}
+            readOnly
+            className="w-full bg-gray-700/40 border border-gray-600 rounded-xl px-4 py-3 text-white pr-24"
+          />
+          <button
+            onClick={copyToClipboard}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg flex items-center space-x-2 transition-colors"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                <span>Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
 const Dashboard = () => {
   const url = import.meta.env.VITE_BACKEND_URL;
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWallet, setCurrentWallet] = useState(0);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const scrollContainer = React.useRef(null);
-  const reviewsContainer = React.useRef(null);
+  const scrollContainer = useRef(null);
+  const reviewsContainer = useRef(null);
 
   useEffect(() => {
     if (!token) {
@@ -264,7 +371,7 @@ const Dashboard = () => {
     {
       level: 2,
       title: "Bronze",
-      minWallet:500,
+      minWallet: 500,
       icon: Sword,
       description: "Give mor rewards along with reviews",
     },
@@ -287,7 +394,7 @@ const Dashboard = () => {
       title: "Diamond",
       minWallet: 5000,
       icon: Crown,
-      description: "The ultimate rewards experience and get true money  .",
+      description: "The ultimate rewards experience and get true money.",
     },
   ];
 
@@ -357,7 +464,7 @@ const Dashboard = () => {
       className="min-h-screen bg-[url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2070')] bg-cover bg-center"
     >
       <div className="min-h-screen bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-blue-900/95">
-        {/* Minimalist wallet in top right corner */}
+        {/* Wallet Component */}
         <div className="fixed top-4 right-4 z-50">
           <div className="bg-gray-800/40 backdrop-blur-sm px-4 py-2 rounded-lg flex items-center space-x-2 border border-white/10">
             <Wallet className="h-6 w-6 text-white/70" />
@@ -382,6 +489,8 @@ const Dashboard = () => {
 
           {/* Slideshow */}
           <Slideshow />
+
+        
 
           {/* Level Cards Carousel */}
           <div className="relative mb-12">
@@ -413,7 +522,8 @@ const Dashboard = () => {
               <ChevronRight className="h-6 w-6 text-white" />
             </button>
           </div>
-
+  {/* Referral Section */}
+  <ReferralSection />
           {/* Reviews Section */}
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-white mb-6 flex items-center">

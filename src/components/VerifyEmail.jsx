@@ -10,10 +10,11 @@ const VerifyEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const formData = location.state?.formData;
+  const username = location.state?.username;
   const url = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    if (!formData) {
+    if (!formData || localStorage.getItem("verifying") === "false") {
       navigate("/register");
       return;
     }
@@ -117,8 +118,9 @@ const VerifyEmail = () => {
         showConfirmButton: false,
       });
       
-
-      navigate("/referralCode");
+      console.log(username);
+      navigate("/referralCode",{state:{username}});
+     
     } catch (error) {
       Swal.fire({
         icon: "error",

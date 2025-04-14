@@ -131,7 +131,7 @@ const Login = () => {
 
               <div className="flex items-center justify-between">
                 <div className="text-sm">
-                  <Link to="/register" className="font-medium text-blue-400 hover:text-blue-300">
+                  <Link to={`/register`} className="font-medium text-blue-400 hover:text-blue-300">
                     Don't have an account? Register
                   </Link>
                 </div>

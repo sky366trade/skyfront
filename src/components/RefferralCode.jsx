@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GamepadIcon, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ReferralCode = () => {
-  const [referralCode, setReferralCode] = useState("");
+  const location = useLocation();
+  const code=location.state?.username;
+  const [referralCode, setReferralCode] = useState(code);
   const navigate = useNavigate();
   const user = localStorage.getItem("username") || "";
   const url = "http://localhost:3000"; // Define URL
   const createTeam = async () => {
-    if (!user) {
+    if (!user) {  
       alert("User data is missing!");
       return;
     }
