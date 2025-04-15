@@ -77,7 +77,7 @@ const Login = () => {
               <div className="space-y-5">
                 <div>
                   <label htmlFor="username" className="text-sm font-medium text-gray-300 block mb-0">
-                    Username
+                    Username or Email
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -89,9 +89,9 @@ const Login = () => {
                       type="text"
                       required
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter your username"
-                      value={formData.username}
-                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                      placeholder="Enter your username or email"
+                      value={formData.username.trim()}
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value.trim() })}
                     />
                   </div>
                 </div>

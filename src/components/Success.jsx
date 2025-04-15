@@ -33,7 +33,7 @@ const Success = () => {
 
         const data = await response.json();
         if (response.ok) {
-          alert(`✅ Wallet updated successfully with ₹${amount}`);
+          alert(`✅ Wallet updated successfully with $${amount}`);
         } else {
           alert(`❌ Error: ${data.msg}`);
         }
@@ -76,7 +76,7 @@ const Success = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen text-white text-xl">
-      {loading ? "Processing payment..." : `✅ ₹${amount} deposited to ${username}'s wallet`}
+      {loading ? "Processing payment..." : `✅ $${amount} deposited to ${username}'s wallet`}
     </div>
   );
 };
