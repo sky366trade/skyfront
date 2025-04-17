@@ -1,26 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Wallet, LogOut, Trophy, GamepadIcon, Settings, User,
-  Home, Gift, Lock, Newspaper, HelpCircle, Contact,
-  ArrowUpCircle, ArrowDownCircle,
-  Building2, Menu, X, ChevronLeft, ChevronRight, Star,
-  Target, Award, TrendingUp, Clock, CheckCircle, BarChart3,
-  Calendar, Mail, Phone, Crown, Sparkles, UserPlus, DollarSign,
-  Zap, Shield, Users
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import {
+  Wallet,
+  LogOut,
+  Trophy,
+  GamepadIcon,
+  Settings,
+  User,
+  Home,
+  Gift,
+  Lock,
+  Newspaper,
+  HelpCircle,
+  Contact,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  Building2,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  Target,
+  Award,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  BarChart3,
+  Calendar,
+  Mail,
+  Phone,
+  Crown,
+  Sparkles,
+  UserPlus,
+  DollarSign,
+  Zap,
+  Shield,
+  Users,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const SidebarMenuItem = ({ icon: Icon, label, onClick, isActive = false, isCollapsed = false }) => (
-  <motion.button 
+const SidebarMenuItem = ({
+  icon: Icon,
+  label,
+  onClick,
+  isActive = false,
+  isCollapsed = false,
+}) => (
+  <motion.button
     onClick={onClick}
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'} px-4 py-3 rounded-xl transition-all duration-200
-      ${isActive 
-        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/20' 
-        : 'hover:bg-gray-700/30 text-gray-300 hover:text-white'}`}
-    title={isCollapsed ? label : ''}
+    className={`w-full flex items-center ${
+      isCollapsed ? "justify-center" : "space-x-3"
+    } px-4 py-3 rounded-xl transition-all duration-200
+      ${
+        isActive
+          ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
+          : "hover:bg-gray-700/30 text-gray-300 hover:text-white"
+      }`}
+    title={isCollapsed ? label : ""}
   >
     <Icon className="h-5 w-5" />
     {!isCollapsed && <span className="font-medium">{label}</span>}
@@ -33,9 +72,11 @@ const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl transition-all duration-200
-      ${isActive
-        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/20'
-        : 'text-gray-300 hover:text-white hover:bg-gray-700/30'}`}
+      ${
+        isActive
+          ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
+          : "text-gray-300 hover:text-white hover:bg-gray-700/30"
+      }`}
   >
     <Icon className="h-5 w-5 mb-1" />
     <span className="text-xs font-medium">{label}</span>
@@ -49,14 +90,12 @@ const MenuSection = ({ title, children, isCollapsed = false }) => (
         {title}
       </h3>
     )}
-    <div className="space-y-1">
-      {children}
-    </div>
+    <div className="space-y-1">{children}</div>
   </div>
 );
 
 const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     className="bg-gray-700/30 p-4 rounded-xl"
@@ -71,11 +110,11 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
       </span>
     </div>
     <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-      <motion.div 
+      <motion.div
         initial={{ width: 0 }}
         animate={{ width: `${Math.min((value / maxValue) * 100, 100)}%` }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className={`absolute h-full ${color.replace('text', 'bg')} opacity-75`}
+        className={`absolute h-full ${color.replace("text", "bg")} opacity-75`}
       />
     </div>
   </motion.div>
@@ -88,7 +127,7 @@ const TeamStatsCard = ({ teamDetails }) => {
   const currentActivity = teamDetails.teamCount * 5;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl overflow-hidden"
@@ -107,23 +146,23 @@ const TeamStatsCard = ({ teamDetails }) => {
       </div>
 
       <div className="space-y-4">
-        <TeamProgressBar 
+        <TeamProgressBar
           icon={UserPlus}
           label="Team Size"
           value={teamDetails.teamCount}
           maxValue={maxMembers}
           color="text-blue-400"
         />
-        
-        <TeamProgressBar 
+
+        <TeamProgressBar
           icon={DollarSign}
           label="Commission Progress"
           value={teamDetails.teamWallet}
           maxValue={maxCommission}
           color="text-green-400"
         />
-        
-        <TeamProgressBar 
+
+        <TeamProgressBar
           icon={Zap}
           label="Team Activity"
           value={currentActivity}
@@ -132,7 +171,7 @@ const TeamStatsCard = ({ teamDetails }) => {
         />
 
         <div className="grid grid-cols-2 gap-4 mt-6">
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="bg-gray-700/30 p-4 rounded-xl"
           >
@@ -141,7 +180,7 @@ const TeamStatsCard = ({ teamDetails }) => {
               {teamDetails.teamCount}
             </div>
           </motion.div>
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="bg-gray-700/30 p-4 rounded-xl"
           >
@@ -157,7 +196,7 @@ const TeamStatsCard = ({ teamDetails }) => {
 };
 
 const TeamMemberCard = ({ member }) => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     className="bg-[#1e2a4a] p-4 rounded-xl border border-gray-700"
@@ -174,7 +213,9 @@ const TeamMemberCard = ({ member }) => (
     <div className="mt-4 grid grid-cols-2 gap-4">
       <div className="bg-gray-800/40 p-3 rounded-lg">
         <p className="text-sm text-gray-400">Wallet Balance</p>
-        <p className="text-lg font-semibold text-white">${member.wallet.toFixed(2)}</p>
+        <p className="text-lg font-semibold text-white">
+          ${member.wallet.toFixed(2)}
+        </p>
       </div>
       <div className="bg-gray-800/40 p-3 rounded-lg">
         <p className="text-sm text-gray-400">Join Date</p>
@@ -210,7 +251,7 @@ const TeamMembersSection = ({ teamMembers }) => (
 );
 
 const TaskCard = ({ task, onComplete }) => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
@@ -218,7 +259,7 @@ const TaskCard = ({ task, onComplete }) => (
   >
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center space-x-3">
-        <motion.div 
+        <motion.div
           whileHover={{ scale: 1.1, rotate: 360 }}
           transition={{ duration: 0.5 }}
           className="p-3 bg-blue-500/20 rounded-xl"
@@ -227,7 +268,7 @@ const TaskCard = ({ task, onComplete }) => (
         </motion.div>
         <h3 className="text-lg font-semibold text-white">{task.title}</h3>
       </div>
-      {task.status === 'completed' ? (
+      {task.status === "completed" ? (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -239,7 +280,6 @@ const TaskCard = ({ task, onComplete }) => (
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          
           className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
         >
           Pending
@@ -249,11 +289,13 @@ const TaskCard = ({ task, onComplete }) => (
     <p className="text-gray-400 mb-4">{task.description}</p>
     <div className="flex items-center justify-between text-sm">
       <span className="text-gray-500">
-  <Clock className="h-4 w-4 inline mr-1" />
-  {`${task.date.split('-')[2].split('T')[0]}/${task.date.split('-')[1]}/${task.date.split('-')[0]}`}
-</span>
+        <Clock className="h-4 w-4 inline mr-1" />
+        {`${task.date.split("-")[2].split("T")[0]}/${task.date.split("-")[1]}/${
+          task.date.split("-")[0]
+        }`}
+      </span>
 
-      <motion.span 
+      <motion.span
         whileHover={{ scale: 1.1 }}
         className="text-yellow-500 flex items-center"
       >
@@ -265,23 +307,90 @@ const TaskCard = ({ task, onComplete }) => (
 );
 
 const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
-  const levels = [
-    { level: 1, title: "Elite", minWallet: 0 },
-    { level: 2, title: "Bronze", minWallet: 500 },
-    { level: 3, title: "Silver", minWallet: 1000 },
-    { level: 4, title: "Gold", minWallet: 3000 },
-    { level: 5, title: "Diamond", minWallet: 5000 },
-  ];
+  const [teamWallet, setTeamWallet] = useState(0);
+  const [userData, setUserData] = useState(null);
+  const url = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      const profileRes = await fetch(`${url}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const profileData = await profileRes.json();
+      setUserData(profileData);
+    };
+    fetchUserData();
+  }, []);
+  useEffect(() => {
+    if (!userData) return;
+    const fetchTotalMembers = async () => {
+      try {
+        console.log({ username: userData.username });
+        const teamsDetails = await fetch(`${url}/total-teams-details`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // This line is important!
+          },
+          body: JSON.stringify({ username: userData.username }),
+        });
 
-  const currentLevel = levels.find(l => currentWallet >= l.minWallet && 
-    (levels[l.level] ? currentWallet < levels[l.level].minWallet : true));
-  
+        // If the response is not JSON (e.g., error HTML), throw
+        if (!teamsDetails.ok) {
+          const text = await teamsDetails.text(); // read the error text
+          throw new Error(
+            `Server responded with status ${teamsDetails.status}: ${text}`
+          );
+        }
+
+        const data = await teamsDetails.json();
+
+        let total = 0;
+
+        // Loop through all levels to sum the wallet
+        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
+          (level) => {
+            data.teams[level].forEach((member) => {
+              total += member.wallet;
+            });
+          }
+        );
+
+        setTeamWallet(total);
+      } catch (error) {
+        console.error("Error fetching total members:", error);
+      }
+    };
+
+    fetchTotalMembers();
+  }, [userData]);
+  const levels = [
+    { level: 1, title: "Star", minWallet: 0, bonus: 100 },
+    { level: 2, title: "Bronze", minWallet: 2_500, bonus: 200 },
+    { level: 3, title: "Silver", minWallet: 5_000, bonus: 500 },
+    { level: 4, title: "Gold", minWallet: 10_000, bonus: 1000 },
+    { level: 5, title: "Platinum", minWallet: 25_000, bonus: 2000 },
+    { level: 6, title: "Diamond", minWallet: 50_000, bonus: 4000 },
+    { level: 7, title: "Emerald", minWallet: 1_000_000, bonus: 8000 },
+    { level: 8, title: "Pearl", minWallet: 2_000_000, bonus: 20_000 },
+    { level: 9, title: "Ruby", minWallet: 5_000_000, bonus: 40_000 },
+    { level: 10, title: "Sapphire", minWallet:10_000_000, bonus: 1_000_000 },
+    { level: 11, title: "Pro Diamond", minWallet: 50_000_000, bonus: 2_000_000 },
+  ];
+  const currentLevel = levels.find(
+    (l) =>
+      teamWallet >= l.minWallet &&
+      (levels[l.level] ? teamWallet < levels[l.level].minWallet : true)
+  );
+
   const progress = (xp / requiredXp) * 100;
   const nextLevel = levels[currentLevel?.level] || levels[levels.length - 1];
-  const walletProgress = Math.min((currentWallet / nextLevel.minWallet) * 100, 100);
-  
+  const walletProgress = Math.min(
+    (teamWallet / nextLevel.minWallet) * 100,
+    100
+  );
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -289,7 +398,7 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <motion.div 
+          <motion.div
             className="p-3 bg-yellow-500/20 rounded-xl"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -297,14 +406,16 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
             <Trophy className="h-6 w-6 text-yellow-500" />
           </motion.div>
           <div>
-            <motion.h3 
+            <motion.h3
               className="text-xl font-bold text-white"
               initial={{ x: -20 }}
               animate={{ x: 0 }}
             >
               Level {currentLevel?.level || 1}
             </motion.h3>
-            <p className="text-gray-400">{currentLevel?.title || "Rookie Arena"}</p>
+            <p className="text-gray-400">
+              {currentLevel?.title || "Rookie Arena"}
+            </p>
           </div>
         </div>
         <motion.div
@@ -314,15 +425,17 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
           <Crown className="h-8 w-8 text-yellow-500" />
         </motion.div>
       </div>
-      
+
       <div className="space-y-4">
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-sm text-gray-400">Daily XP</span>
-            <span className="text-sm text-yellow-500">{xp} / {requiredXp} XP</span>
+            <span className="text-sm text-yellow-500">
+              {xp} / {requiredXp} XP
+            </span>
           </div>
           <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 1, ease: "easeOut" }}
@@ -333,11 +446,13 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Wallet Progress</span>
-            <span className="text-sm text-blue-500">${currentWallet} / ${nextLevel.minWallet}</span>
+            <span className="text-sm text-gray-400">Your Team Progress</span>
+            <span className="text-sm text-blue-500">
+              ${teamWallet.toFixed(2)} / ${nextLevel.minWallet}
+            </span>
           </div>
           <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${walletProgress}%` }}
               transition={{ duration: 1, ease: "easeOut" }}
@@ -347,19 +462,23 @@ const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="bg-gray-700/30 p-3 rounded-xl"
           >
             <div className="text-sm text-gray-400">Current Level</div>
-            <div className="text-lg font-bold text-white">{currentLevel?.level || 1}</div>
+            <div className="text-lg font-bold text-white">
+              {currentLevel?.level || 1}
+            </div>
           </motion.div>
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="bg-gray-700/30 p-3 rounded-xl"
           >
             <div className="text-sm text-gray-400">Next Level</div>
-            <div className="text-lg font-bold text-white">{(currentLevel?.level || 1) + 1}</div>
+            <div className="text-lg font-bold text-white">
+              {(currentLevel?.level || 1) + 1}
+            </div>
           </motion.div>
         </div>
       </div>
@@ -375,24 +494,27 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
     className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
   >
     <div className="flex items-center justify-between">
-      <motion.div 
+      <motion.div
         whileHover={{ rotate: 360 }}
         transition={{ duration: 0.5 }}
         className="p-3 bg-blue-500/20 rounded-xl"
       >
         <Icon className="h-6 w-6 text-blue-500" />
       </motion.div>
-      <motion.div 
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         className={`px-2 py-1 rounded-lg text-sm ${
-          trend > 0 ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'
+          trend > 0
+            ? "bg-green-500/20 text-green-500"
+            : "bg-red-500/20 text-red-500"
         }`}
       >
-        {trend > 0 ? '+' : ''}{trend}%
+        {trend > 0 ? "+" : ""}
+        {trend}%
       </motion.div>
     </div>
-    <motion.h3 
+    <motion.h3
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2 }}
@@ -408,13 +530,13 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [error, setError] = useState(null);
   const [teamDetails, setTeamDetails] = useState(null);
   const [teamMembers, setTeamMembers] = useState([]);
-
+  const [teamWallet, setTeamWallet] = useState(0);
   const url = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -422,22 +544,22 @@ const Profile = () => {
   const fetchTeamMembers = async () => {
     try {
       const response = await fetch(`${url}/showTeamInfo`, {
-        headers: { 
-          Authorization: `Bearer ${token}` 
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) throw new Error('Failed to fetch team members');
+      if (!response.ok) throw new Error("Failed to fetch team members");
       const data = await response.json();
       setTeamMembers(data.teams || []);
     } catch (error) {
-      console.error('Error fetching team members:', error);
+      console.error("Error fetching team members:", error);
     }
   };
-  
+
   const fetchDetails = async () => {
     if (!userData?.username) return;
-    
+
     try {
       setError(null);
       const response = await fetch(`${url}/showDetails`, {
@@ -460,28 +582,31 @@ const Profile = () => {
   };
 
   const calculateUserStats = (tasks) => {
-    const completedTasks = tasks.filter(task => task.status === 'completed').length;
+    const completedTasks = tasks.filter(
+      (task) => task.status === "completed"
+    ).length;
     const totalTasks = tasks.length;
-    const successRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-    
-    const xpPerTask = 1000/tasks.length;
+    const successRate =
+      totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+    const xpPerTask = 1000 / tasks.length;
     const currentXp = completedTasks * xpPerTask;
     const level = Math.floor(currentXp / 1000) + 1;
     const requiredXp = 1000;
-    
+
     return {
       level,
       xp: currentXp,
       requiredXp,
       completedTasks,
       successRate: Math.round(successRate),
-      totalEarnings: userData?.wallet || 0
+      totalEarnings: userData?.wallet || 0,
     };
   };
 
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -491,7 +616,7 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!profileRes.ok) throw new Error('Failed to fetch profile');
+        if (!profileRes.ok) throw new Error("Failed to fetch profile");
         const profileData = await profileRes.json();
         setUserData(profileData);
 
@@ -499,16 +624,15 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!tasksRes.ok) throw new Error('Failed to fetch tasks');
+        if (!tasksRes.ok) throw new Error("Failed to fetch tasks");
         const tasksData = await tasksRes.json();
         setTasks(tasksData.tasks);
-
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setError(error.message);
-        if (error.message.includes('Authentication')) {
-          localStorage.removeItem('token');
-          navigate('/login');
+        if (error.message.includes("Authentication")) {
+          localStorage.removeItem("token");
+          navigate("/login");
         }
       } finally {
         setLoading(false);
@@ -531,27 +655,28 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!response.ok) throw new Error('Failed to complete task');
-      
-      const data = await response.json();
-      
-      setTasks(tasks.map(task => 
-        task._id === taskId ? { ...task, status: 'completed' } : task
-      ));
-      
-      setUserData(prev => ({
-        ...prev,
-        wallet: data.wallet
-      }));
+      if (!response.ok) throw new Error("Failed to complete task");
 
+      const data = await response.json();
+
+      setTasks(
+        tasks.map((task) =>
+          task._id === taskId ? { ...task, status: "completed" } : task
+        )
+      );
+
+      setUserData((prev) => ({
+        ...prev,
+        wallet: data.wallet,
+      }));
     } catch (error) {
-      console.error('Error completing task:', error);
+      console.error("Error completing task:", error);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const handleHomeClick = () => navigate("/dashboard");
@@ -589,10 +714,12 @@ const Profile = () => {
   }
 
   const userStats = calculateUserStats(tasks);
-  const joinDate = new Date(userData?.joinDate || Date.now()).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const joinDate = new Date(
+    userData?.joinDate || Date.now()
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -605,14 +732,20 @@ const Profile = () => {
                 <div className="relative group">
                   <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative">
-                    <img src="icon-03.png" className="h-13.5 w-15.5 mr-2" alt="Logo" />
+                    <img
+                      src="icon-03.png"
+                      className="h-13.5 w-15.5 mr-2"
+                      alt="Logo"
+                    />
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-4">
                 <div className="bg-gray-800/80 px-6 py-2 rounded-xl border border-gray-700/50 flex items-center space-x-4">
-                  <span className="text-white font-medium tracking-wide text-lg sm:inline">${userData?.wallet.toFixed(2) || 0}</span>
+                  <span className="text-white font-medium tracking-wide text-lg sm:inline">
+                    ${userData?.wallet.toFixed(2) || 0}
+                  </span>
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg group-hover:bg-blue-500/30 transition-colors duration-300"></div>
                     <div className="relative bg-gradient-to-br from-blue-600 to-blue-400 p-2 rounded-lg transform group-hover:scale-105 transition-transform duration-300">
@@ -651,13 +784,21 @@ const Profile = () => {
 
         <div className="flex">
           {/* Sidebar */}
-          <div className={`
+          <div
+            className={`
             fixed lg:static inset-y-0 left-0 transform lg:transform-none
-            ${isSidebarCollapsed ? 'w-20' : 'w-64'} bg-gray-800/90 backdrop-blur-xl border-r border-gray-700
+            ${
+              isSidebarCollapsed ? "w-20" : "w-64"
+            } bg-gray-800/90 backdrop-blur-xl border-r border-gray-700
             p-4 space-y-6 transition-all duration-300 ease-in-out z-40
-            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            ${
+              isSidebarOpen
+                ? "translate-x-0"
+                : "-translate-x-full lg:translate-x-0"
+            }
             lg:min-h-[calc(100vh-4rem)] overflow-y-auto
-          `}>
+          `}
+          >
             <button
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
               className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-gray-700/30 hover:bg-gray-700/50 transition-colors"
@@ -670,47 +811,53 @@ const Profile = () => {
             </button>
 
             <MenuSection title="Navigation" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem 
-                icon={Home} 
-                label="Home" 
-                isActive={activeMenu === 'home'}
+              <SidebarMenuItem
+                icon={Home}
+                label="Home"
+                isActive={activeMenu === "home"}
                 onClick={handleHomeClick}
                 isCollapsed={isSidebarCollapsed}
               />
             </MenuSection>
 
-            <MenuSection title="Money Management" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem 
-                icon={ArrowUpCircle} 
-                label="Deposit" 
-                isActive={activeMenu === 'deposit'}
+            <MenuSection
+              title="Money Management"
+              isCollapsed={isSidebarCollapsed}
+            >
+              <SidebarMenuItem
+                icon={ArrowUpCircle}
+                label="Deposit"
+                isActive={activeMenu === "deposit"}
                 onClick={() => {
                   handleDepositClick();
-                  setActiveMenu('deposit');
+                  setActiveMenu("deposit");
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-              <SidebarMenuItem 
-                icon={ArrowDownCircle} 
-                label="Withdrawal" 
-                isActive={activeMenu === 'withdrawal'}
+              <SidebarMenuItem
+                icon={ArrowDownCircle}
+                label="Withdrawal"
+                isActive={activeMenu === "withdrawal"}
                 onClick={() => {
                   navigate("/withdrawal");
-                  setActiveMenu('withdrawal');
+                  setActiveMenu("withdrawal");
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
             </MenuSection>
 
-            <MenuSection title="Benefit Program" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem 
-                icon={Gift} 
-                label="Benefit Program" 
-                isActive={activeMenu === 'benefits'}
+            <MenuSection
+              title="Benefit Program"
+              isCollapsed={isSidebarCollapsed}
+            >
+              <SidebarMenuItem
+                icon={Gift}
+                label="Benefit Program"
+                isActive={activeMenu === "benefits"}
                 onClick={() => {
-                  setActiveMenu('benefits');
+                  setActiveMenu("benefits");
                   handleBenefitProgramClick();
                   setIsSidebarOpen(false);
                 }}
@@ -719,46 +866,46 @@ const Profile = () => {
             </MenuSection>
 
             <MenuSection title="Information" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem 
-                icon={Newspaper} 
-                label="News & Events" 
-                isActive={activeMenu === 'news'}
+              <SidebarMenuItem
+                icon={Newspaper}
+                label="News & Events"
+                isActive={activeMenu === "news"}
                 onClick={() => {
-                  setActiveMenu('news');
+                  setActiveMenu("news");
                   setIsSidebarOpen(false);
                   handleNewsEvent();
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-              <SidebarMenuItem 
-                icon={Building2} 
-                label="About Us" 
-                isActive={activeMenu === 'about'}
+              <SidebarMenuItem
+                icon={Building2}
+                label="About Us"
+                isActive={activeMenu === "about"}
                 onClick={() => {
                   handleAboutClick();
-                  setActiveMenu('about');
+                  setActiveMenu("about");
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-              <SidebarMenuItem 
-                icon={HelpCircle} 
-                label="FAQ" 
-                isActive={activeMenu === 'faq'}
+              <SidebarMenuItem
+                icon={HelpCircle}
+                label="FAQ"
+                isActive={activeMenu === "faq"}
                 onClick={() => {
                   handleFAQClick();
-                  setActiveMenu('faq');
+                  setActiveMenu("faq");
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
               />
-              <SidebarMenuItem 
-                icon={Contact} 
-                label="Contact Us" 
-                isActive={activeMenu === 'contact'}
+              <SidebarMenuItem
+                icon={Contact}
+                label="Contact Us"
+                isActive={activeMenu === "contact"}
                 onClick={() => {
                   handleContactClick();
-                  setActiveMenu('contact');
+                  setActiveMenu("contact");
                   setIsSidebarOpen(false);
                 }}
                 isCollapsed={isSidebarCollapsed}
@@ -777,7 +924,7 @@ const Profile = () => {
           </div>
 
           {isSidebarOpen && (
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden z-30"
               onClick={() => setIsSidebarOpen(false)}
             />
@@ -790,13 +937,13 @@ const Profile = () => {
               <div className="space-y-8">
                 <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
                   <div className="text-center">
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.1 }}
                       className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
                     >
                       <User className="w-12 h-12 text-white" />
                     </motion.div>
-                    <motion.h2 
+                    <motion.h2
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       className="mt-4 text-2xl font-bold text-white"
@@ -805,9 +952,9 @@ const Profile = () => {
                     </motion.h2>
                     <p className="text-gray-400">Trader Profile</p>
                   </div>
-                  
+
                   <div className="mt-6">
-                    <LevelCard 
+                    <LevelCard
                       level={userStats.level}
                       xp={userStats.xp}
                       requiredXp={userStats.requiredXp}
@@ -816,7 +963,7 @@ const Profile = () => {
                   </div>
 
                   <div className="mt-6 space-y-4">
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
@@ -826,7 +973,7 @@ const Profile = () => {
                       </span>
                       <span className="text-white">{joinDate}</span>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
@@ -834,9 +981,11 @@ const Profile = () => {
                         <Mail className="w-4 h-4 mr-2" />
                         Email
                       </span>
-                      <span className="text-white">{userData?.email || 'Not provided'}</span>
+                      <span className="text-white">
+                        {userData?.email || "Not provided"}
+                      </span>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
@@ -844,9 +993,11 @@ const Profile = () => {
                         <Phone className="w-4 h-4 mr-2" />
                         Phone
                       </span>
-                      <span className="text-white">{userData?.phone || 'Not provided'}</span>
+                      <span className="text-white">
+                        {userData?.phone || "Not provided"}
+                      </span>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
@@ -854,9 +1005,11 @@ const Profile = () => {
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Tasks Completed
                       </span>
-                      <span className="text-white">{userStats.completedTasks}</span>
+                      <span className="text-white">
+                        {userStats.completedTasks}
+                      </span>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
@@ -864,15 +1017,15 @@ const Profile = () => {
                         <TrendingUp className="w-4 h-4 mr-2" />
                         Success Rate
                       </span>
-                      <span className="text-white">{userStats.successRate}%</span>
+                      <span className="text-white">
+                        {userStats.successRate}%
+                      </span>
                     </motion.div>
                   </div>
                 </div>
 
                 {/* Team Details Section */}
-                {teamDetails && (
-                  <TeamStatsCard teamDetails={teamDetails} />
-                )}
+                {teamDetails && <TeamStatsCard teamDetails={teamDetails} />}
 
                 {/* Team Members Section */}
                 <TeamMembersSection teamMembers={teamMembers} />
@@ -881,19 +1034,19 @@ const Profile = () => {
               {/* Stats and Tasks Section */}
               <div className="lg:col-span-2 space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <StatCard 
+                  <StatCard
                     icon={CheckCircle}
                     label="Completed Tasks"
                     value={userStats.completedTasks}
                     trend={12}
                   />
-                  <StatCard 
+                  <StatCard
                     icon={Award}
                     label="Success Rate"
                     value={`${userStats.successRate}%`}
                     trend={5}
                   />
-                  <StatCard 
+                  <StatCard
                     icon={TrendingUp}
                     label="Total Earnings"
                     value={`$${userStats.totalEarnings.toFixed(2)}`}
@@ -908,14 +1061,14 @@ const Profile = () => {
                   </h3>
                   <div className="space-y-4">
                     {tasks.map((task) => (
-                      <TaskCard 
+                      <TaskCard
                         key={task._id}
                         task={task}
                         onComplete={handleCompleteTask}
                       />
                     ))}
                     {tasks.length === 0 && (
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="text-gray-400 text-center py-4"
@@ -936,31 +1089,31 @@ const Profile = () => {
             <TaskbarItem
               icon={Home}
               label="Home"
-              isActive={activeMenu === 'home'}
+              isActive={activeMenu === "home"}
               onClick={handleHomeClick}
             />
             <TaskbarItem
               icon={ArrowUpCircle}
               label="Deposit"
-              isActive={activeMenu === 'deposit'}
+              isActive={activeMenu === "deposit"}
               onClick={handleDepositClick}
             />
             <TaskbarItem
               icon={Gift}
               label="Benefits"
-              isActive={activeMenu === 'benefits'}
+              isActive={activeMenu === "benefits"}
               onClick={handleBenefitProgramClick}
             />
             <TaskbarItem
               icon={Newspaper}
               label="News"
-              isActive={activeMenu === 'news'}
+              isActive={activeMenu === "news"}
               onClick={handleNewsEvent}
             />
             <TaskbarItem
               icon={Contact}
               label="Contact"
-              isActive={activeMenu === 'contact'}
+              isActive={activeMenu === "contact"}
               onClick={handleContactClick}
             />
           </div>
@@ -969,5 +1122,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

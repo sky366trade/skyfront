@@ -19,6 +19,16 @@ import {
   Copy,
   Share2,
   Check,
+  EllipsisVertical,
+  ActivityIcon,
+  GlobeLock,
+  Diamond,
+  LucideXSquare,
+  Highlighter,
+  LeafyGreenIcon,
+  GridIcon,
+  GalleryHorizontal,
+  SunMoon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -150,9 +160,71 @@ const LevelCard = ({
   isActive,
   description,
 }) => {
+//get the current team wallet
+const [teamWallet, setTeamWallet] = useState(0);
+  const [userData, setUserData] = useState(null);
+  const url = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      const profileRes = await fetch(`${url}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const profileData = await profileRes.json();
+      setUserData(profileData);
+    };
+    fetchUserData();
+  }, []);
+  useEffect(() => {
+    if (!userData) return;
+    const fetchTotalMembers = async () => {
+      try {
+        console.log({ username: userData.username });
+        const teamsDetails = await fetch(`${url}/total-teams-details`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // This line is important!
+          },
+          body: JSON.stringify({ username: userData.username }),
+        });
+
+        // If the response is not JSON (e.g., error HTML), throw
+        if (!teamsDetails.ok) {
+          const text = await teamsDetails.text(); // read the error text
+          throw new Error(
+            `Server responded with status ${teamsDetails.status}: ${text}`
+          );
+        }
+
+        const data = await teamsDetails.json();
+
+        let total = 0;
+
+        // Loop through all levels to sum the wallet
+        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
+          (level) => {
+            data.teams[level].forEach((member) => {
+              total += member.wallet;
+            });
+          }
+        );
+
+        setTeamWallet(total);
+      } catch (error) {
+        console.error("Error fetching total members:", error);
+      }
+    };
+
+    fetchTotalMembers();
+  }, [userData]);
+
+
+
+
+
   const navigate = useNavigate();
-  const isLocked = currentWallet < minWallet;
-  const progress = Math.min((currentWallet / minWallet) * 100, 100);
+  const isLocked = teamWallet < minWallet;
+  const progress = Math.min((teamWallet / minWallet) * 100, 100);
 
   return (
     <motion.div
@@ -194,7 +266,7 @@ const LevelCard = ({
       </div>
 
       <div className="flex justify-between text-sm mb-4">
-        <span className="text-gray-400">Current: ${currentWallet}</span>
+        <span className="text-gray-400">Current: ${parseFloat(teamWallet).toFixed(2)}</span>
         <span className="text-gray-400">Required: ${minWallet}</span>
       </div>
 
@@ -330,13 +402,82 @@ const LevelCard = ({
   };
 
 const Dashboard = () => {
-  const url = import.meta.env.VITE_BACKEND_URL;
+  
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWallet, setCurrentWallet] = useState(0);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const scrollContainer = useRef(null);
   const reviewsContainer = useRef(null);
+const [teamWallet, setTeamWallet] = useState(0);
+  const [userData, setUserData] = useState(null);
+  const url = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      const profileRes = await fetch(`${url}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const profileData = await profileRes.json();
+      setUserData(profileData);
+    };
+    fetchUserData();
+  }, []);
+  useEffect(() => {
+    if (!userData) return;
+    const fetchTotalMembers = async () => {
+      try {
+        console.log({ username: userData.username });
+        const teamsDetails = await fetch(`${url}/total-teams-details`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // This line is important!
+          },
+          body: JSON.stringify({ username: userData.username }),
+        });
+
+        // If the response is not JSON (e.g., error HTML), throw
+        if (!teamsDetails.ok) {
+          const text = await teamsDetails.text(); // read the error text
+          throw new Error(
+            `Server responded with status ${teamsDetails.status}: ${text}`
+          );
+        }
+
+        const data = await teamsDetails.json();
+
+        let total = 0;
+
+        // Loop through all levels to sum the wallet
+        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
+          (level) => {
+            data.teams[level].forEach((member) => {
+              total += member.wallet;
+            });
+          }
+        );
+
+        setTeamWallet(total);
+      } catch (error) {
+        console.error("Error fetching total members:", error);
+      }
+    };
+
+    fetchTotalMembers();
+  }, [userData]);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     if (!token) {
@@ -365,35 +506,77 @@ const Dashboard = () => {
       level: 1,
       title: "Elite",
       minWallet: 0,
-      icon: Gamepad2,
+      icon: ActivityIcon,
       description: "Perfect for beginners. Start your reward journey here!",
     },
     {
       level: 2,
       title: "Bronze",
-      minWallet: 500,
+      minWallet: 2500,
       icon: Sword,
-      description: "Give mor rewards along with reviews",
+      description: "Give more rewards along with reviews",
     },
     {
       level: 3,
       title: "Silver",
-      minWallet: 1000,
+      minWallet: 5000,
       icon: Shield,
       description: "Join the elite players in high-stakes matches.",
     },
     {
       level: 4,
       title: "Gold",
-      minWallet: 3000,
-      icon: Zap,
+      minWallet: 10000,
+      icon: GlobeLock,
       description: "Exclusive rewarding tasks available worldwide.",
     },
     {
       level: 5,
+      title: "Platinum",
+      minWallet: 25000,
+      icon: Diamond,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 6,
       title: "Diamond",
-      minWallet: 5000,
+      minWallet: 50000,
+      icon: Highlighter,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 7,
+      title: "Emerald",
+      minWallet: 1_000_000,
+      icon: LeafyGreenIcon,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 8,
+      title: "Pearl",
+      minWallet: 2_000_000,
+      icon: GridIcon,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 9,
+      title: "Ruby",
+      minWallet: 5_000_000,
+      icon: GalleryHorizontal,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 10,
+      title: "Sapphire",
+      minWallet: 10_000_000,
       icon: Crown,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 11,
+      title: "Pro Diamond",
+      minWallet: 50_000_000,
+      icon: SunMoon,
       description: "The ultimate rewards experience and get true money.",
     },
   ];
@@ -503,14 +686,14 @@ const Dashboard = () => {
 
             <div
               ref={scrollContainer}
-              className="flex space-x-6 overflow-x-hidden scroll-smooth py-4 px-2"
+              className="flex space-x-10 overflow-x-hidden scroll-smooth py-4 px-2"
             >
               {levels.map((level) => (
                 <LevelCard
                   key={level.level}
                   {...level}
-                  currentWallet={currentWallet}
-                  isActive={currentWallet >= level.minWallet}
+                  teamWallet={teamWallet}
+                  isActive={teamWallet >= level.minWallet}
                 />
               ))}
             </div>

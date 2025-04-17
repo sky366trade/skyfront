@@ -16,14 +16,18 @@ const Register = () => {
   const url = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     localStorage.setItem("verifying", "false");
-   fetch(`${url}/delete-unverified-users`, {
-      method: "DELETE",
-  }, []);
+    fetch(
+      `${url}/delete-unverified-users`,
+      {
+        method: "DELETE",
+      },
+      []
+    );
   }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const username=useParams().username;
+  const username = useParams().username;
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -36,14 +40,28 @@ const Register = () => {
     try {
       localStorage.setItem("verifying", "true");
       localStorage.setItem("username", formData.username);
-      navigate('/verify-email', { state: { formData,username } });
-     
+      const response= await fetch(`${url}/check-register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if(data.msg){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.msg,
+        });
+        return;
+      }
+      navigate("/verify-email", { state: { formData, username } });
     } catch (error) {
       setError(error.message || "An error occurred during registration");
       console.error("Registration Error:", error);
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072')] bg-cover bg-center">
@@ -76,7 +94,10 @@ const Register = () => {
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-5">
                 <div className="relative">
-                  <label htmlFor="username" className="text-sm font-medium text-gray-300 block mb-0">
+                  <label
+                    htmlFor="username"
+                    className="text-sm font-medium text-gray-300 block mb-0"
+                  >
                     Username
                   </label>
                   <div className="relative">
@@ -91,13 +112,21 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Choose your username"
                       value={formData.username.trim()}
-                      onChange={(e) => setFormData({ ...formData, username: e.target.value.trim() })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          username: e.target.value.trim(),
+                        })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="relative">
-                  <label htmlFor="email" className="text-sm font-medium text-gray-300 block mb-0">
+                  <label
+                    htmlFor="email"
+                    className="text-sm font-medium text-gray-300 block mb-0"
+                  >
                     Email
                   </label>
                   <div className="relative">
@@ -112,13 +141,18 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter your email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="relative">
-                  <label htmlFor="phone" className="text-sm font-medium text-gray-300 block mb-0">
+                  <label
+                    htmlFor="phone"
+                    className="text-sm font-medium text-gray-300 block mb-0"
+                  >
                     Phone
                   </label>
                   <div className="relative">
@@ -133,13 +167,18 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter your phone number"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="relative">
-                  <label htmlFor="password" className="text-sm font-medium text-gray-300 block mb-2">
+                  <label
+                    htmlFor="password"
+                    className="text-sm font-medium text-gray-300 block mb-2"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -154,7 +193,9 @@ const Register = () => {
                       className="pl-10 block w-full px-3 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Create a strong password"
                       value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
                     />
                     <button
                       type="button"

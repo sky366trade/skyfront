@@ -112,7 +112,8 @@ const Deposit = () => {
                 <h2 className="text-xl font-semibold text-white">Current Balance</h2>
                 <div className="flex items-center space-x-2">
                   <Wallet className="h-5 w-5 text-blue-500" />
-                  <span className="text-2xl font-bold text-white">${walletBalance}</span>
+                  <span className="text-2xl font-bold text-white">{parseFloat(walletBalance).toFixed(2)} 
+                  </span>
                 </div>
               </div>
 

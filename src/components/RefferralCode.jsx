@@ -43,7 +43,6 @@ const ReferralCode = () => {
           user: referralCode,
         }),
       });
-
       const data = await res.json();
       alert(data.msg);
       localStorage.removeItem("username");
