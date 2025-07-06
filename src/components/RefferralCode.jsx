@@ -48,7 +48,7 @@ const ReferralCode = () => {
       localStorage.removeItem("username");
       navigate("/login");
     } catch (error) {
-      alert("Error collecting your rewards");
+      alert(error);
     }
   };
 
@@ -99,7 +99,7 @@ const ReferralCode = () => {
             </div>
 
             <motion.button
-              onClick={() => handleReferral()} // Fix onClick
+              onClick={() => handleReferral()} 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="button"

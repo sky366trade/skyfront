@@ -180,7 +180,8 @@ function Withdrawal() {
                 </div>
               ))}
               {transactions.length === 0 && (
-                <p className="text-gray-400 text-center py-4">
+                <p className="text-gray-400 text-
+                center py-4">
                   No transactions found
                 </p>
               )}

@@ -1,45 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Wallet,
   LogOut,
-  Trophy,
-  GamepadIcon,
-  Settings,
-  User,
-  Home,
-  Gift,
-  Lock,
-  Newspaper,
-  HelpCircle,
-  Contact,
-  ArrowUpCircle,
-  ArrowDownCircle,
-  Building2,
   Menu,
   X,
-  ChevronLeft,
-  ChevronRight,
-  Star,
-  Target,
-  Award,
-  TrendingUp,
-  Clock,
-  CheckCircle,
-  BarChart3,
+  User,
   Calendar,
   Mail,
   Phone,
-  Crown,
+  CheckCircle,
+  TrendingUp,
+  Award,
+  Target,
+  Clock,
   Sparkles,
+  Home,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  Gift,
+  Newspaper,
+  Building2,
+  HelpCircle,
+  Contact,
+  ChevronLeft,
+  ChevronRight,
+  Trophy,
+  Crown,
+  Shield,
   UserPlus,
   DollarSign,
   Zap,
-  Shield,
   Users,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
+// Sidebar Menu Item Component
 const SidebarMenuItem = ({
   icon: Icon,
   label,
@@ -66,6 +62,7 @@ const SidebarMenuItem = ({
   </motion.button>
 );
 
+// Taskbar Item Component for Mobile
 const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
   <motion.button
     onClick={onClick}
@@ -83,6 +80,7 @@ const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
   </motion.button>
 );
 
+// Menu Section Component
 const MenuSection = ({ title, children, isCollapsed = false }) => (
   <div className="space-y-2">
     {!isCollapsed && (
@@ -94,6 +92,7 @@ const MenuSection = ({ title, children, isCollapsed = false }) => (
   </div>
 );
 
+// Progress Bar Component
 const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -120,6 +119,7 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
   </motion.div>
 );
 
+// Team Stats Card Component
 const TeamStatsCard = ({ teamDetails }) => {
   const maxMembers = 100;
   const maxCommission = 10000;
@@ -195,6 +195,7 @@ const TeamStatsCard = ({ teamDetails }) => {
   );
 };
 
+// Team Member Card Component
 const TeamMemberCard = ({ member }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -227,265 +228,62 @@ const TeamMemberCard = ({ member }) => (
   </motion.div>
 );
 
-const TeamMembersSection = ({ teamMembers }) => (
-  <div className="bg-[#112240] rounded-lg p-6 shadow-xl mt-8">
-    <div className="flex items-center justify-between mb-6">
-      <div className="flex items-center space-x-3">
-        <Users className="h-6 w-6 text-blue-400" />
-        <h2 className="text-xl font-bold text-white">Team Members</h2>
-      </div>
-      <div className="bg-blue-500/20 px-3 py-1 rounded-full">
-        <span className="text-blue-400 font-medium">Level 01 </span>
-      </div>
-    </div>
+// Team Members Section Component
+const TeamMembersSection = ({ teamMembers }) => {
+  const levels = [1, 2, 3, 4, 5, 6];
+  const [currentLevel, setCurrentLevel] = useState(1);
 
-    <div className="space-y-4">
-      {teamMembers.map((member, index) => (
-        <TeamMemberCard key={index} member={member} />
-      ))}
-      {teamMembers.length === 0 && (
-        <p className="text-center text-gray-400 py-4">No team members found</p>
-      )}
-    </div>
-  </div>
-);
-
-const TaskCard = ({ task, onComplete }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
-  >
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center space-x-3">
-        <motion.div
-          whileHover={{ scale: 1.1, rotate: 360 }}
-          transition={{ duration: 0.5 }}
-          className="p-3 bg-blue-500/20 rounded-xl"
-        >
-          <Target className="h-6 w-6 text-blue-500" />
-        </motion.div>
-        <h3 className="text-lg font-semibold text-white">{task.title}</h3>
-      </div>
-      {task.status === "completed" ? (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 200 }}
-        >
-          <CheckCircle className="h-6 w-6 text-green-500" />
-        </motion.div>
-      ) : (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
-        >
-          Pending
-        </motion.button>
-      )}
-    </div>
-    <p className="text-gray-400 mb-4">{task.description}</p>
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-gray-500">
-        <Clock className="h-4 w-4 inline mr-1" />
-        {`${task.date.split("-")[2].split("T")[0]}/${task.date.split("-")[1]}/${
-          task.date.split("-")[0]
-        }`}
-      </span>
-
-      <motion.span
-        whileHover={{ scale: 1.1 }}
-        className="text-yellow-500 flex items-center"
-      >
-        <Sparkles className="h-4 w-4 mr-1" />
-        Reward: {task.reward}
-      </motion.span>
-    </div>
-  </motion.div>
-);
-
-const LevelCard = ({ level, xp, requiredXp, currentWallet }) => {
-  const [teamWallet, setTeamWallet] = useState(0);
-  const [userData, setUserData] = useState(null);
-  const url = import.meta.env.VITE_BACKEND_URL;
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
-      const profileRes = await fetch(`${url}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const profileData = await profileRes.json();
-      setUserData(profileData);
-    };
-    fetchUserData();
-  }, []);
-  useEffect(() => {
-    if (!userData) return;
-    const fetchTotalMembers = async () => {
-      try {
-        console.log({ username: userData.username });
-        const teamsDetails = await fetch(`${url}/total-teams-details`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", // This line is important!
-          },
-          body: JSON.stringify({ username: userData.username }),
-        });
-
-        // If the response is not JSON (e.g., error HTML), throw
-        if (!teamsDetails.ok) {
-          const text = await teamsDetails.text(); // read the error text
-          throw new Error(
-            `Server responded with status ${teamsDetails.status}: ${text}`
-          );
-        }
-
-        const data = await teamsDetails.json();
-
-        let total = 0;
-
-        // Loop through all levels to sum the wallet
-        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
-          (level) => {
-            data.teams[level].forEach((member) => {
-              total += member.wallet;
-            });
-          }
-        );
-
-        setTeamWallet(total);
-      } catch (error) {
-        console.error("Error fetching total members:", error);
-      }
-    };
-
-    fetchTotalMembers();
-  }, [userData]);
-  const levels = [
-    { level: 1, title: "Star", minWallet: 0, bonus: 100 },
-    { level: 2, title: "Bronze", minWallet: 2_500, bonus: 200 },
-    { level: 3, title: "Silver", minWallet: 5_000, bonus: 500 },
-    { level: 4, title: "Gold", minWallet: 10_000, bonus: 1000 },
-    { level: 5, title: "Platinum", minWallet: 25_000, bonus: 2000 },
-    { level: 6, title: "Diamond", minWallet: 50_000, bonus: 4000 },
-    { level: 7, title: "Emerald", minWallet: 1_000_000, bonus: 8000 },
-    { level: 8, title: "Pearl", minWallet: 2_000_000, bonus: 20_000 },
-    { level: 9, title: "Ruby", minWallet: 5_000_000, bonus: 40_000 },
-    { level: 10, title: "Sapphire", minWallet:10_000_000, bonus: 1_000_000 },
-    { level: 11, title: "Pro Diamond", minWallet: 50_000_000, bonus: 2_000_000 },
-  ];
-  const currentLevel = levels.find(
-    (l) =>
-      teamWallet >= l.minWallet &&
-      (levels[l.level] ? teamWallet < levels[l.level].minWallet : true)
-  );
-
-  const progress = (xp / requiredXp) * 100;
-  const nextLevel = levels[currentLevel?.level] || levels[levels.length - 1];
-  const walletProgress = Math.min(
-    (teamWallet / nextLevel.minWallet) * 100,
-    100
-  );
+  const levelKey = `level${currentLevel}`;
+  const members = teamMembers[levelKey] || [];
 
   return (
-    <motion.div
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
-    >
+    <div className="bg-[#112240] rounded-lg p-6 shadow-xl mt-8">
+      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <motion.div
-            className="p-3 bg-yellow-500/20 rounded-xl"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Trophy className="h-6 w-6 text-yellow-500" />
-          </motion.div>
-          <div>
-            <motion.h3
-              className="text-xl font-bold text-white"
-              initial={{ x: -20 }}
-              animate={{ x: 0 }}
-            >
-              Level {currentLevel?.level || 1}
-            </motion.h3>
-            <p className="text-gray-400">
-              {currentLevel?.title || "Rookie Arena"}
-            </p>
-          </div>
+          <Users className="h-6 w-6 text-blue-400" />
+          <h2 className="text-xl font-bold text-white">Team Members</h2>
         </div>
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        >
-          <Crown className="h-8 w-8 text-yellow-500" />
-        </motion.div>
+        <div className="bg-blue-500/20 px-3 py-1 rounded-full">
+          <span className="text-blue-400 font-medium">
+            Level 0{currentLevel}
+          </span>
+        </div>
       </div>
 
+      {/* Level Buttons */}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        {levels.map((level) => (
+          <button
+            key={level}
+            onClick={() => setCurrentLevel(level)}
+            className={`px-4 py-1 rounded-full font-medium transition whitespace-nowrap ${
+              currentLevel === level
+                ? "bg-blue-500 text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Level 0{level}
+          </button>
+        ))}
+      </div>
+
+      {/* Team Members of selected level */}
       <div className="space-y-4">
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Daily XP</span>
-            <span className="text-sm text-yellow-500">
-              {xp} / {requiredXp} XP
-            </span>
-          </div>
-          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Your Team Progress</span>
-            <span className="text-sm text-blue-500">
-              ${teamWallet.toFixed(2)} / ${nextLevel.minWallet}
-            </span>
-          </div>
-          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${walletProgress}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-400"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-3 rounded-xl"
-          >
-            <div className="text-sm text-gray-400">Current Level</div>
-            <div className="text-lg font-bold text-white">
-              {currentLevel?.level || 1}
-            </div>
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-3 rounded-xl"
-          >
-            <div className="text-sm text-gray-400">Next Level</div>
-            <div className="text-lg font-bold text-white">
-              {(currentLevel?.level || 1) + 1}
-            </div>
-          </motion.div>
-        </div>
+        {members.map((member, index) => (
+          <TeamMemberCard key={index} member={member} />
+        ))}
+        {members.length === 0 && (
+          <p className="text-center text-gray-400 py-4">
+            No team members found for this level.
+          </p>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
+// Stat Card Component
 const StatCard = ({ icon: Icon, label, value, trend }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -526,6 +324,412 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
   </motion.div>
 );
 
+// Level Card Component
+const LevelCard = ({ xp, requiredXp, currentWallet }) => {
+  const [teamWallet, setTeamWallet] = useState(0);
+  const [userData, setUserData] = useState(null);
+  const [teamCount, setTeamsCount] = useState(0);
+
+  const url = import.meta.env.VITE_BACKEND_URL;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      const profileRes = await fetch(`${url}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const profileData = await profileRes.json();
+      setUserData(profileData);
+    };
+    fetchUserData();
+  }, [url]);
+
+  useEffect(() => {
+    if (!userData) return;
+    const fetchTotalMembers = async () => {
+      try {
+        console.log({ username: userData.username });
+        const teamsDetails = await fetch(`${url}/total-teams-details`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: userData.username }),
+        });
+
+        if (!teamsDetails.ok) {
+          const text = await teamsDetails.text();
+          throw new Error(
+            `Server responded with status ${teamsDetails.status}: ${text}`
+          );
+        }
+
+        const data = await teamsDetails.json();
+        let totalMember = 0;
+
+        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
+          (level) => {
+            totalMember += data.teams[level].length;
+          }
+        );
+
+        setTeamsCount(totalMember);
+        console.log(totalMember);
+      } catch (error) {
+        console.error("Error fetching total members:", error);
+      }
+    };
+
+    fetchTotalMembers();
+  }, [userData, url]);
+
+  const levels = [
+    { level: 1, title: "Elite", minWallet: 0, member: 0 },
+    { level: 2, title: "Bronze", minWallet: 100, member: 6 },
+    { level: 3, title: "Silver", minWallet: 500, member: 20 },
+    { level: 4, title: "Gold", minWallet: 1000, member: 60 },
+    { level: 5, title: "Platinum", minWallet: 3000, member: 100 },
+    { level: 6, title: "Diamond", minWallet: 5000, member: 500 },
+    { level: 7, title: "Emerald", minWallet: 10000, member: 2000 },
+    { level: 8, title: "Pearl", minWallet: 15000, member: 3000 },
+    { level: 9, title: "Ruby", minWallet: 20000, member: 4000 },
+    { level: 10, title: "Sapphire", minWallet: 40000, member: 8000 },
+    { level: 11, title: "Pro Diamond", minWallet: 60000, member: 50000 },
+  ];
+
+  const currentLevel = levels.findLast(
+    (l) => l.minWallet <= currentWallet && teamCount >= l.member
+  );
+
+  const progress = (xp / requiredXp) * 100;
+  const nextLevel = levels[currentLevel?.level] || levels[levels.length - 1];
+  const walletProgress = Math.min(
+    (currentWallet / nextLevel.minWallet) * 100,
+    100
+  );
+  const memberProgress = Math.min((teamCount / nextLevel.member) * 100, 100);
+
+  return (
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
+    >
+      {console.log(currentLevel)}
+      {levels[0].level}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <motion.div
+            className="p-3 bg-yellow-500/20 rounded-xl"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Trophy className="h-6 w-6 text-yellow-500" />
+          </motion.div>
+          <div>
+            <motion.h3
+              className="text-xl font-bold text-white"
+              initial={{ x: -20 }}
+              animate={{ x: 0 }}
+            >
+              Level {currentLevel?.level}
+            </motion.h3>
+            <p className="text-gray-400">
+              {currentLevel?.title || "Rookie Arena"}
+            </p>
+          </div>
+        </div>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <Crown className="h-8 w-8 text-yellow-500" />
+        </motion.div>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm text-gray-400">Daily XP</span>
+            <span className="text-sm text-yellow-500">
+              {xp} / {requiredXp} XP
+            </span>
+          </div>
+          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm text-gray-400">Wallet Progress</span>
+            <span className="text-sm text-blue-500">
+              ${currentWallet.toFixed(2)} / ${nextLevel.minWallet}
+            </span>
+          </div>
+
+          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${walletProgress}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-400"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm text-gray-400">Member Progress</span>
+            <span className="text-sm text-blue-500">
+              {teamCount} / {nextLevel.member}
+            </span>
+          </div>
+
+          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${memberProgress}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-400"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-700/30 p-3 rounded-xl"
+          >
+            <div className="text-sm text-gray-400">Current Level</div>
+            <div className="text-lg font-bold text-white">
+              {currentLevel?.level || 1}
+            </div>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-700/30 p-3 rounded-xl"
+          >
+            <div className="text-sm text-gray-400">Next Level</div>
+            <div className="text-lg font-bold text-white">
+              {(currentLevel?.level || 1) + 1}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Sidebar Component
+const Sidebar = ({
+  isSidebarOpen,
+  setIsSidebarOpen,
+  isSidebarCollapsed,
+  setIsSidebarCollapsed,
+  activeMenu,
+  setActiveMenu,
+  handleLogout,
+}) => {
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => navigate("/dashboard");
+  const handleBenefitProgramClick = () => navigate("/benefitProgram");
+  const handleNewsEvent = () => navigate("/newsevent");
+  const handleDepositClick = () => navigate("/deposit");
+  const handleContactClick = () => navigate("/contact");
+  const handleAboutClick = () => navigate("/about");
+  const handleFAQClick = () => navigate("/faq");
+
+  return (
+    <>
+      {/* Sidebar */}
+      <div
+        className={`
+          fixed lg:static inset-y-0 left-0 transform lg:transform-none
+          ${
+            isSidebarCollapsed ? "w-20" : "w-64"
+          } bg-gray-800/90 backdrop-blur-xl border-r border-gray-700
+          p-4 space-y-6 transition-all duration-300 ease-in-out z-40
+          ${
+            isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full lg:translate-x-0"
+          }
+          lg:min-h-[calc(100vh-4rem)] overflow-y-auto
+        `}
+      >
+        <button
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-gray-700/30 hover:bg-gray-700/50 transition-colors"
+        >
+          {isSidebarCollapsed ? (
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          ) : (
+            <ChevronLeft className="h-5 w-5 text-gray-400" />
+          )}
+        </button>
+
+        <MenuSection title="Navigation" isCollapsed={isSidebarCollapsed}>
+          <SidebarMenuItem
+            icon={Home}
+            label="Home"
+            isActive={activeMenu === "home"}
+            onClick={handleHomeClick}
+            isCollapsed={isSidebarCollapsed}
+          />
+        </MenuSection>
+
+        <MenuSection title="Money Management" isCollapsed={isSidebarCollapsed}>
+          <SidebarMenuItem
+            icon={ArrowUpCircle}
+            label="Deposit"
+            isActive={activeMenu === "deposit"}
+            onClick={() => {
+              handleDepositClick();
+              setActiveMenu("deposit");
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+          <SidebarMenuItem
+            icon={ArrowDownCircle}
+            label="Withdrawal"
+            isActive={activeMenu === "withdrawal"}
+            onClick={() => {
+              navigate("/withdrawal");
+              setActiveMenu("withdrawal");
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+        </MenuSection>
+
+        <MenuSection title="Benefit Program" isCollapsed={isSidebarCollapsed}>
+          <SidebarMenuItem
+            icon={Gift}
+            label="Benefit Program"
+            isActive={activeMenu === "benefits"}
+            onClick={() => {
+              setActiveMenu("benefits");
+              handleBenefitProgramClick();
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+        </MenuSection>
+
+        <MenuSection title="Information" isCollapsed={isSidebarCollapsed}>
+          <SidebarMenuItem
+            icon={Newspaper}
+            label="News & Events"
+            isActive={activeMenu === "news"}
+            onClick={() => {
+              setActiveMenu("news");
+              setIsSidebarOpen(false);
+              handleNewsEvent();
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+          <SidebarMenuItem
+            icon={Building2}
+            label="About Us"
+            isActive={activeMenu === "about"}
+            onClick={() => {
+              handleAboutClick();
+              setActiveMenu("about");
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+          <SidebarMenuItem
+            icon={HelpCircle}
+            label="FAQ"
+            isActive={activeMenu === "faq"}
+            onClick={() => {
+              handleFAQClick();
+              setActiveMenu("faq");
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+          <SidebarMenuItem
+            icon={Contact}
+            label="Contact Us"
+            isActive={activeMenu === "contact"}
+            onClick={() => {
+              handleContactClick();
+              setActiveMenu("contact");
+              setIsSidebarOpen(false);
+            }}
+            isCollapsed={isSidebarCollapsed}
+          />
+        </MenuSection>
+
+        <div className="lg:hidden mt-6">
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-3 rounded-xl border border-red-500/20 flex items-center justify-center transition-colors"
+          >
+            <LogOut className="h-5 w-5 mr-2" />
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden z-30"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-xl border-t border-gray-700 p-2 z-50 lg:hidden">
+        <div className="max-w-screen-lg mx-auto flex justify-around items-center">
+          <TaskbarItem
+            icon={Home}
+            label="Home"
+            isActive={activeMenu === "home"}
+            onClick={handleHomeClick}
+          />
+          <TaskbarItem
+            icon={ArrowUpCircle}
+            label="Deposit"
+            isActive={activeMenu === "deposit"}
+            onClick={handleDepositClick}
+          />
+          <TaskbarItem
+            icon={Gift}
+            label="Benefits"
+            isActive={activeMenu === "benefits"}
+            onClick={handleBenefitProgramClick}
+          />
+          <TaskbarItem
+            icon={Newspaper}
+            label="News"
+            isActive={activeMenu === "news"}
+            onClick={handleNewsEvent}
+          />
+          <TaskbarItem
+            icon={Contact}
+            label="Contact"
+            isActive={activeMenu === "contact"}
+            onClick={handleContactClick}
+          />
+        </div>
+      </div>
+    </>
+  );
+};
+
+// Main Profile Component
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -536,26 +740,9 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [teamDetails, setTeamDetails] = useState(null);
   const [teamMembers, setTeamMembers] = useState([]);
-  const [teamWallet, setTeamWallet] = useState(0);
   const url = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  const fetchTeamMembers = async () => {
-    try {
-      const response = await fetch(`${url}/showTeamInfo`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error("Failed to fetch team members");
-      const data = await response.json();
-      setTeamMembers(data.teams || []);
-    } catch (error) {
-      console.error("Error fetching team members:", error);
-    }
-  };
 
   const fetchDetails = async () => {
     if (!userData?.username) return;
@@ -589,7 +776,7 @@ const Profile = () => {
     const successRate =
       totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
-    const xpPerTask = 1000 / tasks.length;
+    const xpPerTask = 1000 / (tasks.length || 1);
     const currentXp = completedTasks * xpPerTask;
     const level = Math.floor(currentXp / 1000) + 1;
     const requiredXp = 1000;
@@ -603,6 +790,36 @@ const Profile = () => {
       totalEarnings: userData?.wallet || 0,
     };
   };
+
+  useEffect(() => {
+    if (!userData) return;
+    const fetchTotalMembers = async () => {
+      try {
+        console.log({ username: userData.username });
+        const teamsDetails = await fetch(`${url}/total-teams-details`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: userData.username }),
+        });
+
+        if (!teamsDetails.ok) {
+          const text = await teamsDetails.text();
+          throw new Error(
+            `Server responded with status ${teamsDetails.status}: ${text}`
+          );
+        }
+
+        const data = await teamsDetails.json();
+        setTeamMembers(data.teams);
+      } catch (error) {
+        console.error("Error fetching total members:", error);
+      }
+    };
+
+    fetchTotalMembers();
+  }, [userData, url]);
 
   useEffect(() => {
     if (!token) {
@@ -640,7 +857,6 @@ const Profile = () => {
     };
 
     fetchUserData();
-    fetchTeamMembers();
   }, [token, navigate, url]);
 
   useEffect(() => {
@@ -678,14 +894,6 @@ const Profile = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-
-  const handleHomeClick = () => navigate("/dashboard");
-  const handleBenefitProgramClick = () => navigate("/benefitProgram");
-  const handleNewsEvent = () => navigate("/newsevent");
-  const handleDepositClick = () => navigate("/deposit");
-  const handleContactClick = () => navigate("/contact");
-  const handleAboutClick = () => navigate("/about");
-  const handleFAQClick = () => navigate("/faq");
 
   if (loading) {
     return (
@@ -734,7 +942,7 @@ const Profile = () => {
                   <div className="relative">
                     <img
                       src="icon-03.png"
-                      className="h-13.5 w-15.5 mr-2"
+                      className="h-10 w-10 mr-2"
                       alt="Logo"
                     />
                   </div>
@@ -783,170 +991,33 @@ const Profile = () => {
         </nav>
 
         <div className="flex">
-          {/* Sidebar */}
-          <div
-            className={`
-            fixed lg:static inset-y-0 left-0 transform lg:transform-none
-            ${
-              isSidebarCollapsed ? "w-20" : "w-64"
-            } bg-gray-800/90 backdrop-blur-xl border-r border-gray-700
-            p-4 space-y-6 transition-all duration-300 ease-in-out z-40
-            ${
-              isSidebarOpen
-                ? "translate-x-0"
-                : "-translate-x-full lg:translate-x-0"
-            }
-            lg:min-h-[calc(100vh-4rem)] overflow-y-auto
-          `}
-          >
-            <button
-              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-gray-700/30 hover:bg-gray-700/50 transition-colors"
-            >
-              {isSidebarCollapsed ? (
-                <ChevronRight className="h-5 w-5 text-gray-400" />
-              ) : (
-                <ChevronLeft className="h-5 w-5 text-gray-400" />
-              )}
-            </button>
-
-            <MenuSection title="Navigation" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem
-                icon={Home}
-                label="Home"
-                isActive={activeMenu === "home"}
-                onClick={handleHomeClick}
-                isCollapsed={isSidebarCollapsed}
-              />
-            </MenuSection>
-
-            <MenuSection
-              title="Money Management"
-              isCollapsed={isSidebarCollapsed}
-            >
-              <SidebarMenuItem
-                icon={ArrowUpCircle}
-                label="Deposit"
-                isActive={activeMenu === "deposit"}
-                onClick={() => {
-                  handleDepositClick();
-                  setActiveMenu("deposit");
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-              <SidebarMenuItem
-                icon={ArrowDownCircle}
-                label="Withdrawal"
-                isActive={activeMenu === "withdrawal"}
-                onClick={() => {
-                  navigate("/withdrawal");
-                  setActiveMenu("withdrawal");
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-            </MenuSection>
-
-            <MenuSection
-              title="Benefit Program"
-              isCollapsed={isSidebarCollapsed}
-            >
-              <SidebarMenuItem
-                icon={Gift}
-                label="Benefit Program"
-                isActive={activeMenu === "benefits"}
-                onClick={() => {
-                  setActiveMenu("benefits");
-                  handleBenefitProgramClick();
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-            </MenuSection>
-
-            <MenuSection title="Information" isCollapsed={isSidebarCollapsed}>
-              <SidebarMenuItem
-                icon={Newspaper}
-                label="News & Events"
-                isActive={activeMenu === "news"}
-                onClick={() => {
-                  setActiveMenu("news");
-                  setIsSidebarOpen(false);
-                  handleNewsEvent();
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-              <SidebarMenuItem
-                icon={Building2}
-                label="About Us"
-                isActive={activeMenu === "about"}
-                onClick={() => {
-                  handleAboutClick();
-                  setActiveMenu("about");
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-              <SidebarMenuItem
-                icon={HelpCircle}
-                label="FAQ"
-                isActive={activeMenu === "faq"}
-                onClick={() => {
-                  handleFAQClick();
-                  setActiveMenu("faq");
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-              <SidebarMenuItem
-                icon={Contact}
-                label="Contact Us"
-                isActive={activeMenu === "contact"}
-                onClick={() => {
-                  handleContactClick();
-                  setActiveMenu("contact");
-                  setIsSidebarOpen(false);
-                }}
-                isCollapsed={isSidebarCollapsed}
-              />
-            </MenuSection>
-
-            <div className="lg:hidden mt-6">
-              <button
-                onClick={handleLogout}
-                className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-3 rounded-xl border border-red-500/20 flex items-center justify-center transition-colors"
-              >
-                <LogOut className="h-5 w-5 mr-2" />
-                Logout
-              </button>
-            </div>
-          </div>
-
-          {isSidebarOpen && (
-            <div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden z-30"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarCollapsed={isSidebarCollapsed}
+            setIsSidebarCollapsed={setIsSidebarCollapsed}
+            activeMenu={activeMenu}
+            setActiveMenu={setActiveMenu}
+            handleLogout={handleLogout}
+          />
 
           {/* Main Content */}
-          <div className="flex-1 p-8 pb-24">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="flex-1 p-4 md:p-8 pb-24">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               {/* Profile Section */}
-              <div className="space-y-8">
+              <div className="space-y-6 md:space-y-8">
                 <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
                   <div className="text-center">
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
+                      className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
                     >
-                      <User className="w-12 h-12 text-white" />
+                      <User className="w-10 h-10 md:w-12 md:h-12 text-white" />
                     </motion.div>
                     <motion.h2
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      className="mt-4 text-2xl font-bold text-white"
+                      className="mt-4 text-xl md:text-2xl font-bold text-white"
                     >
                       {userData?.username}
                     </motion.h2>
@@ -967,21 +1038,23 @@ const Profile = () => {
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
-                      <span className="flex items-center text-gray-300">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Member Since
+                      <span className="flex items-center text-gray-300 text-sm md:text-base">
+                        <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Member Since</span>
                       </span>
-                      <span className="text-white">{joinDate}</span>
+                      <span className="text-white text-sm md:text-base ml-2">
+                        {joinDate}
+                      </span>
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
-                      <span className="flex items-center text-gray-300">
-                        <Mail className="w-4 h-4 mr-2" />
-                        Email
+                      <span className="flex items-center text-gray-300 text-sm md:text-base">
+                        <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Email</span>
                       </span>
-                      <span className="text-white">
+                      <span className="text-white text-sm md:text-base ml-2 truncate max-w-[150px]">
                         {userData?.email || "Not provided"}
                       </span>
                     </motion.div>
@@ -989,11 +1062,11 @@ const Profile = () => {
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
-                      <span className="flex items-center text-gray-300">
-                        <Phone className="w-4 h-4 mr-2" />
-                        Phone
+                      <span className="flex items-center text-gray-300 text-sm md:text-base">
+                        <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Phone</span>
                       </span>
-                      <span className="text-white">
+                      <span className="text-white text-sm md:text-base ml-2">
                         {userData?.phone || "Not provided"}
                       </span>
                     </motion.div>
@@ -1001,11 +1074,11 @@ const Profile = () => {
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
-                      <span className="flex items-center text-gray-300">
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Tasks Completed
+                      <span className="flex items-center text-gray-300 text-sm md:text-base">
+                        <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Tasks Completed</span>
                       </span>
-                      <span className="text-white">
+                      <span className="text-white text-sm md:text-base ml-2">
                         {userStats.completedTasks}
                       </span>
                     </motion.div>
@@ -1013,26 +1086,20 @@ const Profile = () => {
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
                     >
-                      <span className="flex items-center text-gray-300">
-                        <TrendingUp className="w-4 h-4 mr-2" />
-                        Success Rate
+                      <span className="flex items-center text-gray-300 text-sm md:text-base">
+                        <TrendingUp className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Success Rate</span>
                       </span>
-                      <span className="text-white">
+                      <span className="text-white text-sm md:text-base ml-2">
                         {userStats.successRate}%
                       </span>
                     </motion.div>
                   </div>
                 </div>
-
-                {/* Team Details Section */}
-                {teamDetails && <TeamStatsCard teamDetails={teamDetails} />}
-
-                {/* Team Members Section */}
-                <TeamMembersSection teamMembers={teamMembers} />
               </div>
 
               {/* Stats and Tasks Section */}
-              <div className="lg:col-span-2 space-y-8">
+              <div className="lg:col-span-2 space-y-6 md:space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <StatCard
                     icon={CheckCircle}
@@ -1053,73 +1120,14 @@ const Profile = () => {
                     trend={8}
                   />
                 </div>
-
-                <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
-                  <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-                    <Target className="w-5 h-5 mr-2 text-blue-500" />
-                    Active Tasks
-                  </h3>
-                  <div className="space-y-4">
-                    {tasks.map((task) => (
-                      <TaskCard
-                        key={task._id}
-                        task={task}
-                        onComplete={handleCompleteTask}
-                      />
-                    ))}
-                    {tasks.length === 0 && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-gray-400 text-center py-4"
-                      >
-                        No active tasks available
-                      </motion.p>
-                    )}
-                  </div>
-                </div>
+                <TeamMembersSection teamMembers={teamMembers} />
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Bar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-xl border-t border-gray-700 p-2 z-50 lg:hidden">
-          <div className="max-w-screen-lg mx-auto flex justify-around items-center">
-            <TaskbarItem
-              icon={Home}
-              label="Home"
-              isActive={activeMenu === "home"}
-              onClick={handleHomeClick}
-            />
-            <TaskbarItem
-              icon={ArrowUpCircle}
-              label="Deposit"
-              isActive={activeMenu === "deposit"}
-              onClick={handleDepositClick}
-            />
-            <TaskbarItem
-              icon={Gift}
-              label="Benefits"
-              isActive={activeMenu === "benefits"}
-              onClick={handleBenefitProgramClick}
-            />
-            <TaskbarItem
-              icon={Newspaper}
-              label="News"
-              isActive={activeMenu === "news"}
-              onClick={handleNewsEvent}
-            />
-            <TaskbarItem
-              icon={Contact}
-              label="Contact"
-              isActive={activeMenu === "contact"}
-              onClick={handleContactClick}
-            />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Profile;

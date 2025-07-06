@@ -159,9 +159,11 @@ const LevelCard = ({
   icon: Icon,
   isActive,
   description,
+  member,
+  teamCount,
 }) => {
-//get the current team wallet
-const [teamWallet, setTeamWallet] = useState(0);
+  //get the current team wallet
+  const [teamWallet, setTeamWallet] = useState(0);
   const [userData, setUserData] = useState(null);
   const url = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
@@ -175,56 +177,11 @@ const [teamWallet, setTeamWallet] = useState(0);
     };
     fetchUserData();
   }, []);
-  useEffect(() => {
-    if (!userData) return;
-    const fetchTotalMembers = async () => {
-      try {
-        console.log({ username: userData.username });
-        const teamsDetails = await fetch(`${url}/total-teams-details`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", // This line is important!
-          },
-          body: JSON.stringify({ username: userData.username }),
-        });
-
-        // If the response is not JSON (e.g., error HTML), throw
-        if (!teamsDetails.ok) {
-          const text = await teamsDetails.text(); // read the error text
-          throw new Error(
-            `Server responded with status ${teamsDetails.status}: ${text}`
-          );
-        }
-
-        const data = await teamsDetails.json();
-
-        let total = 0;
-
-        // Loop through all levels to sum the wallet
-        ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
-          (level) => {
-            data.teams[level].forEach((member) => {
-              total += member.wallet;
-            });
-          }
-        );
-
-        setTeamWallet(total);
-      } catch (error) {
-        console.error("Error fetching total members:", error);
-      }
-    };
-
-    fetchTotalMembers();
-  }, [userData]);
-
-
-
-
 
   const navigate = useNavigate();
-  const isLocked = teamWallet < minWallet;
-  const progress = Math.min((teamWallet / minWallet) * 100, 100);
+  const isLocked = !isActive;
+  const progress = Math.min((currentWallet / minWallet) * 100, 100);
+  const progressTeam = Math.min((teamCount / member) * 100, 100);
 
   return (
     <motion.div
@@ -249,14 +206,15 @@ const [teamWallet, setTeamWallet] = useState(0);
         </div>
         <div className="text-right">
           <span className="text-sm text-gray-400">Level</span>
-          <h3 className="text-2xl font-bold text-white">{level}</h3>
+          <h3 className="text-3xl font-bold text-white">{level}</h3>
         </div>
       </div>
 
-      <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+      <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
       <p className="text-gray-400 text-sm mb-4">{description}</p>
 
-      <div className="relative h-2 bg-gray-700 rounded-full mb-3 overflow-hidden">
+      <div className="text-l font-mono text-white mt-1.5 mb-1.5">Wallet:</div>
+      <div className="relative h-2 bg-gray-700 rounded-full mb-1 overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
@@ -265,11 +223,27 @@ const [teamWallet, setTeamWallet] = useState(0);
         />
       </div>
 
-      <div className="flex justify-between text-sm mb-4">
-        <span className="text-gray-400">Current: ${parseFloat(teamWallet).toFixed(2)}</span>
+      <div className="flex justify-between text-sm mb-4 font-mono">
+        <span className="text-gray-400">
+          Current: ${parseFloat(currentWallet).toFixed(2)}
+        </span>
         <span className="text-gray-400">Required: ${minWallet}</span>
       </div>
 
+      <div className="text-l font-mono text-white mt-1.5 mb-1.5">Members:</div>
+      <div className="relative h-2 bg-gray-700 rounded-full mb-1 overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${progressTeam}%` }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-500"
+        />
+      </div>
+
+      <div className="flex justify-between text-sm mb-4 font-mono">
+        <span className="text-gray-400">Current:{teamCount}</span>
+        <span className="text-gray-400">Required:{member}</span>
+      </div>
       <button
         disabled={isLocked}
         onClick={() => navigate(`/tasks/${level}`)}
@@ -296,120 +270,128 @@ const [teamWallet, setTeamWallet] = useState(0);
   );
 };
 
-  const ReferralSection = () => {
-    const token=localStorage.getItem("token");
-    const navigate = useNavigate();
-    const url=import.meta.env.VITE_BACKEND_URL;
-    const [username, setUsername] = useState("");
-    useEffect(() => {
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-      fetch(`${url}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
+const ReferralSection = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const url = import.meta.env.VITE_BACKEND_URL;
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    fetch(`${url}/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Authentication failed");
+        return res.json();
       })
-        .then((res) => {
-          if (!res.ok) throw new Error("Authentication failed");
-          return res.json();
-        })
-        .then((data) => {
-          setUsername(data.username);
-        })
-        .catch((error) => {
-          console.error("Profile Error:", error);
-          localStorage.removeItem("token");
-          navigate("/login");
-        });
-    }, [token, navigate]);
-    const [copied, setCopied] = useState(false);
-    const referralLink = `${window.location.origin}/register/${username}`; // Replace USER123 with actual user referral code
+      .then((data) => {
+        setUsername(data.username);
+      })
+      .catch((error) => {
+        console.error("Profile Error:", error);
+        localStorage.removeItem("token");
+        navigate("/login");
+      });
+  }, [token, navigate]);
+  const [copied, setCopied] = useState(false);
+  const referralLink = `${window.location.origin}/register/${username}`; // Replace USER123 with actual user referral code
 
-    const copyToClipboard = async () => {
-      try {
-        await navigator.clipboard.writeText(referralLink);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error("Failed to copy text: ", err);
-      }
-    };
-
-    return (
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-8 mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Refer & Earn</h2>
-            <p className="text-gray-400">Share with friends and earn rewards together</p>
-          </div>
-          <div className="bg-blue-500/20 p-4 rounded-xl">
-            <Share2 className="h-8 w-8 text-blue-400" />
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gray-700/40 rounded-xl p-6">
-            <div className="bg-green-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <Users className="h-6 w-6 text-green-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Invite Friends</h3>
-            <p className="text-gray-400 text-sm">Share your unique referral link with friends</p>
-          </div>
-          
-          <div className="bg-gray-700/40 rounded-xl p-6">
-            <div className="bg-purple-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <Trophy className="h-6 w-6 text-purple-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Friend Signs Up</h3>
-            <p className="text-gray-400 text-sm">Your friend creates an account using your link</p>
-          </div>
-
-          <div className="bg-gray-700/40 rounded-xl p-6">
-            <div className="bg-yellow-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <Wallet className="h-6 w-6 text-yellow-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Both Rewards</h3>
-            <p className="text-gray-400 text-sm">Get 10% of their first deposit</p>
-          </div>
-        </div>
-
-        <div className="relative">
-          <input
-            type="text"
-            value={referralLink}
-            readOnly
-            className="w-full bg-gray-700/40 border border-gray-600 rounded-xl px-4 py-3 text-white pr-24"
-          />
-          <button
-            onClick={copyToClipboard}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg flex items-center space-x-2 transition-colors"
-          >
-            {copied ? (
-              <>
-                <Check className="h-4 w-4" />
-                <span>Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-4 w-4" />
-                <span>Copy</span>
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-    );
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
   };
 
+  return (
+    <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-8 mb-12">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-2">Refer & Earn</h2>
+          <p className="text-gray-400">
+            Share with friends and earn rewards together
+          </p>
+        </div>
+        <div className="bg-blue-500/20 p-4 rounded-xl">
+          <Share2 className="h-8 w-8 text-blue-400" />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-gray-700/40 rounded-xl p-6">
+          <div className="bg-green-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <Users className="h-6 w-6 text-green-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">Invite Friends</h3>
+          <p className="text-gray-400 text-sm">
+            Share your unique referral link with friends
+          </p>
+        </div>
+
+        <div className="bg-gray-700/40 rounded-xl p-6">
+          <div className="bg-purple-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <Trophy className="h-6 w-6 text-purple-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">Friend Signs Up</h3>
+          <p className="text-gray-400 text-sm">
+            Your friend creates an account using your link
+          </p>
+        </div>
+
+        <div className="bg-gray-700/40 rounded-xl p-6">
+          <div className="bg-yellow-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <Wallet className="h-6 w-6 text-yellow-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">Both Rewards</h3>
+          <p className="text-gray-400 text-sm">
+            Get 10% of their first deposit
+          </p>
+        </div>
+      </div>
+
+      <div className="relative">
+        <input
+          type="text"
+          value={referralLink}
+          readOnly
+          className="w-full bg-gray-700/40 border border-gray-600 rounded-xl px-4 py-3 text-white pr-24"
+        />
+        <button
+          onClick={copyToClipboard}
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg flex items-center space-x-2 transition-colors"
+        >
+          {copied ? (
+            <>
+              <Check className="h-4 w-4" />
+              <span>Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-4 w-4" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard = () => {
-  
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWallet, setCurrentWallet] = useState(0);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const scrollContainer = useRef(null);
   const reviewsContainer = useRef(null);
-const [teamWallet, setTeamWallet] = useState(0);
+  const [teamCount, setteamCount] = useState(0);
+  const [teamWallet, setTeamWallet] = useState(0);
   const [userData, setUserData] = useState(null);
   const url = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
@@ -451,13 +433,11 @@ const [teamWallet, setTeamWallet] = useState(0);
         // Loop through all levels to sum the wallet
         ["level1", "level2", "level3", "level4", "level5", "level6"].forEach(
           (level) => {
-            data.teams[level].forEach((member) => {
-              total += member.wallet;
-            });
+            total += data.teams[level].length;
           }
         );
 
-        setTeamWallet(total);
+        setteamCount(total);
       } catch (error) {
         console.error("Error fetching total members:", error);
       }
@@ -465,20 +445,6 @@ const [teamWallet, setTeamWallet] = useState(0);
 
     fetchTotalMembers();
   }, [userData]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   useEffect(() => {
     if (!token) {
       navigate("/login");
@@ -506,76 +472,87 @@ const [teamWallet, setTeamWallet] = useState(0);
       level: 1,
       title: "Elite",
       minWallet: 0,
+      member: 0,
       icon: ActivityIcon,
       description: "Perfect for beginners. Start your reward journey here!",
     },
     {
       level: 2,
       title: "Bronze",
-      minWallet: 2500,
+      minWallet: 100,
+      member: 6,
       icon: Sword,
       description: "Give more rewards along with reviews",
     },
     {
       level: 3,
       title: "Silver",
-      minWallet: 5000,
+      minWallet: 500,
+      member: 20,
       icon: Shield,
       description: "Join the elite players in high-stakes matches.",
     },
     {
       level: 4,
       title: "Gold",
-      minWallet: 10000,
+      minWallet: 1_000,
+      member: 60,
       icon: GlobeLock,
       description: "Exclusive rewarding tasks available worldwide.",
     },
     {
       level: 5,
       title: "Platinum",
-      minWallet: 25000,
+      minWallet: 3_000,
+      member: 100,
       icon: Diamond,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 6,
       title: "Diamond",
-      minWallet: 50000,
+      minWallet: 5_000,
+      member: 500,
       icon: Highlighter,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 7,
       title: "Emerald",
-      minWallet: 1_000_000,
+      minWallet: 10_000,
+      member: 2_000,
       icon: LeafyGreenIcon,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 8,
       title: "Pearl",
-      minWallet: 2_000_000,
+      minWallet: 15_000,
+      member: 3_000,
       icon: GridIcon,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 9,
       title: "Ruby",
-      minWallet: 5_000_000,
+      minWallet: 20_000,
+      member: 4_000,
       icon: GalleryHorizontal,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 10,
       title: "Sapphire",
-      minWallet: 10_000_000,
+      minWallet: 40_000,
+      member: 8_000,
       icon: Crown,
       description: "The ultimate rewards experience and get true money.",
     },
     {
       level: 11,
       title: "Pro Diamond",
-      minWallet: 50_000_000,
+      minWallet: 60_000,
+      member: 20_000,
       icon: SunMoon,
       description: "The ultimate rewards experience and get true money.",
     },
@@ -673,8 +650,6 @@ const [teamWallet, setTeamWallet] = useState(0);
           {/* Slideshow */}
           <Slideshow />
 
-        
-
           {/* Level Cards Carousel */}
           <div className="relative mb-12">
             <button
@@ -688,14 +663,20 @@ const [teamWallet, setTeamWallet] = useState(0);
               ref={scrollContainer}
               className="flex space-x-10 overflow-x-hidden scroll-smooth py-4 px-2"
             >
-              {levels.map((level) => (
-                <LevelCard
-                  key={level.level}
-                  {...level}
-                  teamWallet={teamWallet}
-                  isActive={teamWallet >= level.minWallet}
-                />
-              ))}
+              {levels.map((l, index) => (
+  <LevelCard
+    key={l.level}
+    {...l}
+    teamCount={teamCount}
+    currentWallet={currentWallet}
+    member={levels[index + 1] ? levels[index + 1].member : l.member} // Handle last level safely
+    isActive={
+      currentWallet >= l.minWallet &&
+      teamCount >= l.member
+    }
+  />
+))}
+
             </div>
 
             <button
@@ -705,8 +686,8 @@ const [teamWallet, setTeamWallet] = useState(0);
               <ChevronRight className="h-6 w-6 text-white" />
             </button>
           </div>
-  {/* Referral Section */}
-  <ReferralSection />
+          {/* Referral Section */}
+          <ReferralSection />
           {/* Reviews Section */}
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
