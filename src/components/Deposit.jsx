@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowLeft, Wallet, DollarSign, Bitcoin, AlertCircle } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Wallet, 
+  DollarSign, 
+  Bitcoin, 
+  AlertCircle, 
+  TrendingUp,
+  Shield,
+  Clock,
+  CheckCircle,
+  Sparkles
+} from "lucide-react";
 
 const Deposit = () => {
   const [amount, setAmount] = useState('');
@@ -9,6 +19,8 @@ const Deposit = () => {
   const [walletBalance, setWalletBalance] = useState("");
   const [loading, setLoading] = useState(false);
   const [cryptoPaymentData, setCryptoPaymentData] = useState(null);
+  const [focusedField, setFocusedField] = useState("");
+  const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const url = import.meta.env.VITE_BACKEND_URL;
@@ -35,7 +47,7 @@ const Deposit = () => {
         localStorage.removeItem('token');
         navigate('/login');
       });
-  }, [token]);  // ✅ Removed `walletBalance` from dependency list
+  }, [token]);
 
   const handleCryptoPayment = async () => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -71,114 +83,254 @@ const Deposit = () => {
     }
   };
 
-  const quickAmounts = [100, 500, 1000, 5000];
+  const quickAmounts = [
+    { value: 100, popular: false },
+    { value: 500, popular: true },
+    { value: 1000, popular: false },
+    { value: 5000, popular: false }
+  ];
+
+  const handleQuickAmountSelect = (quickAmount) => {
+    setAmount(quickAmount.toString());
+    setSelectedQuickAmount(quickAmount);
+    setTimeout(() => setSelectedQuickAmount(null), 200);
+  };
+
+  const isValidAmount = amount && parseFloat(amount) >= 100 && parseFloat(amount) <= 50000;
 
   return (
-    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1642790106117-e829e14a795f')] bg-cover bg-center">
-      <div className="min-h-screen bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-blue-900/95 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <motion.button
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => navigate('/profile')}
-            className="mb-6 flex items-center text-gray-300 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Back to Profile
-          </motion.button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-96 h-96 -top-48 -left-48 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute w-64 h-64 top-1/2 left-1/4 bg-gradient-to-br from-indigo-200/20 to-blue-200/20 rounded-full blur-2xl animate-pulse delay-500"></div>
+      </div>
 
-          <div className="text-center mb-8">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="inline-block"
-            >
-              <Bitcoin className="h-16 w-16 text-blue-500 mx-auto" />
-            </motion.div>
-            <h1 className="mt-4 text-3xl font-bold text-white">Deposit Funds</h1>
-            <p className="mt-2 text-gray-400">Add money to your Sky366Trade wallet securely</p>
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${3 + Math.random() * 2}s`,
+            }}
+          >
+            <div className="w-2 h-2 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-30"></div>
+          </div>
+        ))}
+      </div>
+
+      <div className="relative min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate('/profile')}
+            className="mb-8 flex items-center text-gray-600 hover:text-gray-800 transition-all duration-200 hover:scale-105 group"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Profile
+          </button>
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="relative inline-block">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl mx-auto mb-6 transform hover:scale-110 transition-all duration-300">
+                <Bitcoin className="h-10 w-10 text-white animate-pulse" />
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-spin">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+              </div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
+                Deposit Funds
+              </h1>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Add money to your Sky366Trade wallet securely with cryptocurrency payments
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white">Current Balance</h2>
-                <div className="flex items-center space-x-2">
-                  <Wallet className="h-5 w-5 text-blue-500" />
-                  <span className="text-2xl font-bold text-white">{parseFloat(walletBalance).toFixed(2)} 
-                  </span>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Deposit Form */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Current Balance Card */}
+              <div className="bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <Wallet className="h-6 w-6 mr-3 text-blue-500" />
+                    Current Balance
+                  </h2>
+                  <div className="flex items-center space-x-3">
+                    <div className="text-right">
+                      <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        ${parseFloat(walletBalance || 0).toFixed(2)}
+                      </div>
+                      <div className="text-sm text-gray-500">Available Balance</div>
+                    </div>
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl flex items-center justify-center">
+                      <TrendingUp className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-300 mb-2">
+              {/* Deposit Form */}
+              <div className="bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl space-y-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-6">Deposit Amount</h3>
+                
+                {/* Amount Input */}
+                <div className="relative group">
+                  <label
+                    htmlFor="amount"
+                    className="text-sm font-medium text-gray-700 block mb-2 transition-colors group-focus-within:text-blue-600"
+                  >
                     Enter Amount (USD)
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <DollarSign className={`h-5 w-5 transition-colors ${focusedField === 'amount' ? 'text-blue-500' : 'text-gray-400'}`} />
+                    </div>
                     <input
                       type="number"
                       id="amount"
                       value={amount}
+                      onFocus={() => setFocusedField('amount')}
+                      onBlur={() => setFocusedField('')}
                       onChange={(e) => setAmount(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter amount"
+                      className="w-full pl-12 pr-12 py-4 bg-white/50 border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 text-lg font-medium"
+                      placeholder="Enter amount (min $100)"
+                      min="100"
+                      max="50000"
                     />
+                    {isValidAmount && (
+                      <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                        <CheckCircle className="h-5 w-5 text-green-500 animate-pulse" />
+                      </div>
+                    )}
                   </div>
+                  {amount && !isValidAmount && (
+                    <p className="mt-2 text-sm text-red-600">
+                      Amount must be between $100 and $50,000
+                    </p>
+                  )}
                 </div>
 
+                {/* Quick Select Amounts */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     Quick Select
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {quickAmounts.map((quickAmount) => (
                       <button
-                        key={quickAmount}
-                        onClick={() => setAmount(quickAmount.toString())}
-                        className="py-2 px-4 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 rounded-xl text-white transition-colors"
+                        key={quickAmount.value}
+                        onClick={() => handleQuickAmountSelect(quickAmount.value)}
+                        className={`relative py-3 px-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+                          selectedQuickAmount === quickAmount.value
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 hover:border-gray-400'
+                        }`}
                       >
-                        ${quickAmount}
+                        ${quickAmount.value.toLocaleString()}
+                        {quickAmount.popular && (
+                          <div className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-400 to-red-400 text-white text-xs px-2 py-1 rounded-full">
+                            Popular
+                          </div>
+                        )}
                       </button>
                     ))}
                   </div>
                 </div>
 
+                {/* Deposit Button */}
                 <button
                   onClick={handleCryptoPayment}
-                  disabled={loading}
-                  className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2"
+                  disabled={loading || !isValidAmount}
+                  className="w-full mt-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl flex items-center justify-center space-x-3"
                 >
                   {loading ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                    <>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                      <span>Processing Payment...</span>
+                    </>
                   ) : (
                     <>
-                      <Bitcoin className="h-5 w-5" />
-                      <span>Pay with Crypto</span>
+                      <Bitcoin className="h-6 w-6" />
+                      <span>Pay with Cryptocurrency</span>
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                     </>
                   )}
                 </button>
               </div>
-            </motion.div>
+            </div>
 
-            <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                <AlertCircle className="h-5 w-5 mr-2 text-blue-500" />
-                Important Notes
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Minimum deposit amount: $100</li>
-                <li>Maximum deposit amount: $50,000</li>
-                <li>Payments require network confirmation</li>
-              </ul>
+            {/* Sidebar Information */}
+            <div className="space-y-6">
+              {/* Important Notes */}
+              <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                  <AlertCircle className="h-5 w-5 mr-2 text-blue-500" />
+                  Important Notes
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <p className="text-gray-600">Minimum deposit amount: $100</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <p className="text-gray-600">Maximum deposit amount: $50,000</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <p className="text-gray-600">Payments require network confirmation</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Security Features */}
+              <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                  <Shield className="h-5 w-5 mr-2 text-green-500" />
+                  Security Features
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <p className="text-gray-600 text-sm">256-bit SSL encryption</p>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <p className="text-gray-600 text-sm">Secure cryptocurrency processing</p>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <p className="text-gray-600 text-sm">Real-time transaction monitoring</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Processing Time */}
+              <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                  <Clock className="h-5 w-5 mr-2 text-orange-500" />
+                  Processing Time
+                </h3>
+                <div className="space-y-2">
+                  <p className="text-gray-600 text-sm">
+                    Cryptocurrency deposits typically process within 10-30 minutes after network confirmation.
+                  </p>
+                  <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p className="text-blue-700 text-sm font-medium">
+                      💡 Tip: Higher network fees result in faster confirmations
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

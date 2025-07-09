@@ -33,6 +33,7 @@ import {
   DollarSign,
   Zap,
   Users,
+  Star,
 } from "lucide-react";
 
 // Sidebar Menu Item Component
@@ -45,20 +46,21 @@ const SidebarMenuItem = ({
 }) => (
   <motion.button
     onClick={onClick}
-    whileHover={{ scale: 1.02 }}
+    whileHover={{ scale: 1.02, x: 4 }}
     whileTap={{ scale: 0.98 }}
     className={`w-full flex items-center ${
       isCollapsed ? "justify-center" : "space-x-3"
-    } px-4 py-3 rounded-xl transition-all duration-200
+    } px-4 py-3 rounded-2xl transition-all duration-300 group relative overflow-hidden
       ${
         isActive
-          ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
-          : "hover:bg-gradient-to-br from-[#0f0c29] to-[#302b63] text-gray-300 hover:text-white"
+          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25"
+          : "hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 text-gray-700 hover:text-blue-600 hover:shadow-md"
       }`}
     title={isCollapsed ? label : ""}
   >
-    <Icon className="h-5 w-5" />
-    {!isCollapsed && <span className="font-medium">{label}</span>}
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <Icon className="h-5 w-5 relative z-10" />
+    {!isCollapsed && <span className="font-medium relative z-10">{label}</span>}
   </motion.button>
 );
 
@@ -68,11 +70,11 @@ const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
     onClick={onClick}
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl transition-all duration-200
+    className={`flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-300
       ${
         isActive
-          ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
-          : "text-gray-300 hover:text-white hover:bg-gradient-to-br from-[#0f0c29] to-[#302b63]"
+          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
+          : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50"
       }`}
   >
     <Icon className="h-5 w-5 mb-1" />
@@ -84,11 +86,11 @@ const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
 const MenuSection = ({ title, children, isCollapsed = false }) => (
   <div className="space-y-2">
     {!isCollapsed && (
-      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mb-2">
+      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-4 mb-3">
         {title}
       </h3>
     )}
-    <div className="space-y-1">{children}</div>
+    <div className="space-y-2">{children}</div>
   </div>
 );
 
@@ -97,23 +99,25 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
+    className="bg-white/80 backdrop-blur-xl p-5 rounded-2xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300"
   >
-    <div className="flex items-center justify-between mb-3">
-      <div className="flex items-center space-x-2">
-        <Icon className={`h-5 w-5 ${color}`} />
-        <span className="text-gray-400">{label}</span>
+    <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center space-x-3">
+        <div className={`p-2 rounded-xl bg-gradient-to-r ${color.replace('text', 'from')}-500 ${color.replace('text', 'to')}-600`}>
+          <Icon className="h-5 w-5 text-white" />
+        </div>
+        <span className="text-gray-700 font-medium">{label}</span>
       </div>
-      <span className={`${color} font-semibold`}>
+      <span className={`${color} font-bold text-lg`}>
         {value.toLocaleString()} / {maxValue.toLocaleString()}
       </span>
     </div>
-    <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+    <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: `${Math.min((value / maxValue) * 100, 100)}%` }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className={`absolute h-full ${color.replace("text", "bg")} opacity-75`}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className={`absolute h-full bg-gradient-to-r ${color.replace('text', 'from')}-500 ${color.replace('text', 'to')}-600 shadow-sm`}
       />
     </div>
   </motion.div>
@@ -130,28 +134,32 @@ const TeamStatsCard = ({ teamDetails }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl overflow-hidden"
+      className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl overflow-hidden relative"
     >
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-white flex items-center">
-          <Trophy className="w-5 h-5 mr-2 text-blue-500" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
+      
+      <div className="flex items-center justify-between mb-8 relative z-10">
+        <h3 className="text-2xl font-bold text-gray-900 flex items-center">
+          <div className="p-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl mr-3 shadow-lg">
+            <Trophy className="w-6 h-6 text-white" />
+          </div>
           Team Performance
         </h3>
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         >
-          <Shield className="h-6 w-6 text-blue-500" />
+          <Shield className="h-8 w-8 text-blue-500" />
         </motion.div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6 relative z-10">
         <TeamProgressBar
           icon={UserPlus}
           label="Team Size"
           value={teamDetails.teamCount}
           maxValue={maxMembers}
-          color="text-blue-400"
+          color="text-blue"
         />
 
         <TeamProgressBar
@@ -159,7 +167,7 @@ const TeamStatsCard = ({ teamDetails }) => {
           label="Commission Progress"
           value={teamDetails.teamWallet}
           maxValue={maxCommission}
-          color="text-green-400"
+          color="text-green"
         />
 
         <TeamProgressBar
@@ -167,25 +175,25 @@ const TeamStatsCard = ({ teamDetails }) => {
           label="Team Activity"
           value={currentActivity}
           maxValue={maxActivity}
-          color="text-yellow-400"
+          color="text-yellow"
         />
 
-        <div className="grid grid-cols-2 gap-4 mt-6">
+        <div className="grid grid-cols-2 gap-6 mt-8">
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
+            whileHover={{ scale: 1.05, y: -5 }}
+            className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 shadow-lg"
           >
-            <div className="text-sm text-gray-400">Total Members</div>
-            <div className="text-lg font-bold text-white mt-1">
+            <div className="text-sm text-blue-600 font-medium">Total Members</div>
+            <div className="text-3xl font-bold text-blue-900 mt-2">
               {teamDetails.teamCount}
             </div>
           </motion.div>
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
+            whileHover={{ scale: 1.05, y: -5 }}
+            className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200 shadow-lg"
           >
-            <div className="text-sm text-gray-400">Total Commission</div>
-            <div className="text-lg font-bold text-white mt-1">
+            <div className="text-sm text-green-600 font-medium">Total Commission</div>
+            <div className="text-3xl font-bold text-green-900 mt-2">
               ${teamDetails.teamWallet}
             </div>
           </motion.div>
@@ -200,27 +208,28 @@ const TeamMemberCard = ({ member }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-[#1e2a4a] p-4 rounded-xl border border-gray-700"
+    whileHover={{ y: -5, scale: 1.02 }}
+    className="bg-white/90 backdrop-blur-xl p-6 rounded-2xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300"
   >
     <div className="flex items-center space-x-4">
-      <div className="p-3 bg-blue-500/20 rounded-full">
-        <User className="h-6 w-6 text-blue-400" />
+      <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+        <User className="h-7 w-7 text-white" />
       </div>
       <div>
-        <h4 className="text-lg font-semibold text-white">{member.username}</h4>
-        <p className="text-gray-400 text-sm">{member.email}</p>
+        <h4 className="text-xl font-bold text-gray-900">{member.username}</h4>
+        <p className="text-gray-600 text-sm">{member.email}</p>
       </div>
     </div>
-    <div className="mt-4 grid grid-cols-2 gap-4">
-      <div className="bg-gray-800/40 p-3 rounded-lg">
-        <p className="text-sm text-gray-400">Wallet Balance</p>
-        <p className="text-lg font-semibold text-white">
+    <div className="mt-6 grid grid-cols-2 gap-4">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200">
+        <p className="text-sm text-gray-600 font-medium">Wallet Balance</p>
+        <p className="text-xl font-bold text-gray-900 mt-1">
           ${member.wallet.toFixed(2)}
         </p>
       </div>
-      <div className="bg-gray-800/40 p-3 rounded-lg">
-        <p className="text-sm text-gray-400">Join Date</p>
-        <p className="text-sm text-white">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200">
+        <p className="text-sm text-gray-600 font-medium">Join Date</p>
+        <p className="text-sm text-gray-900 font-semibold mt-1">
           {new Date(member.joinDate).toLocaleDateString()}
         </p>
       </div>
@@ -237,46 +246,53 @@ const TeamMembersSection = ({ teamMembers }) => {
   const members = teamMembers[levelKey] || [];
 
   return (
-    <div className="bg-[#0f0c29] rounded-lg p-6 shadow-xl mt-8">
+    <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 mt-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <Users className="h-6 w-6 text-blue-400" />
-          <h2 className="text-xl font-bold text-white">Team Members</h2>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-4">
+          <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl shadow-lg">
+            <Users className="h-7 w-7 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900">Team Members</h2>
         </div>
-        <div className="bg-blue-500/20 px-3 py-1 rounded-full">
-          <span className="text-blue-400 font-medium">
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-2 rounded-full shadow-lg">
+          <span className="text-white font-bold">
             Level 0{currentLevel}
           </span>
         </div>
       </div>
 
       {/* Level Buttons */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+      <div className="flex gap-3 mb-8 overflow-x-auto pb-2">
         {levels.map((level) => (
-          <button
+          <motion.button
             key={level}
             onClick={() => setCurrentLevel(level)}
-            className={`px-4 py-1 rounded-full font-medium transition whitespace-nowrap ${
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`px-6 py-3 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap shadow-lg ${
               currentLevel === level
-                ? "bg-blue-500 text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-blue-500/25"
+                : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 border border-gray-200"
             }`}
           >
             Level 0{level}
-          </button>
+          </motion.button>
         ))}
       </div>
 
       {/* Team Members of selected level */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {members.map((member, index) => (
           <TeamMemberCard key={index} member={member} />
         ))}
         {members.length === 0 && (
-          <p className="text-center text-gray-400 py-4">
-            No team members found for this level.
-          </p>
+          <div className="text-center py-12">
+            <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4">
+              <Users className="w-8 h-8 text-gray-400" />
+            </div>
+            <p className="text-gray-500 text-lg">No team members found for this level.</p>
+          </div>
         )}
       </div>
     </div>
@@ -288,24 +304,26 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    whileHover={{ scale: 1.05 }}
-    className="bg-[#0f0c29]  backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
+    whileHover={{ scale: 1.05, y: -10 }}
+    className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden group"
   >
-    <div className="flex items-center justify-between">
+    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500" />
+    
+    <div className="flex items-center justify-between relative z-10">
       <motion.div
-        whileHover={{ rotate: 360 }}
-        transition={{ duration: 0.5 }}
-        className="p-3 bg-blue-500/20 rounded-xl"
+        whileHover={{ rotate: 360, scale: 1.1 }}
+        transition={{ duration: 0.6 }}
+        className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg"
       >
-        <Icon className="h-6 w-6 text-blue-500" />
+        <Icon className="h-7 w-7 text-white" />
       </motion.div>
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        className={`px-2 py-1 rounded-lg text-sm ${
+        className={`px-3 py-2 rounded-xl text-sm font-bold shadow-lg ${
           trend > 0
-            ? "bg-green-500/20 text-green-500"
-            : "bg-red-500/20 text-red-500"
+            ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+            : "bg-gradient-to-r from-red-500 to-pink-600 text-white"
         }`}
       >
         {trend > 0 ? "+" : ""}
@@ -316,11 +334,11 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2 }}
-      className="text-2xl font-bold text-white mt-4"
+      className="text-3xl font-bold text-gray-900 mt-6 relative z-10"
     >
       {value}
     </motion.h3>
-    <p className="text-gray-400">{label}</p>
+    <p className="text-gray-600 font-medium relative z-10">{label}</p>
   </motion.div>
 );
 
@@ -390,10 +408,6 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
     { level: 5, title: "Platinum", minWallet: 3000, member: 100 },
     { level: 6, title: "Diamond", minWallet: 4000, member: 500 },
     { level: 7, title: "Emerald", minWallet: 5000, member: 2000 },
-    // { level: 8, title: "Pearl", minWallet: 15000, member: 3000 },
-    // { level: 9, title: "Ruby", minWallet: 20000, member: 4000 },
-    // { level: 10, title: "Sapphire", minWallet: 40000, member: 8000 },
-    // { level: 11, title: "Pro Diamond", minWallet: 60000, member: 50000 },
   ];
 
   const currentLevel = levels.findLast(
@@ -413,110 +427,110 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-[#0f0c29] backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
+      className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden"
     >
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-full -translate-y-16 translate-x-16" />
       
-      
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
+      <div className="flex items-center justify-between mb-8 relative z-10">
+        <div className="flex items-center space-x-4">
           <motion.div
-            className="p-3 bg-yellow-500/20 rounded-xl"
-            whileHover={{ scale: 1.1 }}
+            className="p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl shadow-lg"
+            whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.9 }}
           >
-            <Trophy className="h-6 w-6 text-yellow-500" />
+            <Trophy className="h-7 w-7 text-white" />
           </motion.div>
           <div>
             <motion.h3
-              className="text-xl font-bold text-white"
+              className="text-2xl font-bold text-gray-900"
               initial={{ x: -20 }}
               animate={{ x: 0 }}
             >
               Level {currentLevel?.level}
             </motion.h3>
-            <p className="text-gray-400">
+            <p className="text-gray-600 font-medium">
               {currentLevel?.title || "Rookie Arena"}
             </p>
           </div>
         </div>
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         >
-          <Crown className="h-8 w-8 text-yellow-500" />
+          <Crown className="h-10 w-10 text-yellow-500" />
         </motion.div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6 relative z-10">
         <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-white">Daily XP</span>
-            <span className="text-sm text-yellow-500">
+          <div className="flex justify-between mb-3">
+            <span className="text-sm text-gray-900 font-semibold">Daily XP</span>
+            <span className="text-sm text-yellow-600 font-bold">
               {xp} / {requiredXp} XP
             </span>
           </div>
-          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-yellow-400 to-orange-500 shadow-sm"
             />
           </div>
         </div>
 
         <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-white">Wallet Progress</span>
-            <span className="text-sm text-blue-500">
+          <div className="flex justify-between mb-3">
+            <span className="text-sm text-gray-900 font-semibold">Wallet Progress</span>
+            <span className="text-sm text-blue-600 font-bold">
               ${currentWallet.toFixed(2)} / ${nextLevel.minWallet}
             </span>
           </div>
 
-          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${walletProgress}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-400"
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-sm"
             />
           </div>
         </div>
 
         <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-white">Member Progress</span>
-            <span className="text-sm text-blue-500">
+          <div className="flex justify-between mb-3">
+            <span className="text-sm text-gray-900 font-semibold">Member Progress</span>
+            <span className="text-sm text-blue-600 font-bold">
               {teamCount} / {nextLevel.member}
             </span>
           </div>
 
-          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${memberProgress}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-400"
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-sm"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-8">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-3 rounded-xl"
+            className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl border border-blue-200 shadow-lg"
           >
-            <div className="text-sm text-gray-400">Current Level</div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-sm text-blue-600 font-medium">Current Level</div>
+            <div className="text-2xl font-bold text-blue-900 mt-1">
               {currentLevel?.level || 1}
             </div>
           </motion.div>
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-3 rounded-xl"
+            className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-2xl border border-green-200 shadow-lg"
           >
-            <div className="text-sm text-gray-400">Next Level</div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-sm text-green-600 font-medium">Next Level</div>
+            <div className="text-2xl font-bold text-green-900 mt-1">
               {(currentLevel?.level || 1) + 1}
             </div>
           </motion.div>
@@ -553,9 +567,9 @@ const Sidebar = ({
         className={`
           fixed lg:static inset-y-0 left-0 transform lg:transform-none
           ${
-            isSidebarCollapsed ? "w-20" : "w-64"
-          }  backdrop-blur-xl border-r border-gray-700
-          p-4 space-y-6 transition-all duration-300 ease-in-out z-40
+            isSidebarCollapsed ? "w-20" : "w-72"
+          } bg-white/95 backdrop-blur-xl border-r border-gray-200/50 shadow-2xl
+          p-6 space-y-8 transition-all duration-300 ease-in-out z-40
           ${
             isSidebarOpen
               ? "translate-x-0"
@@ -566,12 +580,12 @@ const Sidebar = ({
       >
         <button
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-[#0f0c29] border-white border-[1px] text-white hover:bg-gray-700/50 transition-colors"
+          className="hidden lg:flex items-center justify-center w-full p-3 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg"
         >
           {isSidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-white" />
+            <ChevronRight className="h-5 w-5" />
           ) : (
-            <ChevronLeft className="h-5 w-5 text-white" />
+            <ChevronLeft className="h-5 w-5" />
           )}
         </button>
 
@@ -671,10 +685,10 @@ const Sidebar = ({
           />
         </MenuSection>
 
-        <div className="lg:hidden mt-6">
+        <div className="lg:hidden mt-8">
           <button
             onClick={handleLogout}
-            className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-3 rounded-xl border border-red-500/20 flex items-center justify-center transition-colors"
+            className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg font-medium"
           >
             <LogOut className="h-5 w-5 mr-2" />
             Logout
@@ -684,13 +698,13 @@ const Sidebar = ({
 
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden z-30"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden z-30"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Mobile Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-xl border-t border-gray-700 p-2 z-50 lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/50 p-4 z-50 lg:hidden shadow-2xl">
         <div className="max-w-screen-lg mx-auto flex justify-around items-center">
           <TaskbarItem
             icon={Home}
@@ -794,7 +808,6 @@ const Profile = () => {
     if (!userData) return;
     const fetchTotalMembers = async () => {
       try {
-      
         const teamsDetails = await fetch(`${url}/total-teams-details`, {
           method: "POST",
           headers: {
@@ -896,11 +909,11 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"
+          className="rounded-full h-20 w-20 border-4 border-blue-500 border-t-transparent shadow-lg"
         />
       </div>
     );
@@ -908,11 +921,11 @@ const Profile = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-red-500/10 text-red-500 p-4 rounded-xl border border-red-500/20"
+          className="bg-red-50 text-red-600 p-6 rounded-2xl border border-red-200 shadow-lg"
         >
           {error}
         </motion.div>
@@ -930,38 +943,35 @@ const Profile = () => {
   });
 
   return (
-    <div className="min-h-screen bg-cover bg-center">
-      <div className="min-h-screen bg-[#0f0c29] ">
-        <nav className="bg-[#0f0c29] backdrop-blur-xl border-b border-gray-700 relative z-30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="min-h-screen">
+        <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-lg relative z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex items-center justify-between h-20">
               <div className="flex items-center">
                 <div className="relative group">
-                  <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative text-white font-bold text-2xl">
-                   Sky<span className="text-blue-600">366</span>Trade
+                  <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative text-gray-900 font-bold text-3xl">
+                    Sky<span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">366</span>Trade
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="bg-[#0f0c29] px-6 py-2 rounded-xl border border-gray-700/50 flex items-center space-x-4">
-                  <span className="text-white font-medium tracking-wide text-lg sm:inline">
+              <div className="flex items-center space-x-6">
+                <div className="bg-white/90 backdrop-blur-xl p-2 rounded-2xl border border-gray-200/50  flex items-center space-x-4">
+                  <span className="text-gray-900 font-bold tracking-wide text-xl sm:inline">
                     ${userData?.wallet.toFixed(2) || 0}
                   </span>
                   <div className="relative group">
-                    <div className="absolute -inset-2 bg--500/20 rounded-lg blur-lg  transition-colors duration-300"></div>
-                    <div className="relative bg-blue-600 p-2 rounded-lg transform group-hover:scale-105 transition-transform duration-300">
-                     
-                      <div className="relative z-10">
-                        <Wallet className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-                      </div>
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Wallet className=" text-white" />
                     </div>
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 hidden sm:flex items-center transition-colors"
+                  className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-3 rounded-2xl hidden sm:flex items-center transition-all duration-300 shadow-lg font-medium"
                 >
                   <LogOut className="h-5 w-5 mr-2" />
                   <span>Logout</span>
@@ -970,12 +980,12 @@ const Profile = () => {
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                   className="relative group lg:hidden"
                 >
-                  <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative bg-gray-800/80 p-2 rounded-xl border border-gray-700/50">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative bg-white/90 backdrop-blur-xl p-3 rounded-2xl border border-gray-200/50 shadow-lg">
                     {isSidebarOpen ? (
-                      <X className="h-6 w-6 text-blue-400" />
+                      <X className="h-7 w-7 text-blue-600" />
                     ) : (
-                      <Menu className="h-6 w-6 text-blue-400" />
+                      <Menu className="h-7 w-7 text-blue-600" />
                     )}
                   </div>
                 </button>
@@ -996,29 +1006,31 @@ const Profile = () => {
           />
 
           {/* Main Content */}
-          <div className="flex-1 p-4 md:p-8 pb-24">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+          <div className="flex-1 p-6 md:p-10 pb-32">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
               {/* Profile Section */}
-              <div className="space-y-6 md:space-y-8">
-                <div className="bg-gradient-to-br from-[#0f0c29]  backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
-                  <div className="text-center">
+              <div className="space-y-8 md:space-y-10">
+                <div className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
+                  
+                  <div className="text-center relative z-10">
                     <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center shadow-2xl"
                     >
-                      <User className="w-10 h-10 md:w-12 md:h-12 text-white" />
+                      <User className="w-12 h-12 md:w-14 md:h-14 text-white" />
                     </motion.div>
                     <motion.h2
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      className="mt-4 text-xl md:text-2xl font-bold text-white"
+                      className="mt-6 text-2xl md:text-3xl font-bold text-gray-900"
                     >
                       {userData?.username}
                     </motion.h2>
-                    <p className="text-gray-400">Trader Profile</p>
+                    <p className="text-gray-600 font-medium text-lg">Trader Profile</p>
                   </div>
 
-                  <div className="mt-6">
+                  <div className="mt-8 relative z-10">
                     <LevelCard
                       level={userStats.level}
                       xp={userStats.xp}
@@ -1027,64 +1039,64 @@ const Profile = () => {
                     />
                   </div>
 
-                  <div className="mt-6 space-y-4">
+                  <div className="mt-8 space-y-4 relative z-10">
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm"
                     >
-                      <span className="flex items-center text-gray-300 text-sm md:text-base">
-                        <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="flex items-center text-gray-700 text-sm md:text-base font-medium">
+                        <Calendar className="w-5 h-5 mr-3 flex-shrink-0 text-blue-500" />
                         <span className="truncate">Member Since</span>
                       </span>
-                      <span className="text-white text-sm md:text-base ml-2">
+                      <span className="text-gray-900 text-sm md:text-base ml-2 font-semibold">
                         {joinDate}
                       </span>
                     </motion.div>
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm"
                     >
-                      <span className="flex items-center text-gray-300 text-sm md:text-base">
-                        <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="flex items-center text-gray-700 text-sm md:text-base font-medium">
+                        <Mail className="w-5 h-5 mr-3 flex-shrink-0 text-blue-500" />
                         <span className="truncate">Email</span>
                       </span>
-                      <span className="text-white text-sm md:text-base ml-2 truncate max-w-[150px]">
+                      <span className="text-gray-900 text-sm md:text-base ml-2 truncate max-w-[150px] font-semibold">
                         {userData?.email || "Not provided"}
                       </span>
                     </motion.div>
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm"
                     >
-                      <span className="flex items-center text-gray-300 text-sm md:text-base">
-                        <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="flex items-center text-gray-700 text-sm md:text-base font-medium">
+                        <Phone className="w-5 h-5 mr-3 flex-shrink-0 text-blue-500" />
                         <span className="truncate">Phone</span>
                       </span>
-                      <span className="text-white text-sm md:text-base ml-2">
+                      <span className="text-gray-900 text-sm md:text-base ml-2 font-semibold">
                         {userData?.phone || "Not provided"}
                       </span>
                     </motion.div>
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm"
                     >
-                      <span className="flex items-center text-gray-300 text-sm md:text-base">
-                        <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="flex items-center text-gray-700 text-sm md:text-base font-medium">
+                        <CheckCircle className="w-5 h-5 mr-3 flex-shrink-0 text-green-500" />
                         <span className="truncate">Tasks Completed</span>
                       </span>
-                      <span className="text-white text-sm md:text-base ml-2">
+                      <span className="text-gray-900 text-sm md:text-base ml-2 font-semibold">
                         {userStats.completedTasks}
                       </span>
                     </motion.div>
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29] rounded-xl"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm"
                     >
-                      <span className="flex items-center text-gray-300 text-sm md:text-base">
-                        <TrendingUp className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="flex items-center text-gray-700 text-sm md:text-base font-medium">
+                        <TrendingUp className="w-5 h-5 mr-3 flex-shrink-0 text-green-500" />
                         <span className="truncate">Success Rate</span>
                       </span>
-                      <span className="text-white text-sm md:text-base ml-2">
+                      <span className="text-gray-900 text-sm md:text-base ml-2 font-semibold">
                         {userStats.successRate}%
                       </span>
                     </motion.div>
@@ -1093,8 +1105,8 @@ const Profile = () => {
               </div>
 
               {/* Stats and Tasks Section */}
-              <div className="lg:col-span-2 space-y-6 md:space-y-8">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="lg:col-span-2 space-y-8 md:space-y-10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <StatCard
                     icon={CheckCircle}
                     label="Completed Tasks"
