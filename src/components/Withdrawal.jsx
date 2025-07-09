@@ -31,7 +31,7 @@ function Withdrawal() {
           bep20Address: address2,
         })
       });
-      console.log(response);
+    
       const data = await response.json();
       if (response.ok) {
         setSuccess(data.msg);

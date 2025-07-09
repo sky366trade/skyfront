@@ -9,7 +9,7 @@ const ReferralCode = () => {
   const [referralCode, setReferralCode] = useState(code);
   const navigate = useNavigate();
   const user = localStorage.getItem("username") || "";
-  const url = "http://localhost:3000"; // Define URL
+const url = import.meta.env.VITE_BACKEND_URL;
   const createTeam = async () => {
     if (!user) {  
       alert("User data is missing!");
@@ -63,11 +63,11 @@ const ReferralCode = () => {
           <div className="relative group">
             <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative">
-            <img src="icon-03.png" className="h-13.5 w-15.5 mr-0 " />
+            
             </div>
           </div>
           <span className="ml-3 text-3xl font-bold text-white">
-            TradeFlyHub
+            Sky366Trade
           </span>
         </motion.div>
 

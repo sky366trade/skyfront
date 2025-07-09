@@ -62,7 +62,7 @@ const Contact = () => {
             >
               <Mail className="h-8 w-8 text-blue-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">Email</h3>
-              <p className="text-gray-400">tradeflyhub@gmail.com</p>
+              <p className="text-gray-400">Sky366Trade@gmail.com</p>
             </motion.div>
 
             <motion.div
@@ -73,7 +73,7 @@ const Contact = () => {
             >
               <Phone className="h-8 w-8 text-blue-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">Telegram</h3>
-              <p className="text-gray-400">@tradeflyhub</p>
+              <p className="text-gray-400">@Sky366Trade</p>
             </motion.div>
 
             <motion.div

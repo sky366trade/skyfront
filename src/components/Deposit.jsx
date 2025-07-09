@@ -98,7 +98,7 @@ const Deposit = () => {
               <Bitcoin className="h-16 w-16 text-blue-500 mx-auto" />
             </motion.div>
             <h1 className="mt-4 text-3xl font-bold text-white">Deposit Funds</h1>
-            <p className="mt-2 text-gray-400">Add money to your TradeFlyHub wallet securely</p>
+            <p className="mt-2 text-gray-400">Add money to your Sky366Trade wallet securely</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

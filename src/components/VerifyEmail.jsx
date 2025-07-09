@@ -118,7 +118,7 @@ const VerifyEmail = () => {
         showConfirmButton: false,
       });
 
-      console.log(username);
+  
       navigate("/referralCode", { state: { username } });
     } catch (error) {
       Swal.fire({

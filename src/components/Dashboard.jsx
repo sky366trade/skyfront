@@ -409,7 +409,7 @@ const Dashboard = () => {
     if (!userData) return;
     const fetchTotalMembers = async () => {
       try {
-        console.log({ username: userData.username });
+       
         const teamsDetails = await fetch(`${url}/total-teams-details`, {
           method: "POST",
           headers: {
@@ -479,7 +479,7 @@ const Dashboard = () => {
     {
       level: 2,
       title: "Bronze",
-      minWallet: 100,
+      minWallet: 500,
       member: 6,
       icon: Sword,
       description: "Give more rewards along with reviews",
@@ -487,7 +487,7 @@ const Dashboard = () => {
     {
       level: 3,
       title: "Silver",
-      minWallet: 500,
+      minWallet: 1000,
       member: 20,
       icon: Shield,
       description: "Join the elite players in high-stakes matches.",
@@ -495,7 +495,7 @@ const Dashboard = () => {
     {
       level: 4,
       title: "Gold",
-      minWallet: 1_000,
+      minWallet: 2000,
       member: 60,
       icon: GlobeLock,
       description: "Exclusive rewarding tasks available worldwide.",
@@ -503,7 +503,7 @@ const Dashboard = () => {
     {
       level: 5,
       title: "Platinum",
-      minWallet: 3_000,
+      minWallet: 3000,
       member: 100,
       icon: Diamond,
       description: "The ultimate rewards experience and get true money.",
@@ -511,7 +511,7 @@ const Dashboard = () => {
     {
       level: 6,
       title: "Diamond",
-      minWallet: 5_000,
+      minWallet: 4000,
       member: 500,
       icon: Highlighter,
       description: "The ultimate rewards experience and get true money.",
@@ -519,43 +519,43 @@ const Dashboard = () => {
     {
       level: 7,
       title: "Emerald",
-      minWallet: 10_000,
+      minWallet: 5000,
       member: 2_000,
       icon: LeafyGreenIcon,
       description: "The ultimate rewards experience and get true money.",
     },
-    {
-      level: 8,
-      title: "Pearl",
-      minWallet: 15_000,
-      member: 3_000,
-      icon: GridIcon,
-      description: "The ultimate rewards experience and get true money.",
-    },
-    {
-      level: 9,
-      title: "Ruby",
-      minWallet: 20_000,
-      member: 4_000,
-      icon: GalleryHorizontal,
-      description: "The ultimate rewards experience and get true money.",
-    },
-    {
-      level: 10,
-      title: "Sapphire",
-      minWallet: 40_000,
-      member: 8_000,
-      icon: Crown,
-      description: "The ultimate rewards experience and get true money.",
-    },
-    {
-      level: 11,
-      title: "Pro Diamond",
-      minWallet: 60_000,
-      member: 20_000,
-      icon: SunMoon,
-      description: "The ultimate rewards experience and get true money.",
-    },
+    // {
+    //   level: 8,
+    //   title: "Pearl",
+    //   minWallet: 15_000,
+    //   member: 3_000,
+    //   icon: GridIcon,
+    //   description: "The ultimate rewards experience and get true money.",
+    // },
+    // {
+    //   level: 9,
+    //   title: "Ruby",
+    //   minWallet: 20_000,
+    //   member: 4_000,
+    //   icon: GalleryHorizontal,
+    //   description: "The ultimate rewards experience and get true money.",
+    // },
+    // {
+    //   level: 10,
+    //   title: "Sapphire",
+    //   minWallet: 40_000,
+    //   member: 8_000,
+    //   icon: Crown,
+    //   description: "The ultimate rewards experience and get true money.",
+    // },
+    // {
+    //   level: 11,
+    //   title: "Pro Diamond",
+    //   minWallet: 60_000,
+    //   member: 20_000,
+    //   icon: SunMoon,
+    //   description: "The ultimate rewards experience and get true money.",
+    // },
   ];
 
   const reviews = [

@@ -130,15 +130,15 @@ const NewsEvents = () => {
       date: "Mar 14, 2024",
       readTime: 3,
       tags: ["Update", "Features"],
-      description: "At TradeFlyHub, we recognize and reward mentorship. Our Mentorship Rewards Program allows you to earn up to $3000 based on your downline network performance.",
+      description: "At Sky366Trade, we recognize and reward mentorship. Our Mentorship Rewards Program allows you to earn up to $3000 based on your downline network performance.",
       content: (
         <div className="space-y-4">
           <p>We're constantly working to improve your experience on our platform. Today, we're excited to announce several new features that will make your gaming journey even better!</p>
           <h4 className="text-xl font-bold text-white">Important Notes</h4>
           <ul className="list-disc pl-4 space-y-2">
-            <li>Each user is allowed only one TradeFlyHub account.</li>
+            <li>Each user is allowed only one Sky366Trade account.</li>
             <li>Accounts sharing the same IP address will not be eligible for rewards.</li>
-            <li>TradeFlyHub reserves the right to cancel rewards participation if fraudulent activities are detected, such as multiple accounts with the same identity or VPN usage to log into multiple accounts.</li>
+            <li>Sky366Trade reserves the right to cancel rewards participation if fraudulent activities are detected, such as multiple accounts with the same identity or VPN usage to log into multiple accounts.</li>
           </ul>
           <p>These updates are now live! Log in to explore all the new features and improvements.</p>
         </div>
@@ -150,17 +150,17 @@ const NewsEvents = () => {
       date: "Mar 13, 2024",
       readTime: 4,
       tags: ["Community", "Awards"],
-      description: "At TradeFlyHub, we value your referrals. Get rewarded every time your direct downlines make their initial deposits.",
+      description: "At Sky366Trade, we value your referrals. Get rewarded every time your direct downlines make their initial deposits.",
       content: (
         <div className="space-y-4">
-          <p>Join TradeFlyHub today and maximize your earnings with our referral and mentorship rewards programs!</p>
+          <p>Join Sky366Trade today and maximize your earnings with our referral and mentorship rewards programs!</p>
           <h4 className="text-xl font-bold text-white">Important Notes</h4>
           <ul className="list-disc pl-4 space-y-2">
-            <li>Only one TradeFlyHub account per user is allowed.
+            <li>Only one Sky366Trade account per user is allowed.
 
 h</li>
             <li>Accounts sharing an IP address are not eligible for rewards</li>
-            <li>TradeFlyHub reserves the right to cancel rewards if fraudulent activities such as multiple accounts or VPN usage are detected.</li>
+            <li>Sky366Trade reserves the right to cancel rewards if fraudulent activities such as multiple accounts or VPN usage are detected.</li>
           </ul>
           <p>Congratulations to all our champions! Your dedication and contribution make our community stronger.</p>
         </div>

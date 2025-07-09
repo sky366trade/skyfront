@@ -9,7 +9,7 @@ const Success = () => {
   const url = import.meta.env.VITE_BACKEND_URL;
   const [loading, setLoading] = useState(true);
   const hasRun = useRef(false); // Prevents double execution
-
+  const [teams,setTeams]=useState(null);
   useEffect(() => {
     if (hasRun.current) return; // Exit if already run
     hasRun.current = true; // Set flag after first run
@@ -19,7 +19,6 @@ const Success = () => {
       navigate("/");
       return;
     }
-
     const updateWallet = async () => {
       try {
         const response = await fetch(`${url}/update-wallet`, {

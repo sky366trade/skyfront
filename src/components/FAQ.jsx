@@ -46,8 +46,8 @@ const FAQ = () => {
   const navigate = useNavigate();
   const faqs = [
     {
-      question: "What is TradeFlyHub?",
-      answer: "TradeFlyHub is revolutionizing the rewarding industry by combining competitive tasks with innovative trading mechanics.Our platform provides a secure and engaging environment for players worldwide."
+      question: "What is Sky366Trade?",
+      answer: "Sky366Trade is revolutionizing the rewarding industry by combining competitive tasks with innovative trading mechanics.Our platform provides a secure and engaging environment for players worldwide."
     },
     {
       question: "How do I get started?",
@@ -91,7 +91,7 @@ const FAQ = () => {
           >
             <HelpCircle className="h-16 w-16 text-blue-500 mx-auto mb-4" />
             <h1 className="text-4xl font-bold text-white mb-4">Frequently Asked Questions</h1>
-            <p className="text-gray-400">Find answers to common questions about TradeFlyHub</p>
+            <p className="text-gray-400">Find answers to common questions about Sky366Trade</p>
           </motion.div>
 
           <motion.div

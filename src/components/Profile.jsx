@@ -53,7 +53,7 @@ const SidebarMenuItem = ({
       ${
         isActive
           ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
-          : "hover:bg-gray-700/30 text-gray-300 hover:text-white"
+          : "hover:bg-gradient-to-br from-[#0f0c29] to-[#302b63] text-gray-300 hover:text-white"
       }`}
     title={isCollapsed ? label : ""}
   >
@@ -72,7 +72,7 @@ const TaskbarItem = ({ icon: Icon, label, onClick, isActive = false }) => (
       ${
         isActive
           ? "bg-blue-500/20 text-blue-400 border border-blue-500/20"
-          : "text-gray-300 hover:text-white hover:bg-gray-700/30"
+          : "text-gray-300 hover:text-white hover:bg-gradient-to-br from-[#0f0c29] to-[#302b63]"
       }`}
   >
     <Icon className="h-5 w-5 mb-1" />
@@ -97,7 +97,7 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-gray-700/30 p-4 rounded-xl"
+    className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
   >
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center space-x-2">
@@ -173,7 +173,7 @@ const TeamStatsCard = ({ teamDetails }) => {
         <div className="grid grid-cols-2 gap-4 mt-6">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-4 rounded-xl"
+            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
           >
             <div className="text-sm text-gray-400">Total Members</div>
             <div className="text-lg font-bold text-white mt-1">
@@ -182,7 +182,7 @@ const TeamStatsCard = ({ teamDetails }) => {
           </motion.div>
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-4 rounded-xl"
+            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-4 rounded-xl"
           >
             <div className="text-sm text-gray-400">Total Commission</div>
             <div className="text-lg font-bold text-white mt-1">
@@ -237,7 +237,7 @@ const TeamMembersSection = ({ teamMembers }) => {
   const members = teamMembers[levelKey] || [];
 
   return (
-    <div className="bg-[#112240] rounded-lg p-6 shadow-xl mt-8">
+    <div className="bg-[#0f0c29] rounded-lg p-6 shadow-xl mt-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
@@ -289,7 +289,7 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     whileHover={{ scale: 1.05 }}
-    className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
+    className="bg-[#0f0c29]  backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
   >
     <div className="flex items-center justify-between">
       <motion.div
@@ -348,7 +348,6 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
     if (!userData) return;
     const fetchTotalMembers = async () => {
       try {
-        console.log({ username: userData.username });
         const teamsDetails = await fetch(`${url}/total-teams-details`, {
           method: "POST",
           headers: {
@@ -374,7 +373,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
         );
 
         setTeamsCount(totalMember);
-        console.log(totalMember);
+       
       } catch (error) {
         console.error("Error fetching total members:", error);
       }
@@ -385,16 +384,16 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
   const levels = [
     { level: 1, title: "Elite", minWallet: 0, member: 0 },
-    { level: 2, title: "Bronze", minWallet: 100, member: 6 },
-    { level: 3, title: "Silver", minWallet: 500, member: 20 },
-    { level: 4, title: "Gold", minWallet: 1000, member: 60 },
+    { level: 2, title: "Bronze", minWallet: 500, member: 6 },
+    { level: 3, title: "Silver", minWallet: 1000, member: 20 },
+    { level: 4, title: "Gold", minWallet: 2000, member: 60 },
     { level: 5, title: "Platinum", minWallet: 3000, member: 100 },
-    { level: 6, title: "Diamond", minWallet: 5000, member: 500 },
-    { level: 7, title: "Emerald", minWallet: 10000, member: 2000 },
-    { level: 8, title: "Pearl", minWallet: 15000, member: 3000 },
-    { level: 9, title: "Ruby", minWallet: 20000, member: 4000 },
-    { level: 10, title: "Sapphire", minWallet: 40000, member: 8000 },
-    { level: 11, title: "Pro Diamond", minWallet: 60000, member: 50000 },
+    { level: 6, title: "Diamond", minWallet: 4000, member: 500 },
+    { level: 7, title: "Emerald", minWallet: 5000, member: 2000 },
+    // { level: 8, title: "Pearl", minWallet: 15000, member: 3000 },
+    // { level: 9, title: "Ruby", minWallet: 20000, member: 4000 },
+    // { level: 10, title: "Sapphire", minWallet: 40000, member: 8000 },
+    // { level: 11, title: "Pro Diamond", minWallet: 60000, member: 50000 },
   ];
 
   const currentLevel = levels.findLast(
@@ -414,10 +413,10 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
+      className="bg-[#0f0c29] backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl"
     >
-      {console.log(currentLevel)}
-      {levels[0].level}
+      
+      
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <motion.div
@@ -451,7 +450,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
       <div className="space-y-4">
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Daily XP</span>
+            <span className="text-sm text-white">Daily XP</span>
             <span className="text-sm text-yellow-500">
               {xp} / {requiredXp} XP
             </span>
@@ -468,7 +467,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Wallet Progress</span>
+            <span className="text-sm text-white">Wallet Progress</span>
             <span className="text-sm text-blue-500">
               ${currentWallet.toFixed(2)} / ${nextLevel.minWallet}
             </span>
@@ -486,7 +485,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-400">Member Progress</span>
+            <span className="text-sm text-white">Member Progress</span>
             <span className="text-sm text-blue-500">
               {teamCount} / {nextLevel.member}
             </span>
@@ -505,7 +504,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-3 rounded-xl"
+            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-3 rounded-xl"
           >
             <div className="text-sm text-gray-400">Current Level</div>
             <div className="text-lg font-bold text-white">
@@ -514,7 +513,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
           </motion.div>
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-gray-700/30 p-3 rounded-xl"
+            className="bg-gradient-to-br from-[#0f0c29] to-[#302b63] p-3 rounded-xl"
           >
             <div className="text-sm text-gray-400">Next Level</div>
             <div className="text-lg font-bold text-white">
@@ -555,7 +554,7 @@ const Sidebar = ({
           fixed lg:static inset-y-0 left-0 transform lg:transform-none
           ${
             isSidebarCollapsed ? "w-20" : "w-64"
-          } bg-gray-800/90 backdrop-blur-xl border-r border-gray-700
+          }  backdrop-blur-xl border-r border-gray-700
           p-4 space-y-6 transition-all duration-300 ease-in-out z-40
           ${
             isSidebarOpen
@@ -567,12 +566,12 @@ const Sidebar = ({
       >
         <button
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-gray-700/30 hover:bg-gray-700/50 transition-colors"
+          className="hidden lg:flex items-center justify-center w-full p-2 rounded-xl bg-[#0f0c29] border-white border-[1px] text-white hover:bg-gray-700/50 transition-colors"
         >
           {isSidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-gray-400" />
+            <ChevronRight className="h-5 w-5 text-white" />
           ) : (
-            <ChevronLeft className="h-5 w-5 text-gray-400" />
+            <ChevronLeft className="h-5 w-5 text-white" />
           )}
         </button>
 
@@ -795,7 +794,7 @@ const Profile = () => {
     if (!userData) return;
     const fetchTotalMembers = async () => {
       try {
-        console.log({ username: userData.username });
+      
         const teamsDetails = await fetch(`${url}/total-teams-details`, {
           method: "POST",
           headers: {
@@ -931,34 +930,29 @@ const Profile = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1533134486753-c833f0ed4866?q=80&w=2070')] bg-cover bg-center">
-      <div className="min-h-screen bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-blue-900/95">
-        <nav className="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700 relative z-30">
+    <div className="min-h-screen bg-cover bg-center">
+      <div className="min-h-screen bg-[#0f0c29] ">
+        <nav className="bg-[#0f0c29] backdrop-blur-xl border-b border-gray-700 relative z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <div className="relative group">
                   <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative">
-                    <img
-                      src="icon-03.png"
-                      className="h-10 w-10 mr-2"
-                      alt="Logo"
-                    />
+                  <div className="relative text-white font-bold text-2xl">
+                   Sky<span className="text-blue-600">366</span>Trade
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center space-x-4">
-                <div className="bg-gray-800/80 px-6 py-2 rounded-xl border border-gray-700/50 flex items-center space-x-4">
+                <div className="bg-[#0f0c29] px-6 py-2 rounded-xl border border-gray-700/50 flex items-center space-x-4">
                   <span className="text-white font-medium tracking-wide text-lg sm:inline">
                     ${userData?.wallet.toFixed(2) || 0}
                   </span>
                   <div className="relative group">
-                    <div className="absolute -inset-2 bg-blue-500/20 rounded-lg blur-lg group-hover:bg-blue-500/30 transition-colors duration-300"></div>
-                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-400 p-2 rounded-lg transform group-hover:scale-105 transition-transform duration-300">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-lg"></div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/20 rounded-lg"></div>
+                    <div className="absolute -inset-2 bg--500/20 rounded-lg blur-lg  transition-colors duration-300"></div>
+                    <div className="relative bg-blue-600 p-2 rounded-lg transform group-hover:scale-105 transition-transform duration-300">
+                     
                       <div className="relative z-10">
                         <Wallet className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
                       </div>
@@ -1006,7 +1000,7 @@ const Profile = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               {/* Profile Section */}
               <div className="space-y-6 md:space-y-8">
-                <div className="bg-gray-800/40 backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
+                <div className="bg-gradient-to-br from-[#0f0c29]  backdrop-blur-xl p-6 rounded-2xl border border-gray-700 shadow-xl">
                   <div className="text-center">
                     <motion.div
                       whileHover={{ scale: 1.1 }}
@@ -1036,7 +1030,7 @@ const Profile = () => {
                   <div className="mt-6 space-y-4">
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
                     >
                       <span className="flex items-center text-gray-300 text-sm md:text-base">
                         <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -1048,7 +1042,7 @@ const Profile = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
                     >
                       <span className="flex items-center text-gray-300 text-sm md:text-base">
                         <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -1060,7 +1054,7 @@ const Profile = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
                     >
                       <span className="flex items-center text-gray-300 text-sm md:text-base">
                         <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -1072,7 +1066,7 @@ const Profile = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29]  rounded-xl"
                     >
                       <span className="flex items-center text-gray-300 text-sm md:text-base">
                         <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -1084,7 +1078,7 @@ const Profile = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl"
+                      className="flex items-center justify-between p-3 bg-gradient-to-br from-[#0f0c29] rounded-xl"
                     >
                       <span className="flex items-center text-gray-300 text-sm md:text-base">
                         <TrendingUp className="w-4 h-4 mr-2 flex-shrink-0" />
