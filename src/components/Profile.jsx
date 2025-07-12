@@ -60,7 +60,9 @@ const SidebarMenuItem = ({
   >
     <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     <Icon className="h-4 w-4 sm:h-5 sm:w-5 relative z-10 flex-shrink-0" />
-    {!isCollapsed && <span className="font-medium relative z-10 truncate">{label}</span>}
+    {!isCollapsed && (
+      <span className="font-medium relative z-10 truncate">{label}</span>
+    )}
   </motion.button>
 );
 
@@ -103,12 +105,21 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
   >
     <div className="flex items-center justify-between mb-3 sm:mb-4">
       <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-        <div className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-r ${color.replace('text', 'from')}-500 ${color.replace('text', 'to')}-600 flex-shrink-0`}>
+        <div
+          className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-r ${color.replace(
+            "text",
+            "from"
+          )}-500 ${color.replace("text", "to")}-600 flex-shrink-0`}
+        >
           <Icon className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-white" />
         </div>
-        <span className="text-gray-700 font-medium text-sm sm:text-base truncate">{label}</span>
+        <span className="text-gray-700 font-medium text-sm sm:text-base truncate">
+          {label}
+        </span>
       </div>
-      <span className={`${color} font-bold text-sm sm:text-base lg:text-lg flex-shrink-0 ml-2`}>
+      <span
+        className={`${color} font-bold text-sm sm:text-base lg:text-lg flex-shrink-0 ml-2`}
+      >
         {value.toLocaleString()} / {maxValue.toLocaleString()}
       </span>
     </div>
@@ -117,7 +128,10 @@ const TeamProgressBar = ({ icon: Icon, label, value, maxValue, color }) => (
         initial={{ width: 0 }}
         animate={{ width: `${Math.min((value / maxValue) * 100, 100)}%` }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        className={`absolute h-full bg-gradient-to-r ${color.replace('text', 'from')}-500 ${color.replace('text', 'to')}-600 shadow-sm`}
+        className={`absolute h-full bg-gradient-to-r ${color.replace(
+          "text",
+          "from"
+        )}-500 ${color.replace("text", "to")}-600 shadow-sm`}
       />
     </div>
   </motion.div>
@@ -137,7 +151,7 @@ const TeamStatsCard = ({ teamDetails }) => {
       className="bg-white/90 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl overflow-hidden relative"
     >
       <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-10 translate-x-10 sm:-translate-y-16 sm:translate-x-16" />
-      
+
       <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8 relative z-10">
         <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 flex items-center">
           <div className="p-2 sm:p-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl sm:rounded-2xl mr-2 sm:mr-3 shadow-lg flex-shrink-0">
@@ -184,7 +198,9 @@ const TeamStatsCard = ({ teamDetails }) => {
             whileHover={{ scale: 1.05, y: -5 }}
             className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border border-blue-200 shadow-lg"
           >
-            <div className="text-xs sm:text-sm text-blue-600 font-medium">Total Members</div>
+            <div className="text-xs sm:text-sm text-blue-600 font-medium">
+              Total Members
+            </div>
             <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-900 mt-1 sm:mt-2">
               {teamDetails.teamCount}
             </div>
@@ -193,7 +209,9 @@ const TeamStatsCard = ({ teamDetails }) => {
             whileHover={{ scale: 1.05, y: -5 }}
             className="bg-gradient-to-br from-green-50 to-green-100 p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border border-green-200 shadow-lg"
           >
-            <div className="text-xs sm:text-sm text-green-600 font-medium">Total Commission</div>
+            <div className="text-xs sm:text-sm text-green-600 font-medium">
+              Total Commission
+            </div>
             <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-900 mt-1 sm:mt-2">
               ${teamDetails.teamWallet}
             </div>
@@ -217,19 +235,27 @@ const TeamMemberCard = ({ member }) => (
         <User className="h-4 w-4 sm:h-5 sm:w-5 lg:h-7 lg:w-7 text-white" />
       </div>
       <div className="min-w-0 flex-1">
-        <h4 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 truncate">{member.username}</h4>
-        <p className="text-gray-600 text-xs sm:text-sm truncate">{member.email}</p>
+        <h4 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 truncate">
+          {member.username}
+        </h4>
+        <p className="text-gray-600 text-xs sm:text-sm truncate">
+          {member.email}
+        </p>
       </div>
     </div>
     <div className="mt-3 sm:mt-4 lg:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl border border-gray-200">
-        <p className="text-xs sm:text-sm text-gray-600 font-medium">Wallet Balance</p>
+        <p className="text-xs sm:text-sm text-gray-600 font-medium">
+          Wallet Balance
+        </p>
         <p className="text-sm sm:text-lg lg:text-xl font-bold text-gray-900 mt-1">
           ${member.wallet.toFixed(2)}
         </p>
       </div>
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl border border-gray-200">
-        <p className="text-xs sm:text-sm text-gray-600 font-medium">Join Date</p>
+        <p className="text-xs sm:text-sm text-gray-600 font-medium">
+          Join Date
+        </p>
         <p className="text-xs sm:text-sm text-gray-900 font-semibold mt-1">
           {new Date(member.joinDate).toLocaleDateString()}
         </p>
@@ -254,7 +280,9 @@ const TeamMembersSection = ({ teamMembers }) => {
           <div className="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl sm:rounded-2xl shadow-lg flex-shrink-0">
             <Users className="h-4 w-4 sm:h-5 sm:w-5 lg:h-7 lg:w-7 text-white" />
           </div>
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Team Members</h2>
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+            Team Members
+          </h2>
         </div>
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg self-start sm:self-auto">
           <span className="text-white font-bold text-sm sm:text-base">
@@ -292,7 +320,9 @@ const TeamMembersSection = ({ teamMembers }) => {
             <div className="p-3 sm:p-4 bg-gray-100 rounded-full w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 mx-auto mb-3 sm:mb-4">
               <Users className="w-6 h-6 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-gray-400" />
             </div>
-            <p className="text-gray-500 text-sm sm:text-base lg:text-lg">No team members found for this level.</p>
+            <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
+              No team members found for this level.
+            </p>
           </div>
         )}
       </div>
@@ -309,7 +339,7 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
     className="bg-white/90 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden group"
   >
     <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-8 translate-x-8 sm:-translate-y-10 sm:translate-x-10 lg:-translate-y-12 lg:translate-x-12 group-hover:scale-150 transition-transform duration-500" />
-    
+
     <div className="flex items-center justify-between relative z-10 mb-3 sm:mb-4 lg:mb-6">
       <motion.div
         whileHover={{ rotate: 360, scale: 1.1 }}
@@ -339,7 +369,9 @@ const StatCard = ({ icon: Icon, label, value, trend }) => (
     >
       {value}
     </motion.h3>
-    <p className="text-gray-600 font-medium relative z-10 text-sm sm:text-base">{label}</p>
+    <p className="text-gray-600 font-medium relative z-10 text-sm sm:text-base">
+      {label}
+    </p>
   </motion.div>
 );
 
@@ -392,7 +424,6 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
         );
 
         setTeamsCount(totalMember);
-       
       } catch (error) {
         console.error("Error fetching total members:", error);
       }
@@ -403,12 +434,16 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
   const levels = [
     { level: 1, title: "Elite", minWallet: 0, member: 0 },
-    { level: 2, title: "Bronze", minWallet: 500, member: 6 },
-    { level: 3, title: "Silver", minWallet: 1000, member: 20 },
-    { level: 4, title: "Gold", minWallet: 2000, member: 60 },
+    { level: 2, title: "Bronze", minWallet: 100, member: 2 },
+    { level: 3, title: "Silver", minWallet: 500, member: 20 },
+    { level: 4, title: "Gold", minWallet: 1000, member: 60 },
     { level: 5, title: "Platinum", minWallet: 3000, member: 100 },
-    { level: 6, title: "Diamond", minWallet: 4000, member: 500 },
-    { level: 7, title: "Emerald", minWallet: 5000, member: 2000 },
+    { level: 6, title: "Diamond", minWallet: 5000, member: 500 },
+    { level: 7, title: "Emerald", minWallet: 10000, member: 2000 },
+    { level: 8, title: "Pearl", minWallet: 15000, member: 3000 },
+    { level: 9, title: "Ruby", minWallet: 20000, member: 4000 },
+    { level: 10, title: "Sapphire", minWallet: 40000, member: 8000 },
+    { level: 11, title: "Pro Diamond", minWallet: 60000, member: 20000 },
   ];
 
   const currentLevel = levels.findLast(
@@ -431,7 +466,7 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
       className="bg-white/90 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-full -translate-y-10 translate-x-10 sm:-translate-y-12 sm:translate-x-12 lg:-translate-y-16 lg:translate-x-16" />
-      
+
       <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8 relative z-10">
         <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 min-w-0 flex-1">
           <motion.div
@@ -466,7 +501,9 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
       <div className="space-y-3 sm:space-y-4 lg:space-y-6 relative z-10">
         <div>
           <div className="flex justify-between mb-2 sm:mb-3">
-            <span className="text-xs sm:text-sm text-gray-900 font-semibold">Daily XP</span>
+            <span className="text-xs sm:text-sm text-gray-900 font-semibold">
+              Daily XP
+            </span>
             <span className="text-xs sm:text-sm text-yellow-600 font-bold">
               {xp} / {requiredXp} XP
             </span>
@@ -483,7 +520,9 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
         <div>
           <div className="flex justify-between mb-2 sm:mb-3">
-            <span className="text-xs sm:text-sm text-gray-900 font-semibold">Wallet Progress</span>
+            <span className="text-xs sm:text-sm text-gray-900 font-semibold">
+              Wallet Progress
+            </span>
             <span className="text-xs sm:text-sm text-blue-600 font-bold">
               ${currentWallet.toFixed(2)} / ${nextLevel.minWallet}
             </span>
@@ -501,7 +540,9 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
 
         <div>
           <div className="flex justify-between mb-2 sm:mb-3">
-            <span className="text-xs sm:text-sm text-gray-900 font-semibold">Member Progress</span>
+            <span className="text-xs sm:text-sm text-gray-900 font-semibold">
+              Member Progress
+            </span>
             <span className="text-xs sm:text-sm text-blue-600 font-bold">
               {teamCount} / {nextLevel.member}
             </span>
@@ -522,7 +563,9 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
             whileHover={{ scale: 1.05 }}
             className="bg-gradient-to-br from-blue-50 to-blue-100 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl border border-blue-200 shadow-lg"
           >
-            <div className="text-xs sm:text-sm text-blue-600 font-medium">Current Level</div>
+            <div className="text-xs sm:text-sm text-blue-600 font-medium">
+              Current Level
+            </div>
             <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-900 mt-1">
               {currentLevel?.level || 1}
             </div>
@@ -531,7 +574,9 @@ const LevelCard = ({ xp, requiredXp, currentWallet }) => {
             whileHover={{ scale: 1.05 }}
             className="bg-gradient-to-br from-green-50 to-green-100 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl border border-green-200 shadow-lg"
           >
-            <div className="text-xs sm:text-sm text-green-600 font-medium">Next Level</div>
+            <div className="text-xs sm:text-sm text-green-600 font-medium">
+              Next Level
+            </div>
             <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-900 mt-1">
               {(currentLevel?.level || 1) + 1}
             </div>
@@ -954,7 +999,11 @@ const Profile = () => {
                 <div className="relative group">
                   <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative text-gray-900 font-bold text-xl sm:text-2xl lg:text-3xl">
-                    Sky<span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">366</span>Trade
+                    Sky
+                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      366
+                    </span>
+                    Trade
                   </div>
                 </div>
               </div>
@@ -1014,7 +1063,7 @@ const Profile = () => {
               <div className="space-y-4 sm:space-y-6 lg:space-y-8 xl:space-y-10">
                 <div className="bg-white/90 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-10 translate-x-10 sm:-translate-y-12 sm:translate-x-12 lg:-translate-y-16 lg:translate-x-16" />
-                  
+
                   <div className="text-center relative z-10">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
@@ -1029,7 +1078,9 @@ const Profile = () => {
                     >
                       {userData?.username}
                     </motion.h2>
-                    <p className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Trader Profile</p>
+                    <p className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">
+                      Trader Profile
+                    </p>
                   </div>
 
                   <div className="mt-4 sm:mt-6 lg:mt-8 relative z-10">

@@ -531,15 +531,15 @@ const Dashboard = () => {
     {
       level: 2,
       title: "Bronze",
-      minWallet: 500,
-      member: 6,
+      minWallet: 100,
+      member: 2,
       icon: Sword,
       description: "Give more rewards along with reviews",
     },
     {
       level: 3,
       title: "Silver",
-      minWallet: 1000,
+      minWallet: 500,
       member: 20,
       icon: Shield,
       description: "Join the elite players in high-stakes matches.",
@@ -547,7 +547,7 @@ const Dashboard = () => {
     {
       level: 4,
       title: "Gold",
-      minWallet: 2000,
+      minWallet: 1000,
       member: 60,
       icon: GlobeLock,
       description: "Exclusive rewarding tasks available worldwide.",
@@ -563,7 +563,7 @@ const Dashboard = () => {
     {
       level: 6,
       title: "Diamond",
-      minWallet: 4000,
+      minWallet: 5000,
       member: 500,
       icon: Highlighter,
       description: "The ultimate rewards experience and get true money.",
@@ -571,11 +571,45 @@ const Dashboard = () => {
     {
       level: 7,
       title: "Emerald",
-      minWallet: 5000,
+      minWallet: 10000,
       member: 2000,
+      icon: Shield,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 8,
+      title: "Pearl",
+      minWallet: 15000,
+      member: 3000,
+      icon: ActivityIcon,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 9,
+      title: "Ruby",
+      minWallet: 20000,
+      member: 4000,
       icon: LeafyGreenIcon,
       description: "The ultimate rewards experience and get true money.",
     },
+    {
+      level: 10,
+      title: "Sapphire",
+      minWallet: 40000,
+      member: 8000,
+      icon: Sword,
+      description: "The ultimate rewards experience and get true money.",
+    },
+    {
+      level: 11,
+      title: "Pro Diamond",
+      minWallet: 60000,
+      member: 20000,
+      icon: ActivityIcon,
+      description: "The ultimate rewards experience and get true money.",
+    },
+  
+    
   ];
 
   const reviews = [
