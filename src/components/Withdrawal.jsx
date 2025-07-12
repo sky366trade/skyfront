@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { ArrowLeft, Wallet, Sparkles, DollarSign, Clock, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Wallet, Sparkles, DollarSign, Clock, CheckCircle, XCircle, TrendingUp, Info, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function Withdrawal() {
@@ -105,6 +105,17 @@ function Withdrawal() {
     }
   };
 
+  const calculateFee = (inputAmount) => {
+    if (!inputAmount || inputAmount === '') return 0;
+    return parseFloat(inputAmount) * 0.1;
+  };
+
+  const calculateFinalAmount = (inputAmount) => {
+    if (!inputAmount || inputAmount === '') return 0;
+    const fee = calculateFee(inputAmount);
+    return parseFloat(inputAmount) - fee;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
       {/* Decorative background elements */}
@@ -171,6 +182,38 @@ function Withdrawal() {
             Back to Profile
           </motion.a>
 
+          {/* Important Information Notice */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 mb-6"
+          >
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <Info className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">Withdrawal Information</h3>
+                <div className="space-y-2 text-sm text-blue-800">
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4 text-blue-600" />
+                    <span><strong>Processing Time:</strong> Withdrawals are processed within 36 hours</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <AlertCircle className="w-4 h-4 text-blue-600" />
+                    <span><strong>Service Fee:</strong> 10% fee will be deducted from your withdrawal amount</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                    <span><strong>Withdrawal Policy:</strong> Only winning amounts are eligible for withdrawal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Withdrawal Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,6 +255,31 @@ function Withdrawal() {
                     <DollarSign className="w-5 h-5 text-blue-300" />
                   </div>
                 </div>
+
+                {/* Fee Calculation Display */}
+                {amount && parseFloat(amount) > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="mt-3 p-4 bg-gray-50 rounded-xl border border-gray-200"
+                  >
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Withdrawal Amount:</span>
+                        <span className="font-medium">${parseFloat(amount).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Service Fee (10%):</span>
+                        <span className="font-medium text-red-600">-${calculateFee(amount).toFixed(2)}</span>
+                      </div>
+                      <hr className="border-gray-300" />
+                      <div className="flex justify-between">
+                        <span className="font-semibold text-gray-800">You will receive:</span>
+                        <span className="font-bold text-green-600">${calculateFinalAmount(amount).toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               <div>
@@ -391,7 +459,7 @@ function Withdrawal() {
             transition={{ delay: 0.5 }}
             className="mt-8 text-center text-gray-500 text-sm max-w-md mx-auto"
           >
-            "Managing your finances with care and transparency, every step of the way"
+            "Processing within 36 hours with full transparency on fees and timing"
           </motion.p>
         </div>
       </div>
