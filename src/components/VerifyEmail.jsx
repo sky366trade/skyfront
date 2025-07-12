@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import { Mail, ArrowRight, RefreshCw, CheckCircle } from "lucide-react";
 import Swal from "sweetalert2";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
-  
-  // Mock data for demo purposes
-  const formData = { email: "user@example.com" };
-  const username = "john_doe";
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const formData = location.state?.formData;
+  const username = location.state?.username;
+  const url = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
+      if (!formData || localStorage.getItem("verifying") === "false") {
+      navigate("/register");
+      return;
+    }
     // Send OTP when component mounts
     sendOTP();
 
@@ -33,8 +38,11 @@ const VerifyEmail = () => {
     setLoading(true);
     try {
       // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const response = await fetch(`${url}/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
       Swal.fire({
         icon: "success",
         title: "OTP Sent!",
@@ -93,7 +101,17 @@ const VerifyEmail = () => {
     setLoading(true);
     try {
       // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+       const response = await fetch(`${url}/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          otp: otpString,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.msg);
       
       Swal.fire({
         icon: "success",
@@ -105,6 +123,7 @@ const VerifyEmail = () => {
 
       // Mock navigation
       console.log("Navigating to referral code page with username:", username);
+       navigate("/referralCode", { state: { username } });
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -116,6 +135,7 @@ const VerifyEmail = () => {
       setLoading(false);
     }
   };
+  if (!formData) return null;
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
